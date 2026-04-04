@@ -64,6 +64,15 @@ it.
    - `scripts/sync_plan_state.py`
    - `scripts/archive_exec_plan.py`
 
+## Script Boundary
+
+- The lifecycle scripts named in this Skill are bundled with the Skill itself.
+- They are not expected to exist under the target repository's `scripts/` directory.
+- Resolve `scripts/init_exec_plan.py`, `scripts/sync_plan_state.py`, and `scripts/archive_exec_plan.py` relative to this Skill directory.
+- The only repo-local script that preflight may expect is `scripts/check_harness.py`, because that file belongs to the repository's Harness baseline.
+- Do not report bundled lifecycle scripts as repository gaps.
+- In command examples below, `python3 scripts/...` means `python3 <this-skill>/scripts/...`, not `python3 <repo>/scripts/...`.
+
 ## Workflow
 
 ### 1. Rewrite the Bug Report Before Acting
@@ -106,8 +115,8 @@ first, or record the gap explicitly in the active plan.
 ### 4. Create or Update the Fix Plan
 
 - If an active plan already covers the issue, update it.
-- Otherwise initialize a plan with `scripts/init_exec_plan.py`.
-- Sync `docs/PLANS.md` with `scripts/sync_plan_state.py` unless the file
+- Otherwise initialize a plan with the bundled `scripts/init_exec_plan.py`.
+- Sync `docs/PLANS.md` with the bundled `scripts/sync_plan_state.py` unless the file
   is unmanaged.
 
 Preferred commands:
@@ -140,7 +149,7 @@ python3 scripts/sync_plan_state.py --repo <repo-root>
 
 - Archive only when reproduction or validation evidence shows the issue
   is resolved.
-- Use `scripts/archive_exec_plan.py` to prepend the completion header,
+- Use the bundled `scripts/archive_exec_plan.py` to prepend the completion header,
   move the file into `completed/`, and resync `docs/PLANS.md`.
 - If `docs/PLANS.md` is unmanaged, preserve it and surface the required
   manual update instead of forcing a rewrite.

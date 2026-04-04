@@ -8,6 +8,10 @@ When deterministic initialization is useful, prefer
 `scripts/init_exec_plan.py` and then refine the generated file instead
 of hand-writing the whole document from scratch.
 
+Here `scripts/init_exec_plan.py` refers to the bundled script inside
+this Skill, not to a script that must exist inside the target
+repository.
+
 ```markdown
 # <Feature / Task Name>
 

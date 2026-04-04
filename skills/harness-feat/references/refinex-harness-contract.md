@@ -26,6 +26,10 @@ Use `scripts/init_exec_plan.py`, `scripts/sync_plan_state.py`, and
 `scripts/archive_exec_plan.py` to keep this lifecycle deterministic
 whenever the repository's `docs/PLANS.md` is managed.
 
+Those lifecycle scripts are bundled with `harness-feat` itself. They are
+not repository requirements and should not be reported as missing repo
+files.
+
 ## Repository Invariants
 
 These constraints come from the repository's Harness control plane and

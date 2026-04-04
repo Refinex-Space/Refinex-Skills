@@ -41,6 +41,16 @@ def _run_json(cmd: list[str]) -> dict:
     return json.loads(result.stdout)
 
 
+def _assert_repo_lifecycle_scripts_absent(repo: Path) -> None:
+    for rel_path in [
+        "scripts/init_exec_plan.py",
+        "scripts/sync_plan_state.py",
+        "scripts/archive_exec_plan.py",
+    ]:
+        if (repo / rel_path).exists():
+            raise AssertionError(f"Target repository unexpectedly contains {rel_path}")
+
+
 def _normalize_paths(value: object, repo: Path) -> object:
     repo_resolved = str(repo.resolve())
     private_resolved = repo_resolved.replace("/var/", "/private/var/")
@@ -64,6 +74,7 @@ def _bootstrap_repo(repo: Path, files: dict[str, str], language: str) -> None:
 
 def _run_case_managed_e2e(repo: Path, fixture: dict) -> dict:
     _bootstrap_repo(repo, fixture["files"], fixture["language"])
+    _assert_repo_lifecycle_scripts_absent(repo)
     init_result = _run_json(
         [
             "python3",
@@ -124,6 +135,7 @@ def _run_case_managed_e2e(repo: Path, fixture: dict) -> dict:
 
 def _run_case_unmanaged_plans_safe(repo: Path, fixture: dict) -> dict:
     _materialize(repo, fixture["files"])
+    _assert_repo_lifecycle_scripts_absent(repo)
     init_result = _run_json(
         [
             "python3",
