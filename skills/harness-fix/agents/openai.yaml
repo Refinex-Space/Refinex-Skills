@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Fix"
+  short_description: "Drive repair work through the Harness control plane"
+  default_prompt: "Use $harness-fix to rewrite the bug report, run harness preflight, reproduce it, plan the fix, validate the repair, and archive the completed work."

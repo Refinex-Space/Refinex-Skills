@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Feat"
+  short_description: "Drive feature work through the Harness control plane"
+  default_prompt: "Use $harness-feat to rewrite the task, run harness preflight, create or update plan artifacts, execute incrementally, validate, and archive the completed work."

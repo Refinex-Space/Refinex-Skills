@@ -1,0 +1,8 @@
+{
+  "files": {
+    "AGENTS.md": "# Custom Root Agents\n\n人工维护入口，不允许脚本重写。\n",
+    "docs/PLANS.md": "# Custom Plans\n\n这里是人工维护的计划入口。\n",
+    "docs/exec-plans/active/.gitkeep": "",
+    "package.json": "{\n  \"name\": \"fixture-root\",\n  \"private\": true\n}\n"
+  }
+}

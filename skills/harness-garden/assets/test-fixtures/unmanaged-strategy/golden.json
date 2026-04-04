@@ -1,0 +1,470 @@
+{
+  "repair_result": {
+    "repo": "<REPO>",
+    "language": "en",
+    "audit": {
+      "repo": "<REPO>",
+      "language": "en",
+      "profile": {
+        "repo_name": "fixture-repo",
+        "project_type": "monorepo",
+        "languages": [
+          "TypeScript"
+        ],
+        "frameworks": [
+          "pnpm Workspace"
+        ],
+        "doc_language": "en",
+        "has_frontend": true,
+        "complex_architecture": true,
+        "local_agent_dirs": [
+          "apps/web"
+        ],
+        "top_level_dirs": [
+          "apps",
+          "docs"
+        ],
+        "structure_summary": "apps, docs",
+        "required_harness_files": [
+          "AGENTS.md",
+          "ARCHITECTURE.md",
+          "docs/README.md",
+          "docs/PLANS.md",
+          "docs/SECURITY.md",
+          "docs/RELIABILITY.md",
+          "docs/OBSERVABILITY.md",
+          "docs/QUALITY_SCORE.md",
+          "docs/exec-plans/tech-debt-tracker.md",
+          "docs/exec-plans/completed/README.md",
+          "docs/generated/README.md",
+          "docs/references/index.md",
+          "docs/FRONTEND.md",
+          "docs/PRODUCT_SENSE.md",
+          "docs/product-specs/index.md",
+          "docs/DESIGN.md",
+          "docs/design-docs/index.md",
+          "docs/design-docs/core-beliefs.md"
+        ],
+        "route_docs": [
+          "docs/PLANS.md",
+          "docs/SECURITY.md",
+          "docs/RELIABILITY.md",
+          "docs/OBSERVABILITY.md",
+          "docs/QUALITY_SCORE.md",
+          "docs/FRONTEND.md",
+          "docs/PRODUCT_SENSE.md",
+          "docs/DESIGN.md",
+          "docs/design-docs/index.md"
+        ],
+        "profile_fingerprint": "d70c39e01dfa8fc3"
+      },
+      "findings": [
+        {
+          "severity": "P0",
+          "code": "missing-file",
+          "path": "ARCHITECTURE.md",
+          "message": "Missing Harness file: ARCHITECTURE.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P1",
+          "code": "missing-plans-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/PLANS.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P1",
+          "code": "missing-local-agent",
+          "path": "apps/web/AGENTS.md",
+          "message": "Missing local AGENTS.md for workspace boundary apps/web",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P1",
+          "code": "missing-file",
+          "path": "docs/OBSERVABILITY.md",
+          "message": "Missing Harness file: docs/OBSERVABILITY.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P1",
+          "code": "plans-missing-active-pointer",
+          "path": "docs/PLANS.md",
+          "message": "PLANS.md does not mention docs/exec-plans/active",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P1",
+          "code": "missing-file",
+          "path": "docs/QUALITY_SCORE.md",
+          "message": "Missing Harness file: docs/QUALITY_SCORE.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P1",
+          "code": "missing-file",
+          "path": "docs/RELIABILITY.md",
+          "message": "Missing Harness file: docs/RELIABILITY.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P1",
+          "code": "missing-file",
+          "path": "docs/SECURITY.md",
+          "message": "Missing Harness file: docs/SECURITY.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P1",
+          "code": "missing-file",
+          "path": "docs/exec-plans/tech-debt-tracker.md",
+          "message": "Missing Harness file: docs/exec-plans/tech-debt-tracker.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/DESIGN.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/FRONTEND.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/OBSERVABILITY.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/PLANS.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/PRODUCT_SENSE.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/QUALITY_SCORE.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/RELIABILITY.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/SECURITY.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-route",
+          "path": "AGENTS.md",
+          "message": "Root AGENTS.md does not route to docs/design-docs/index.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/DESIGN.md",
+          "message": "Missing Harness file: docs/DESIGN.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/FRONTEND.md",
+          "message": "Missing Harness file: docs/FRONTEND.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "plans-missing-active-entry",
+          "path": "docs/PLANS.md",
+          "message": "PLANS.md does not mention active plan feature-a.md",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/PRODUCT_SENSE.md",
+          "message": "Missing Harness file: docs/PRODUCT_SENSE.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/README.md",
+          "message": "Missing Harness file: docs/README.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/design-docs/core-beliefs.md",
+          "message": "Missing Harness file: docs/design-docs/core-beliefs.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/design-docs/index.md",
+          "message": "Missing Harness file: docs/design-docs/index.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/exec-plans/completed/README.md",
+          "message": "Missing Harness file: docs/exec-plans/completed/README.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-archive-header",
+          "path": "docs/exec-plans/completed/done.md",
+          "message": "Completed plan is missing the standard archive header",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/generated/README.md",
+          "message": "Missing Harness file: docs/generated/README.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-manifest",
+          "path": "docs/generated/harness-manifest.md",
+          "message": "Harness manifest is missing",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/product-specs/index.md",
+          "message": "Missing Harness file: docs/product-specs/index.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-file",
+          "path": "docs/references/index.md",
+          "message": "Missing Harness file: docs/references/index.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "missing-check-script",
+          "path": "scripts/check_harness.py",
+          "message": "Repo-local Harness check script is missing",
+          "action": "safe-fix"
+        }
+      ]
+    },
+    "created": [
+      "ARCHITECTURE.md",
+      "apps/web/AGENTS.md",
+      "docs/DESIGN.md",
+      "docs/FRONTEND.md",
+      "docs/OBSERVABILITY.md",
+      "docs/PRODUCT_SENSE.md",
+      "docs/QUALITY_SCORE.md",
+      "docs/README.md",
+      "docs/RELIABILITY.md",
+      "docs/SECURITY.md",
+      "docs/design-docs/core-beliefs.md",
+      "docs/design-docs/index.md",
+      "docs/exec-plans/completed/README.md",
+      "docs/exec-plans/tech-debt-tracker.md",
+      "docs/generated/README.md",
+      "docs/product-specs/index.md",
+      "docs/references/index.md"
+    ],
+    "updated": [
+      "docs/exec-plans/completed/done.md",
+      "docs/generated/harness-manifest.md",
+      "scripts/check_harness.py"
+    ],
+    "high_risk_plan": "docs/exec-plans/active/harness-garden-remediation.md"
+  },
+  "post_audit": {
+    "repo": "<REPO>",
+    "language": "en",
+    "profile": {
+      "repo_name": "fixture-repo",
+      "project_type": "monorepo",
+      "languages": [
+        "TypeScript"
+      ],
+      "frameworks": [
+        "pnpm Workspace"
+      ],
+      "doc_language": "en",
+      "has_frontend": true,
+      "complex_architecture": true,
+      "local_agent_dirs": [
+        "apps/web"
+      ],
+      "top_level_dirs": [
+        "apps",
+        "docs",
+        "scripts"
+      ],
+      "structure_summary": "apps, docs, scripts",
+      "required_harness_files": [
+        "AGENTS.md",
+        "ARCHITECTURE.md",
+        "docs/README.md",
+        "docs/PLANS.md",
+        "docs/SECURITY.md",
+        "docs/RELIABILITY.md",
+        "docs/OBSERVABILITY.md",
+        "docs/QUALITY_SCORE.md",
+        "docs/exec-plans/tech-debt-tracker.md",
+        "docs/exec-plans/completed/README.md",
+        "docs/generated/README.md",
+        "docs/references/index.md",
+        "docs/FRONTEND.md",
+        "docs/PRODUCT_SENSE.md",
+        "docs/product-specs/index.md",
+        "docs/DESIGN.md",
+        "docs/design-docs/index.md",
+        "docs/design-docs/core-beliefs.md"
+      ],
+      "route_docs": [
+        "docs/PLANS.md",
+        "docs/SECURITY.md",
+        "docs/RELIABILITY.md",
+        "docs/OBSERVABILITY.md",
+        "docs/QUALITY_SCORE.md",
+        "docs/FRONTEND.md",
+        "docs/PRODUCT_SENSE.md",
+        "docs/DESIGN.md",
+        "docs/design-docs/index.md"
+      ],
+      "profile_fingerprint": "6b4228ca5f99667b"
+    },
+    "findings": [
+      {
+        "severity": "P1",
+        "code": "missing-plans-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/PLANS.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P1",
+        "code": "plans-missing-active-pointer",
+        "path": "docs/PLANS.md",
+        "message": "PLANS.md does not mention docs/exec-plans/active",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/DESIGN.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/FRONTEND.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/OBSERVABILITY.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/PLANS.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/PRODUCT_SENSE.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/QUALITY_SCORE.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/RELIABILITY.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/SECURITY.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "missing-route",
+        "path": "AGENTS.md",
+        "message": "Root AGENTS.md does not route to docs/design-docs/index.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "plans-missing-active-entry",
+        "path": "docs/PLANS.md",
+        "message": "PLANS.md does not mention active plan feature-a.md",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "plans-missing-active-entry",
+        "path": "docs/PLANS.md",
+        "message": "PLANS.md does not mention active plan harness-garden-remediation.md",
+        "action": "manual-plan"
+      }
+    ]
+  },
+  "files": {
+    "AGENTS.md": "# Huge Agents\nThis file forgot routes.\n",
+    "docs/generated/harness-manifest.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Manifest\n\n## Repository Profile\n\n- **Project**: repo\n- **Project type**: monorepo\n- **Languages**: TypeScript\n- **Frameworks**: pnpm Workspace\n- **Documentation language**: en\n- **Profile fingerprint**: `6b4228ca5f99667b`\n\n## Managed Files\n\n- `ARCHITECTURE.md`\n- `apps/web/AGENTS.md`\n- `docs/DESIGN.md`\n- `docs/FRONTEND.md`\n- `docs/OBSERVABILITY.md`\n- `docs/PRODUCT_SENSE.md`\n- `docs/QUALITY_SCORE.md`\n- `docs/README.md`\n- `docs/RELIABILITY.md`\n- `docs/SECURITY.md`\n- `docs/design-docs/core-beliefs.md`\n- `docs/design-docs/index.md`\n- `docs/exec-plans/active/harness-garden-remediation.md`\n- `docs/exec-plans/completed/README.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/README.md`\n- `docs/generated/harness-manifest.md`\n- `docs/product-specs/index.md`\n- `docs/references/index.md`\n- `scripts/check_harness.py`\n\n## Local AGENTS Coverage\n\n- `apps/web`\n\n## Indexes and Entry Points\n\n- `docs/PLANS.md`\n- `docs/OBSERVABILITY.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/harness-manifest.md`\n- `docs/references/index.md`\n",
+    "docs/exec-plans/active/harness-garden-remediation.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Garden Remediation\n\n## Metadata\n\n- **Status**: 🟡 Active\n- **Owner**: Codex / Claude Agent\n- **Created**: 2026-04-05\n- **Goal**: repair Harness drift that should not be blindly rewritten\n\n## High-Risk Findings\n\n- [P1] `missing-plans-route` AGENTS.md -> Root AGENTS.md does not route to docs/PLANS.md\n- [P1] `plans-missing-active-pointer` docs/PLANS.md -> PLANS.md does not mention docs/exec-plans/active\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/DESIGN.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/FRONTEND.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/OBSERVABILITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/PLANS.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/PRODUCT_SENSE.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/QUALITY_SCORE.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/RELIABILITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/SECURITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/design-docs/index.md\n- [P2] `plans-missing-active-entry` docs/PLANS.md -> PLANS.md does not mention active plan feature-a.md\n\n## Auto-Fixed\n\n- ARCHITECTURE.md\n- apps/web/AGENTS.md\n- docs/OBSERVABILITY.md\n- docs/QUALITY_SCORE.md\n- docs/RELIABILITY.md\n- docs/SECURITY.md\n- docs/exec-plans/tech-debt-tracker.md\n- docs/DESIGN.md\n- docs/FRONTEND.md\n- docs/PRODUCT_SENSE.md\n- docs/README.md\n- docs/design-docs/core-beliefs.md\n- docs/design-docs/index.md\n- docs/exec-plans/completed/README.md\n- docs/generated/README.md\n- docs/product-specs/index.md\n- docs/references/index.md\n- docs/exec-plans/completed/done.md\n\n## Next Slices\n\n- [ ] address root routing or index drift\n- [ ] handle high-risk semantic rewrites\n- [ ] rerun the audit\n"
+  }
+}

@@ -1,0 +1,172 @@
+{
+  "repair_result": {
+    "repo": "<REPO>",
+    "language": "zh",
+    "audit": {
+      "repo": "<REPO>",
+      "language": "zh",
+      "profile": {
+        "repo_name": "fixture-repo",
+        "project_type": "monorepo",
+        "languages": [
+          "TypeScript",
+          "Python"
+        ],
+        "frameworks": [
+          "pnpm Workspace"
+        ],
+        "doc_language": "zh",
+        "has_frontend": true,
+        "complex_architecture": true,
+        "local_agent_dirs": [
+          "apps/web",
+          "services/api"
+        ],
+        "top_level_dirs": [
+          "apps",
+          "docs",
+          "scripts",
+          "services"
+        ],
+        "structure_summary": "apps, docs, scripts, services",
+        "required_harness_files": [
+          "AGENTS.md",
+          "ARCHITECTURE.md",
+          "docs/README.md",
+          "docs/PLANS.md",
+          "docs/SECURITY.md",
+          "docs/RELIABILITY.md",
+          "docs/OBSERVABILITY.md",
+          "docs/QUALITY_SCORE.md",
+          "docs/exec-plans/tech-debt-tracker.md",
+          "docs/exec-plans/completed/README.md",
+          "docs/generated/README.md",
+          "docs/references/index.md",
+          "docs/FRONTEND.md",
+          "docs/PRODUCT_SENSE.md",
+          "docs/product-specs/index.md",
+          "docs/DESIGN.md",
+          "docs/design-docs/index.md",
+          "docs/design-docs/core-beliefs.md"
+        ],
+        "route_docs": [
+          "docs/PLANS.md",
+          "docs/SECURITY.md",
+          "docs/RELIABILITY.md",
+          "docs/OBSERVABILITY.md",
+          "docs/QUALITY_SCORE.md",
+          "docs/FRONTEND.md",
+          "docs/PRODUCT_SENSE.md",
+          "docs/DESIGN.md",
+          "docs/design-docs/index.md"
+        ],
+        "profile_fingerprint": "d1085d840466389d"
+      },
+      "findings": [
+        {
+          "severity": "P1",
+          "code": "missing-file",
+          "path": "docs/OBSERVABILITY.md",
+          "message": "Missing Harness file: docs/OBSERVABILITY.md",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "stale-manifest",
+          "path": "docs/generated/harness-manifest.md",
+          "message": "Harness manifest is stale relative to the current repository profile",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "check-script-failed",
+          "path": "scripts/check_harness.py",
+          "message": "Repo-local Harness check script could not be executed cleanly",
+          "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "stale-check-script",
+          "path": "scripts/check_harness.py",
+          "message": "Repo-local Harness check script is stale relative to the current repository profile",
+          "action": "safe-fix"
+        }
+      ]
+    },
+    "created": [
+      "docs/OBSERVABILITY.md"
+    ],
+    "updated": [
+      "docs/generated/harness-manifest.md",
+      "scripts/check_harness.py"
+    ],
+    "high_risk_plan": null
+  },
+  "post_audit": {
+    "repo": "<REPO>",
+    "language": "zh",
+    "profile": {
+      "repo_name": "fixture-repo",
+      "project_type": "monorepo",
+      "languages": [
+        "TypeScript",
+        "Python"
+      ],
+      "frameworks": [
+        "pnpm Workspace"
+      ],
+      "doc_language": "zh",
+      "has_frontend": true,
+      "complex_architecture": true,
+      "local_agent_dirs": [
+        "apps/web",
+        "services/api"
+      ],
+      "top_level_dirs": [
+        "apps",
+        "docs",
+        "scripts",
+        "services"
+      ],
+      "structure_summary": "apps, docs, scripts, services",
+      "required_harness_files": [
+        "AGENTS.md",
+        "ARCHITECTURE.md",
+        "docs/README.md",
+        "docs/PLANS.md",
+        "docs/SECURITY.md",
+        "docs/RELIABILITY.md",
+        "docs/OBSERVABILITY.md",
+        "docs/QUALITY_SCORE.md",
+        "docs/exec-plans/tech-debt-tracker.md",
+        "docs/exec-plans/completed/README.md",
+        "docs/generated/README.md",
+        "docs/references/index.md",
+        "docs/FRONTEND.md",
+        "docs/PRODUCT_SENSE.md",
+        "docs/product-specs/index.md",
+        "docs/DESIGN.md",
+        "docs/design-docs/index.md",
+        "docs/design-docs/core-beliefs.md"
+      ],
+      "route_docs": [
+        "docs/PLANS.md",
+        "docs/SECURITY.md",
+        "docs/RELIABILITY.md",
+        "docs/OBSERVABILITY.md",
+        "docs/QUALITY_SCORE.md",
+        "docs/FRONTEND.md",
+        "docs/PRODUCT_SENSE.md",
+        "docs/DESIGN.md",
+        "docs/design-docs/index.md"
+      ],
+      "profile_fingerprint": "d1085d840466389d"
+    },
+    "findings": []
+  },
+  "files": {
+    "docs/OBSERVABILITY.md": "<!-- HARNESS:MANAGED FILE -->\n# Observability\n\n## 目标\n\n让未来的智能体能够直接理解系统运行态，而不是依赖口头描述或零散记忆。\n\n## 必备观测面\n\n- 关键日志与错误证据\n- 重要指标或耗时信号\n- 可用时提供 traces / request flow 线索\n- UI 场景尽量提供浏览器或端到端验证入口\n\n## 默认要求\n\n- 优先可脚本化的检查方式，减少纯人工描述\n- 将命令、面板、调试入口保持可发现\n- 如果仓库支持隔离 worktree 或按任务启动环境，应在此记录用法\n- 重复出现的盲点记录到 `docs/exec-plans/tech-debt-tracker.md`\n",
+    "docs/generated/harness-manifest.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Manifest\n\n## 仓库画像\n\n- **项目名**: repo\n- **项目类型**: monorepo\n- **语言**: TypeScript, Python\n- **框架信号**: pnpm Workspace\n- **文档语言**: zh\n- **Profile 指纹**: `d1085d840466389d`\n\n## 管理文件\n\n- `AGENTS.md`\n- `ARCHITECTURE.md`\n- `apps/web/AGENTS.md`\n- `docs/DESIGN.md`\n- `docs/FRONTEND.md`\n- `docs/OBSERVABILITY.md`\n- `docs/PLANS.md`\n- `docs/PRODUCT_SENSE.md`\n- `docs/QUALITY_SCORE.md`\n- `docs/README.md`\n- `docs/RELIABILITY.md`\n- `docs/SECURITY.md`\n- `docs/design-docs/core-beliefs.md`\n- `docs/design-docs/index.md`\n- `docs/exec-plans/active/harness-bootstrap.md`\n- `docs/exec-plans/completed/README.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/README.md`\n- `docs/generated/harness-manifest.md`\n- `docs/product-specs/index.md`\n- `docs/references/index.md`\n- `scripts/check_harness.py`\n- `services/api/AGENTS.md`\n\n## 局部 AGENTS 覆盖\n\n- `apps/web`\n- `services/api`\n\n## 索引与入口\n\n- `docs/PLANS.md`\n- `docs/OBSERVABILITY.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/harness-manifest.md`\n- `docs/references/index.md`\n",
+    "scripts/check_harness.py": "# HARNESS:MANAGED FILE\n#!/usr/bin/env python3\n\nfrom __future__ import annotations\n\nimport argparse\nimport json\nfrom pathlib import Path\n\nREQUIRED_FILES = [\"AGENTS.md\", \"ARCHITECTURE.md\", \"docs/DESIGN.md\", \"docs/FRONTEND.md\", \"docs/OBSERVABILITY.md\", \"docs/PLANS.md\", \"docs/PRODUCT_SENSE.md\", \"docs/QUALITY_SCORE.md\", \"docs/README.md\", \"docs/RELIABILITY.md\", \"docs/SECURITY.md\", \"docs/design-docs/core-beliefs.md\", \"docs/design-docs/index.md\", \"docs/exec-plans/completed/README.md\", \"docs/exec-plans/tech-debt-tracker.md\", \"docs/generated/README.md\", \"docs/generated/harness-manifest.md\", \"docs/product-specs/index.md\", \"docs/references/index.md\", \"scripts/check_harness.py\"]\nROUTE_DOCS = [\"docs/PLANS.md\", \"docs/SECURITY.md\", \"docs/RELIABILITY.md\", \"docs/OBSERVABILITY.md\", \"docs/QUALITY_SCORE.md\", \"docs/FRONTEND.md\", \"docs/PRODUCT_SENSE.md\", \"docs/DESIGN.md\", \"docs/design-docs/index.md\"]\nLOCAL_AGENT_DIRS = [\"apps/web\", \"services/api\"]\nPROFILE_FINGERPRINT = \"d1085d840466389d\"\nMANIFEST_PATH = \"docs/generated/harness-manifest.md\"\nROOT_AGENT_MAX_LINES = 140\nLOCAL_AGENT_MAX_LINES = 120\nPLANS_MAX_LINES = 180\n\n\ndef _append(findings: list[dict], severity: str, code: str, path: str, message: str) -> None:\n    findings.append(\n        {\n            \"severity\": severity,\n            \"code\": code,\n            \"path\": path,\n            \"message\": message,\n        }\n    )\n\n\ndef _line_count(path: Path) -> int:\n    return len(path.read_text(encoding=\"utf-8\").splitlines())\n\n\ndef run_check(repo: Path) -> dict:\n    findings: list[dict] = []\n\n    for rel_path in REQUIRED_FILES:\n        if not (repo / rel_path).exists():\n            _append(\n                findings,\n                \"P0\",\n                \"missing-required-file\",\n                rel_path,\n                f\"Required Harness file is missing: {rel_path}\",\n            )\n\n    agents_path = repo / \"AGENTS.md\"\n    if agents_path.exists():\n        content = agents_path.read_text(encoding=\"utf-8\")\n        if _line_count(agents_path) > ROOT_AGENT_MAX_LINES:\n            _append(\n                findings,\n                \"P1\",\n                \"root-agent-too-large\",\n                \"AGENTS.md\",\n                f\"Root AGENTS.md exceeds {ROOT_AGENT_MAX_LINES} lines and stops being a clean routing map\",\n            )\n        if \"docs/PLANS.md\" not in content:\n            _append(\n                findings,\n                \"P1\",\n                \"missing-plans-route\",\n                \"AGENTS.md\",\n                \"Root AGENTS.md does not route to docs/PLANS.md\",\n            )\n        for rel_path in ROUTE_DOCS:\n            if rel_path and rel_path not in content:\n                _append(\n                    findings,\n                    \"P2\",\n                    \"missing-route\",\n                    \"AGENTS.md\",\n                    f\"Root AGENTS.md does not route to {rel_path}\",\n                )\n\n    for rel_dir in LOCAL_AGENT_DIRS:\n        agent_path = repo / rel_dir / \"AGENTS.md\"\n        if not agent_path.exists():\n            _append(\n                findings,\n                \"P1\",\n                \"missing-local-agent\",\n                f\"{rel_dir}/AGENTS.md\",\n                f\"Expected local AGENTS.md is missing for {rel_dir}\",\n            )\n            continue\n        if _line_count(agent_path) > LOCAL_AGENT_MAX_LINES:\n            _append(\n                findings,\n                \"P2\",\n                \"local-agent-too-large\",\n                f\"{rel_dir}/AGENTS.md\",\n                f\"Local AGENTS.md exceeds {LOCAL_AGENT_MAX_LINES} lines and should be trimmed to local routing only\",\n            )\n\n    plans_path = repo / \"docs\" / \"PLANS.md\"\n    active_dir = repo / \"docs\" / \"exec-plans\" / \"active\"\n    if plans_path.exists():\n        plans_text = plans_path.read_text(encoding=\"utf-8\")\n        if _line_count(plans_path) > PLANS_MAX_LINES:\n            _append(\n                findings,\n                \"P2\",\n                \"plans-too-large\",\n                \"docs/PLANS.md\",\n                f\"PLANS.md exceeds {PLANS_MAX_LINES} lines and should stay as a short routing index\",\n            )\n        if active_dir.exists():\n            active_plans = sorted(path.name for path in active_dir.glob(\"*.md\") if path.is_file())\n            if active_plans and \"docs/exec-plans/active\" not in plans_text:\n                _append(\n                    findings,\n                    \"P1\",\n                    \"plans-missing-active-pointer\",\n                    \"docs/PLANS.md\",\n                    \"PLANS.md does not mention docs/exec-plans/active\",\n                )\n            for plan_name in active_plans:\n                if plan_name not in plans_text and plan_name != \"README.md\":\n                    _append(\n                        findings,\n                        \"P2\",\n                        \"plans-missing-active-entry\",\n                        \"docs/PLANS.md\",\n                        f\"PLANS.md does not mention active plan {plan_name}\",\n                    )\n\n    completed_dir = repo / \"docs\" / \"exec-plans\" / \"completed\"\n    if completed_dir.exists():\n        for path in sorted(completed_dir.glob(\"*.md\")):\n            if path.name == \"README.md\":\n                continue\n            if not path.read_text(encoding=\"utf-8\").lstrip().startswith(\"> ✅ Completed:\"):\n                _append(\n                    findings,\n                    \"P2\",\n                    \"missing-archive-header\",\n                    str(path.relative_to(repo)),\n                    \"Completed plan is missing the standard archive header\",\n                )\n\n    manifest_path = repo / MANIFEST_PATH\n    if not manifest_path.exists():\n        _append(\n            findings,\n            \"P2\",\n            \"missing-manifest\",\n            MANIFEST_PATH,\n            \"Harness manifest is missing\",\n        )\n    else:\n        manifest_text = manifest_path.read_text(encoding=\"utf-8\")\n        if PROFILE_FINGERPRINT not in manifest_text:\n            _append(\n                findings,\n                \"P2\",\n                \"manifest-fingerprint-mismatch\",\n                MANIFEST_PATH,\n                \"Harness manifest does not match the current bootstrap profile fingerprint\",\n            )\n\n    return {\"ok\": not any(item[\"severity\"] in {\"P0\", \"P1\"} for item in findings), \"findings\": findings}\n\n\ndef main() -> int:\n    parser = argparse.ArgumentParser(description=\"Check repository Harness health\")\n    parser.add_argument(\"--repo\", default=\".\", help=\"Repository root\")\n    parser.add_argument(\"--format\", choices=(\"json\", \"md\"), default=\"md\")\n    args = parser.parse_args()\n    result = run_check(Path(args.repo).resolve())\n    if args.format == \"json\":\n        print(json.dumps(result, ensure_ascii=False, indent=2))\n    else:\n        print(\"# Harness Check\")\n        print()\n        print(f\"- OK: {result['ok']}\")\n        print(f\"- Profile fingerprint: `{PROFILE_FINGERPRINT}`\")\n        if result[\"findings\"]:\n            print()\n            print(\"## Findings\")\n            print()\n            for item in result[\"findings\"]:\n                print(\n                    f\"- [{item['severity']}] `{item['code']}` {item['path']}: {item['message']}\"\n                )\n        else:\n            print()\n            print(\"- No findings\")\n    return 0 if result[\"ok\"] else 1\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n"
+  }
+}

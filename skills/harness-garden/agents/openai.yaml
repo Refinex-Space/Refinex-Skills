@@ -1,0 +1,4 @@
+interface:
+  display_name: "Harness Garden"
+  short_description: "Audit and repair industrial Harness drift"
+  default_prompt: "Use $harness-garden to audit a repository's Harness Engineering health, refresh stale managed files, repair low-risk drift, and plan high-risk corrections."

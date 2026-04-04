@@ -1,0 +1,35 @@
+{
+  "init_result": {
+    "mode": "feat",
+    "language": "zh",
+    "plan_path": "<REPO>/docs/exec-plans/active/provider-health-view.md",
+    "relative_path": "docs/exec-plans/active/provider-health-view.md",
+    "slug": "provider-health-view",
+    "written": true,
+    "sync_result": {
+      "repo": "<REPO>",
+      "plans_path": "docs/PLANS.md",
+      "language": "zh",
+      "written": true,
+      "manual_update_required": false,
+      "reason": "",
+      "desired_content": "<!-- HARNESS:MANAGED FILE -->\n# Development Plans\n\n> 智能体启动任务前先阅读本文件，确认当前活跃计划与优先级。\n\n## 当前状态\n\n- **活跃计划目录**: `docs/exec-plans/active/`\n- **Harness 状态**: 通过 `scripts/check_harness.py` 持续维护\n- **结构性技术债**: `docs/exec-plans/tech-debt-tracker.md`\n\n## 活跃计划入口\n\n- [Harness Bootstrap](docs/exec-plans/active/harness-bootstrap.md)\n- [Provider Health View](docs/exec-plans/active/provider-health-view.md)\n\n## 规则\n\n1. 新任务需要创建或复用 `docs/exec-plans/active/` 中的活跃计划\n2. 完成后归档到 `docs/exec-plans/completed/`\n3. 结构性技术债与延后治理写入 `docs/exec-plans/tech-debt-tracker.md`\n4. `PLANS.md` 保持短小，只做高层入口，不复制执行细节\n"
+    }
+  },
+  "archive_result": {
+    "repo": "<REPO>",
+    "archived_from": "docs/exec-plans/active/provider-health-view.md",
+    "archived_to": "docs/exec-plans/completed/provider-health-view.md",
+    "sync_result": {
+      "repo": "<REPO>",
+      "plans_path": "docs/PLANS.md",
+      "language": "zh",
+      "written": true,
+      "manual_update_required": false,
+      "reason": "",
+      "desired_content": "<!-- HARNESS:MANAGED FILE -->\n# Development Plans\n\n> 智能体启动任务前先阅读本文件，确认当前活跃计划与优先级。\n\n## 当前状态\n\n- **活跃计划目录**: `docs/exec-plans/active/`\n- **Harness 状态**: 通过 `scripts/check_harness.py` 持续维护\n- **结构性技术债**: `docs/exec-plans/tech-debt-tracker.md`\n\n## 活跃计划入口\n\n- [Harness Bootstrap](docs/exec-plans/active/harness-bootstrap.md)\n\n## 规则\n\n1. 新任务需要创建或复用 `docs/exec-plans/active/` 中的活跃计划\n2. 完成后归档到 `docs/exec-plans/completed/`\n3. 结构性技术债与延后治理写入 `docs/exec-plans/tech-debt-tracker.md`\n4. `PLANS.md` 保持短小，只做高层入口，不复制执行细节\n"
+    }
+  },
+  "plans_md": "<!-- HARNESS:MANAGED FILE -->\n# Development Plans\n\n> 智能体启动任务前先阅读本文件，确认当前活跃计划与优先级。\n\n## 当前状态\n\n- **活跃计划目录**: `docs/exec-plans/active/`\n- **Harness 状态**: 通过 `scripts/check_harness.py` 持续维护\n- **结构性技术债**: `docs/exec-plans/tech-debt-tracker.md`\n\n## 活跃计划入口\n\n- [Harness Bootstrap](docs/exec-plans/active/harness-bootstrap.md)\n\n## 规则\n\n1. 新任务需要创建或复用 `docs/exec-plans/active/` 中的活跃计划\n2. 完成后归档到 `docs/exec-plans/completed/`\n3. 结构性技术债与延后治理写入 `docs/exec-plans/tech-debt-tracker.md`\n4. `PLANS.md` 保持短小，只做高层入口，不复制执行细节\n",
+  "completed_plan": "> ✅ Completed: 2026-04-06\n> Summary: Delivered provider health planning loop\n> Duration: 1 day\n> Key learnings: Keep plan lifecycle script-driven\n\n# Provider Health View\n\n## 元信息\n\n- **状态**: 🟡 Active\n- **负责人**: Codex / Claude Agent\n- **创建日期**: 2026-04-05\n- **目标**: Expose a provider health view in settings\n- **范围**: Settings UI, health command, relevant docs\n- **非目标**: Historical analytics and background polling\n- **回滚方案**: Git revert 或恢复本次修改文件\n- **关联入口**: `docs/PLANS.md`\n- **计划路径**: `docs/exec-plans/active/provider-health-view.md`\n\n## Harness 预检\n\n- **仓库自检状态**: 可用且通过\n- **Harness 关键观测面**:\n  - scripts/check_harness.py\n  - docs/generated/harness-manifest.md\n  - docs/OBSERVABILITY.md\n  - docs/exec-plans/tech-debt-tracker.md\n\n## 背景\n\nUsers cannot verify provider readiness before a request fails\n\n## 优化后的任务定义\n\n- **Outcome**: Expose a provider health view in settings\n- **Problem**: Users cannot verify provider readiness before a request fails\n- **Scope**: Settings UI, health command, relevant docs\n- **Non-goals**: Historical analytics and background polling\n- **Constraints**:\n  - Respect existing Tauri command boundaries\n- **Affected surfaces**:\n  - apps/web\n- **Validation**:\n  - Manual settings verification and targeted tests\n- **Docs to sync**:\n  - docs/exec-plans/active/provider-health-view.md\n  - docs/PLANS.md\n  - docs/OBSERVABILITY.md\n- **Open assumptions**:\n  - Existing provider config path remains the source of truth\n\n## 渐进执行切片\n\n### Slice 1 — 建立上下文与最小可行变更\n\n- [ ] 实现\n- [ ] 验证\n\n### Slice 2 — 完成核心实现\n\n- [ ] 实现\n- [ ] 验证\n\n### Slice 3 — 文档、可观测性与收尾\n\n- [ ] 同步文档与生成事实\n- [ ] 最终验证\n\n## 风险与回滚\n\n  - UI may misrepresent transient provider failures if health semantics are weak\n- Git revert 或恢复本次修改文件\n\n## 决策记录\n\n| 日期 | 决策 | 原因 |\n| ---- | ---- | ---- |\n\n## 验证记录\n\n- 初始化计划，待补充实际验证命令与结果\n\n## 完成归档说明\n\n- 在归档前补充完成日期、摘要、周期和关键经验\n"
+}
