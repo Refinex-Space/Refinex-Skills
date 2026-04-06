@@ -3,8 +3,9 @@
 # Refinex-Skills
 
 MIT-licensed personal skill suite for agent-first software development,
-covering two complementary engineering disciplines: Harness Engineering
-for code-side rigor and Write Skills for documentation quality.
+covering three complementary disciplines: Harness Engineering for
+code-side rigor, Office Skills for document deliverables, and Write
+Skills for documentation quality.
 
 ---
 
@@ -31,6 +32,39 @@ These skills are designed to work together as one control-plane stack:
    Execute debugging and repair work through deterministic plan lifecycle.
 
 Docs: [docs/harness-suite.en.md](docs/harness-suite.en.md)
+
+---
+
+### Office Skills Suite
+
+Four companion skills for Office-family deliverables. These skills were
+renamed from bare file-extension names to `office-*` names so they read
+as one suite and avoid namespace ambiguity in prompts and indexes:
+
+- `office-docx`
+- `office-pdf`
+- `office-pptx`
+- `office-xlsx`
+
+1. `office-docx`
+   Create, inspect, edit, and validate Word `.docx` documents.
+2. `office-pdf`
+   Read, generate, transform, extract from, and fill PDF documents.
+3. `office-pptx`
+   Build, review, and modify PowerPoint `.pptx` presentations.
+4. `office-xlsx`
+   Create, clean, analyze, and recalculate spreadsheet deliverables.
+
+Migration note:
+- Legacy skill names `docx`, `pdf`, `pptx`, and `xlsx` are now
+  `office-docx`, `office-pdf`, `office-pptx`, and `office-xlsx`.
+
+Source note:
+- These four skills are derived from Anthropic's `anthropics/skills`
+  repository and were originally provided there as document skills:
+  https://github.com/anthropics/skills
+
+Docs: [docs/office-suite.en.md](docs/office-suite.en.md)
 
 ---
 
@@ -78,6 +112,8 @@ Refinex-Skills/
 ├── docs/
 │   ├── harness-suite.en.md
 │   ├── harness-suite.zh.md
+│   ├── office-suite.en.md
+│   ├── office-suite.zh.md
 │   ├── write-suite.en.md
 │   └── write-suite.zh.md
 ├── skills/
@@ -85,6 +121,10 @@ Refinex-Skills/
 │   ├── harness-garden/
 │   ├── harness-feat/
 │   ├── harness-fix/
+│   ├── office-docx/
+│   ├── office-pdf/
+│   ├── office-pptx/
+│   ├── office-xlsx/
 │   ├── tech-writing/
 │   └── tech-rewrite/
 ├── .gitignore
@@ -98,6 +138,10 @@ Refinex-Skills/
 **Harness Engineering Suite**
 - English: [docs/harness-suite.en.md](docs/harness-suite.en.md)
 - 中文: [docs/harness-suite.zh.md](docs/harness-suite.zh.md)
+
+**Office Skills Suite**
+- English: [docs/office-suite.en.md](docs/office-suite.en.md)
+- 中文: [docs/office-suite.zh.md](docs/office-suite.zh.md)
 
 **Write Skills Suite**
 - English: [docs/write-suite.en.md](docs/write-suite.en.md)
