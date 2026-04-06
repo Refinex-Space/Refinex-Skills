@@ -155,6 +155,8 @@ python3 scripts/run_fixture_tests.py
 ## Guardrails
 
 - Do not start substantive coding before there is a current plan artifact unless the task is obviously trivial.
+- Execution plan filenames must use date-prefixed kebab-case under `docs/exec-plans/`, for example `2026-04-05-provider-context-window-config.md`.
+- Do not create or keep bare-slug plan files such as `provider-context-window-config.md`; rename or regenerate them into the date-prefixed form.
 - Do not let a plan become a diary. Record only decisions, progress, risks, and evidence that reduce future rediscovery.
 - Do not trust stale docs over source code, tests, logs, and generated facts.
 - Do not modify generated files by hand when the repository expects them to be script-generated.

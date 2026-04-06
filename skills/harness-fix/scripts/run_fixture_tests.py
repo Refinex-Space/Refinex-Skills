@@ -66,7 +66,18 @@ def _normalize_paths(value: object, repo: Path) -> object:
 def _bootstrap_repo(repo: Path, files: dict[str, str], language: str) -> None:
     _materialize(repo, files)
     _run_json(
-        ["python3", str(_bootstrap_script()), "--repo", str(repo), "--language", language, "--format", "json"]
+        [
+            "python3",
+            str(_bootstrap_script()),
+            "--repo",
+            str(repo),
+            "--language",
+            language,
+            "--date",
+            "2026-04-05",
+            "--format",
+            "json",
+        ]
     )
 
 

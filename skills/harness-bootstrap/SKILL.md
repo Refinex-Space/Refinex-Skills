@@ -69,7 +69,7 @@ Do not ask the user for structure the repository already reveals.
 - Always include `docs/OBSERVABILITY.md` and `docs/exec-plans/tech-debt-tracker.md`.
 - Add frontend or design docs only when repository signals justify them.
 - Create local `AGENTS.md` only at real handoff boundaries.
-- Generate a managed active plan at `docs/exec-plans/active/harness-bootstrap.md`.
+- Generate a managed active plan at a date-prefixed path such as `docs/exec-plans/active/2026-04-05-harness-bootstrap.md`.
 
 ### 3. Preserve Unmanaged Strategic Files
 
@@ -105,6 +105,7 @@ substantial unmanaged documentation.
 ## Guardrails
 
 - `AGENTS.md` must stay a routing map, not a handbook.
+- Execution plan filenames under `docs/exec-plans/` must use `YYYY-MM-DD-short-task-title.md`; bare-slug filenames are Harness drift.
 - Do not install CI, linter, or workflow mutations by default.
 - Do not overwrite unmanaged root `AGENTS.md`, unmanaged `docs/PLANS.md`, or other unmanaged strategic docs unless the rewrite is obviously safe.
 - Keep observability, tech-debt tracking, and generated facts as first-class harness surfaces.

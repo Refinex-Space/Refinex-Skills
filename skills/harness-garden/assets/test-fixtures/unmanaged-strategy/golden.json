@@ -236,6 +236,13 @@
         },
         {
           "severity": "P2",
+          "code": "plan-missing-date-prefix",
+          "path": "docs/exec-plans/active/feature-a.md",
+          "message": "Execution plan filename must start with YYYY-MM-DD-",
+          "action": "manual-plan"
+        },
+        {
+          "severity": "P2",
           "code": "missing-file",
           "path": "docs/exec-plans/completed/README.md",
           "message": "Missing Harness file: docs/exec-plans/completed/README.md",
@@ -247,6 +254,13 @@
           "path": "docs/exec-plans/completed/done.md",
           "message": "Completed plan is missing the standard archive header",
           "action": "safe-fix"
+        },
+        {
+          "severity": "P2",
+          "code": "plan-missing-date-prefix",
+          "path": "docs/exec-plans/completed/done.md",
+          "message": "Execution plan filename must start with YYYY-MM-DD-",
+          "action": "manual-plan"
         },
         {
           "severity": "P2",
@@ -309,7 +323,7 @@
       "docs/generated/harness-manifest.md",
       "scripts/check_harness.py"
     ],
-    "high_risk_plan": "docs/exec-plans/active/harness-garden-remediation.md"
+    "high_risk_plan": "docs/exec-plans/active/2026-04-05-harness-garden-remediation.md"
   },
   "post_audit": {
     "repo": "<REPO>",
@@ -450,21 +464,35 @@
         "severity": "P2",
         "code": "plans-missing-active-entry",
         "path": "docs/PLANS.md",
-        "message": "PLANS.md does not mention active plan feature-a.md",
+        "message": "PLANS.md does not mention active plan 2026-04-05-harness-garden-remediation.md",
         "action": "manual-plan"
       },
       {
         "severity": "P2",
         "code": "plans-missing-active-entry",
         "path": "docs/PLANS.md",
-        "message": "PLANS.md does not mention active plan harness-garden-remediation.md",
+        "message": "PLANS.md does not mention active plan feature-a.md",
         "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "plan-missing-date-prefix",
+        "path": "docs/exec-plans/active/feature-a.md",
+        "message": "Execution plan filename must start with YYYY-MM-DD-",
+        "action": "manual-plan"
+      },
+      {
+        "severity": "P2",
+        "code": "plan-missing-date-prefix",
+        "path": "docs/exec-plans/completed/done.md",
+        "message": "Execution plan filename must start with YYYY-MM-DD-",
+        "action": "safe-fix"
       }
     ]
   },
   "files": {
     "AGENTS.md": "# Huge Agents\nThis file forgot routes.\n",
-    "docs/generated/harness-manifest.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Manifest\n\n## Repository Profile\n\n- **Project**: repo\n- **Project type**: monorepo\n- **Languages**: TypeScript\n- **Frameworks**: pnpm Workspace\n- **Documentation language**: en\n- **Profile fingerprint**: `6b4228ca5f99667b`\n\n## Managed Files\n\n- `ARCHITECTURE.md`\n- `apps/web/AGENTS.md`\n- `docs/DESIGN.md`\n- `docs/FRONTEND.md`\n- `docs/OBSERVABILITY.md`\n- `docs/PRODUCT_SENSE.md`\n- `docs/QUALITY_SCORE.md`\n- `docs/README.md`\n- `docs/RELIABILITY.md`\n- `docs/SECURITY.md`\n- `docs/design-docs/core-beliefs.md`\n- `docs/design-docs/index.md`\n- `docs/exec-plans/active/harness-garden-remediation.md`\n- `docs/exec-plans/completed/README.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/README.md`\n- `docs/generated/harness-manifest.md`\n- `docs/product-specs/index.md`\n- `docs/references/index.md`\n- `scripts/check_harness.py`\n\n## Local AGENTS Coverage\n\n- `apps/web`\n\n## Indexes and Entry Points\n\n- `docs/PLANS.md`\n- `docs/OBSERVABILITY.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/harness-manifest.md`\n- `docs/references/index.md`\n",
-    "docs/exec-plans/active/harness-garden-remediation.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Garden Remediation\n\n## Metadata\n\n- **Status**: 🟡 Active\n- **Owner**: Codex / Claude Agent\n- **Created**: 2026-04-05\n- **Goal**: repair Harness drift that should not be blindly rewritten\n\n## High-Risk Findings\n\n- [P1] `missing-plans-route` AGENTS.md -> Root AGENTS.md does not route to docs/PLANS.md\n- [P1] `plans-missing-active-pointer` docs/PLANS.md -> PLANS.md does not mention docs/exec-plans/active\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/DESIGN.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/FRONTEND.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/OBSERVABILITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/PLANS.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/PRODUCT_SENSE.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/QUALITY_SCORE.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/RELIABILITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/SECURITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/design-docs/index.md\n- [P2] `plans-missing-active-entry` docs/PLANS.md -> PLANS.md does not mention active plan feature-a.md\n\n## Auto-Fixed\n\n- ARCHITECTURE.md\n- apps/web/AGENTS.md\n- docs/OBSERVABILITY.md\n- docs/QUALITY_SCORE.md\n- docs/RELIABILITY.md\n- docs/SECURITY.md\n- docs/exec-plans/tech-debt-tracker.md\n- docs/DESIGN.md\n- docs/FRONTEND.md\n- docs/PRODUCT_SENSE.md\n- docs/README.md\n- docs/design-docs/core-beliefs.md\n- docs/design-docs/index.md\n- docs/exec-plans/completed/README.md\n- docs/generated/README.md\n- docs/product-specs/index.md\n- docs/references/index.md\n- docs/exec-plans/completed/done.md\n\n## Next Slices\n\n- [ ] address root routing or index drift\n- [ ] handle high-risk semantic rewrites\n- [ ] rerun the audit\n"
+    "docs/generated/harness-manifest.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Manifest\n\n## Repository Profile\n\n- **Project**: repo\n- **Project type**: monorepo\n- **Languages**: TypeScript\n- **Frameworks**: pnpm Workspace\n- **Documentation language**: en\n- **Profile fingerprint**: `6b4228ca5f99667b`\n\n## Managed Files\n\n- `ARCHITECTURE.md`\n- `apps/web/AGENTS.md`\n- `docs/DESIGN.md`\n- `docs/FRONTEND.md`\n- `docs/OBSERVABILITY.md`\n- `docs/PRODUCT_SENSE.md`\n- `docs/QUALITY_SCORE.md`\n- `docs/README.md`\n- `docs/RELIABILITY.md`\n- `docs/SECURITY.md`\n- `docs/design-docs/core-beliefs.md`\n- `docs/design-docs/index.md`\n- `docs/exec-plans/active/2026-04-05-harness-garden-remediation.md`\n- `docs/exec-plans/completed/README.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/README.md`\n- `docs/generated/harness-manifest.md`\n- `docs/product-specs/index.md`\n- `docs/references/index.md`\n- `scripts/check_harness.py`\n\n## Local AGENTS Coverage\n\n- `apps/web`\n\n## Indexes and Entry Points\n\n- `docs/PLANS.md`\n- `docs/OBSERVABILITY.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/harness-manifest.md`\n- `docs/references/index.md`\n",
+    "docs/exec-plans/active/2026-04-05-harness-garden-remediation.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Garden Remediation\n\n## Metadata\n\n- **Status**: 🟡 Active\n- **Owner**: Codex / Claude Agent\n- **Created**: 2026-04-05\n- **Goal**: repair Harness drift that should not be blindly rewritten\n\n## High-Risk Findings\n\n- [P1] `missing-plans-route` AGENTS.md -> Root AGENTS.md does not route to docs/PLANS.md\n- [P1] `plans-missing-active-pointer` docs/PLANS.md -> PLANS.md does not mention docs/exec-plans/active\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/DESIGN.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/FRONTEND.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/OBSERVABILITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/PLANS.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/PRODUCT_SENSE.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/QUALITY_SCORE.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/RELIABILITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/SECURITY.md\n- [P2] `missing-route` AGENTS.md -> Root AGENTS.md does not route to docs/design-docs/index.md\n- [P2] `plans-missing-active-entry` docs/PLANS.md -> PLANS.md does not mention active plan feature-a.md\n- [P2] `plan-missing-date-prefix` docs/exec-plans/active/feature-a.md -> Execution plan filename must start with YYYY-MM-DD-\n- [P2] `plan-missing-date-prefix` docs/exec-plans/completed/done.md -> Execution plan filename must start with YYYY-MM-DD-\n\n## Auto-Fixed\n\n- ARCHITECTURE.md\n- apps/web/AGENTS.md\n- docs/OBSERVABILITY.md\n- docs/QUALITY_SCORE.md\n- docs/RELIABILITY.md\n- docs/SECURITY.md\n- docs/exec-plans/tech-debt-tracker.md\n- docs/DESIGN.md\n- docs/FRONTEND.md\n- docs/PRODUCT_SENSE.md\n- docs/README.md\n- docs/design-docs/core-beliefs.md\n- docs/design-docs/index.md\n- docs/exec-plans/completed/README.md\n- docs/generated/README.md\n- docs/product-specs/index.md\n- docs/references/index.md\n- docs/exec-plans/completed/done.md\n\n## Next Slices\n\n- [ ] address root routing or index drift\n- [ ] handle high-risk semantic rewrites\n- [ ] rerun the audit\n"
   }
 }

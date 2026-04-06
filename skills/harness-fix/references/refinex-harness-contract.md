@@ -21,6 +21,7 @@ Read in this order unless the bug is already tightly localized:
 - `docs/exec-plans/active/*.md`: live work artifact; update during investigation and repair.
 - `docs/exec-plans/completed/`: archive only after verified repair and completion summary.
 - `docs/exec-plans/tech-debt-tracker.md`: systemic harness, design, or observability debt.
+- Execution plan filenames must use `YYYY-MM-DD-short-task-title.md`; bare-slug filenames are Harness drift.
 
 Use `scripts/init_exec_plan.py`, `scripts/sync_plan_state.py`, and
 `scripts/archive_exec_plan.py` to keep this lifecycle deterministic

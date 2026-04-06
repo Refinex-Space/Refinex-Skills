@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 from pathlib import Path
 from typing import Dict, List
@@ -20,6 +21,12 @@ from _garden_common import (
     render_manifest,
     required_paths_for_garden,
 )
+
+PLAN_FILENAME_RE = re.compile(r"^\d{4}-\d{2}-\d{2}-.+\.md$")
+
+
+def _has_dated_plan_name(path: Path) -> bool:
+    return bool(PLAN_FILENAME_RE.match(path.name))
 
 
 def _append_finding(
@@ -127,7 +134,10 @@ def audit_repository(repo: Path, strictness: str) -> Dict[str, object]:
                 action,
             )
         if active_dir.exists():
-            active_plans = [path.name for path in active_dir.glob("*.md") if path.is_file()]
+            active_plan_paths = [
+                path for path in active_dir.glob("*.md") if path.is_file() and path.name != "README.md"
+            ]
+            active_plans = [path.name for path in active_plan_paths]
             if active_plans and "docs/exec-plans/active" not in plans_text:
                 action = "safe-fix" if is_managed(plans_path) else "manual-plan"
                 _append_finding(
@@ -138,15 +148,24 @@ def audit_repository(repo: Path, strictness: str) -> Dict[str, object]:
                     "PLANS.md does not mention docs/exec-plans/active",
                     action,
                 )
-            for plan_name in active_plans:
-                if plan_name != "README.md" and plan_name not in plans_text:
+            for plan_path in active_plan_paths:
+                if not _has_dated_plan_name(plan_path):
+                    _append_finding(
+                        findings,
+                        "P2",
+                        "plan-missing-date-prefix",
+                        str(plan_path.relative_to(repo)),
+                        "Execution plan filename must start with YYYY-MM-DD-",
+                        "manual-plan",
+                    )
+                if plan_path.name not in plans_text:
                     action = "safe-fix" if is_managed(plans_path) else "manual-plan"
                     _append_finding(
                         findings,
                         "P2",
                         "plans-missing-active-entry",
                         "docs/PLANS.md",
-                        f"PLANS.md does not mention active plan {plan_name}",
+                        f"PLANS.md does not mention active plan {plan_path.name}",
                         action,
                     )
 
@@ -253,6 +272,15 @@ def audit_repository(repo: Path, strictness: str) -> Dict[str, object]:
         for path in sorted(completed_dir.glob("*.md")):
             if path.name == "README.md":
                 continue
+            if not _has_dated_plan_name(path):
+                _append_finding(
+                    findings,
+                    "P2",
+                    "plan-missing-date-prefix",
+                    str(path.relative_to(repo)),
+                    "Execution plan filename must start with YYYY-MM-DD-",
+                    "manual-plan",
+                )
             if missing_archive_header(path):
                 _append_finding(
                     findings,

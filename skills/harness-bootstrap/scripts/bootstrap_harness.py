@@ -14,6 +14,7 @@ from init_repo_harness_check import install_repo_harness_check
 from profile_repo import build_profile, selected_doc_paths
 
 MANAGED_MARKER = "<!-- HARNESS:MANAGED FILE -->"
+BOOTSTRAP_PLAN_SLUG = "harness-bootstrap"
 
 
 def _parse_template_library(name: str) -> Dict[str, str]:
@@ -42,7 +43,32 @@ def _detect_language(profile: Dict[str, object], override: str) -> str:
     return str(profile["doc_language"])
 
 
-def _doc_context(profile: Dict[str, object], language: str) -> Dict[str, str]:
+def _date_prefixed_plan_name(plan_date: str, slug: str) -> str:
+    return f"{plan_date}-{slug}.md"
+
+
+def _plan_date_from_relpath(plan_path: str, fallback: str) -> str:
+    parts = Path(plan_path).stem.split("-", 3)
+    return "-".join(parts[:3]) if len(parts) >= 4 else fallback
+
+
+def _resolve_bootstrap_plan_path(repo: Path, plan_date: str, dry_run: bool) -> str:
+    active_dir = repo / "docs" / "exec-plans" / "active"
+    active_dir.mkdir(parents=True, exist_ok=True)
+    dated_candidates = sorted(
+        path for path in active_dir.glob(f"*-{BOOTSTRAP_PLAN_SLUG}.md") if path.is_file()
+    )
+    if dated_candidates:
+        return dated_candidates[-1].relative_to(repo).as_posix()
+
+    target = active_dir / _date_prefixed_plan_name(plan_date, BOOTSTRAP_PLAN_SLUG)
+    legacy = active_dir / f"{BOOTSTRAP_PLAN_SLUG}.md"
+    if legacy.exists() and not target.exists() and not dry_run:
+        legacy.replace(target)
+    return target.relative_to(repo).as_posix()
+
+
+def _doc_context(profile: Dict[str, object], language: str, active_plan_path: str) -> Dict[str, str]:
     has_frontend = bool(profile["has_frontend"])
     complex_arch = bool(profile["complex_architecture"])
     template_library = _parse_template_library(f"bootstrap-docs.{language}.tpl")
@@ -71,7 +97,7 @@ def _doc_context(profile: Dict[str, object], language: str) -> Dict[str, str]:
     return {
         "PROJECT_NAME": str(profile["repo_name"]),
         "PROJECT_SUMMARY": summary,
-        "ACTIVE_PLAN_PATH": "docs/exec-plans/active/harness-bootstrap.md",
+        "ACTIVE_PLAN_PATH": active_plan_path,
         "EXTRA_ROUTES": "\n".join(routes_extra) if routes_extra else "",
         "LOCAL_AGENT_HINTS": "\n".join(local_agent_hint_lines),
         "STRUCTURE_SUMMARY": structure_summary,
@@ -148,10 +174,11 @@ def _run_repo_check(repo: Path) -> Dict[str, object]:
     return payload
 
 
-def bootstrap_repo(repo: Path, language: str, dry_run: bool) -> Dict[str, object]:
+def bootstrap_repo(repo: Path, language: str, dry_run: bool, plan_date: str) -> Dict[str, object]:
     profile = build_profile(repo)
+    plan_path = _resolve_bootstrap_plan_path(repo, plan_date, dry_run)
     template_library = _parse_template_library(f"bootstrap-docs.{language}.tpl")
-    context = _doc_context(profile, language)
+    context = _doc_context(profile, language, plan_path)
 
     created: List[str] = []
     updated: List[str] = []
@@ -189,13 +216,12 @@ def bootstrap_repo(repo: Path, language: str, dry_run: bool) -> Dict[str, object
             skipped.append(f"{rel_path} (existing unmanaged file preserved)")
 
     plan_template = _load_template(f"bootstrap-plan.{language}.md.tpl")
-    plan_path = "docs/exec-plans/active/harness-bootstrap.md"
     touched_items = created + updated
     created_items = touched_items if touched_items else ["(no files created yet)"]
     skipped_items = skipped or (["- 无" if language == "zh" else "- none"])
     follow_up_items = skipped or (["- 无额外风险" if language == "zh" else "- no additional follow-ups"])
     plan_content = plan_template.substitute(
-        DATE=date.today().isoformat(),
+        DATE=_plan_date_from_relpath(plan_path, plan_date),
         PROJECT_NAME=profile["repo_name"],
         PLAN_PATH=plan_path,
         PROFILE_SUMMARY=(
@@ -245,6 +271,7 @@ def main() -> int:
     parser.add_argument("--repo", default=".", help="Repository root")
     parser.add_argument("--mode", default="adaptive", choices=("adaptive",), help="Scaffold mode")
     parser.add_argument("--language", default="auto", choices=("auto", "zh", "en"))
+    parser.add_argument("--date", default=date.today().isoformat(), help="Plan creation date")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--format", default="md", choices=("md", "json"))
     args = parser.parse_args()
@@ -253,7 +280,7 @@ def main() -> int:
     repo.mkdir(parents=True, exist_ok=True)
     profile = build_profile(repo)
     language = _detect_language(profile, args.language)
-    result = bootstrap_repo(repo, language, args.dry_run)
+    result = bootstrap_repo(repo, language, args.dry_run, args.date)
 
     if args.format == "json":
         print(json.dumps(result, ensure_ascii=False, indent=2))

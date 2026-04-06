@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from datetime import date
 from pathlib import Path
 from string import Template
@@ -24,11 +25,51 @@ from _garden_common import (
 )
 from audit_harness import audit_repository
 
+PLAN_DATE_PREFIX_RE = re.compile(r"^(?P<date>\d{4}-\d{2}-\d{2})-(?P<body>.+)$")
+REMEDIATION_PLAN_SLUG = "harness-garden-remediation"
 
-def _resolve_active_plan(repo: Path, language: str, prefer_remediation: bool) -> Dict[str, str]:
+
+def _date_prefixed_plan_name(plan_date: str, slug: str) -> str:
+    return f"{plan_date}-{slug}.md"
+
+
+def _strip_plan_date_prefix(name: str) -> str:
+    stem = Path(name).stem
+    matched = PLAN_DATE_PREFIX_RE.match(stem)
+    return matched.group("body") if matched else stem
+
+
+def _plan_display_label(path: Path) -> str:
+    try:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.startswith("# "):
+                return line[2:].strip()
+    except UnicodeDecodeError:
+        pass
+    return _strip_plan_date_prefix(path.name).replace("-", " ").title()
+
+
+def _resolve_remediation_plan_relpath(repo: Path, plan_date: str, dry_run: bool) -> str:
+    active_dir = repo / "docs" / "exec-plans" / "active"
+    active_dir.mkdir(parents=True, exist_ok=True)
+    dated_candidates = sorted(
+        path for path in active_dir.glob(f"*-{REMEDIATION_PLAN_SLUG}.md") if path.is_file()
+    )
+    if dated_candidates:
+        return dated_candidates[-1].relative_to(repo).as_posix()
+
+    target = active_dir / _date_prefixed_plan_name(plan_date, REMEDIATION_PLAN_SLUG)
+    legacy = active_dir / f"{REMEDIATION_PLAN_SLUG}.md"
+    if legacy.exists() and not target.exists() and not dry_run:
+        legacy.replace(target)
+    return target.relative_to(repo).as_posix()
+
+
+def _resolve_active_plan(repo: Path, language: str, prefer_remediation: bool, plan_date: str, dry_run: bool) -> Dict[str, str]:
     if prefer_remediation:
+        remediation_relpath = _resolve_remediation_plan_relpath(repo, plan_date, dry_run)
         return {
-            "path": "docs/exec-plans/active/harness-garden-remediation.md",
+            "path": remediation_relpath,
             "label": "Harness Garden Remediation" if language == "en" else "Harness Garden Remediation",
         }
     active_dir = repo / "docs" / "exec-plans" / "active"
@@ -39,8 +80,8 @@ def _resolve_active_plan(repo: Path, language: str, prefer_remediation: bool) ->
             if path.is_file() and path.name != "README.md"
         )
         if candidates:
-            first = candidates[0]
-            label = Path(first).stem.replace("-", " ").title()
+            first = candidates[-1]
+            label = _plan_display_label(repo / first)
             return {"path": first, "label": label}
     return {
         "path": "docs/exec-plans/active/",
@@ -125,12 +166,13 @@ def _write_remediation_plan(
     language: str,
     high_risk_findings: List[Dict[str, str]],
     auto_fixed: List[str],
+    plan_date: str,
     dry_run: bool,
 ) -> str:
     template = load_text_template(skill_root, f"remediation-plan.{language}.md.tpl")
-    plan_path = repo / "docs" / "exec-plans" / "active" / "harness-garden-remediation.md"
+    plan_path = repo / _resolve_remediation_plan_relpath(repo, plan_date, dry_run)
     content = template.substitute(
-        DATE=date.today().isoformat(),
+        DATE=plan_date,
         HIGH_RISK_FINDINGS=(
             "\n".join(
                 f"- [{item['severity']}] `{item['code']}` {item['path']} -> {item['message']}"
@@ -147,7 +189,7 @@ def _write_remediation_plan(
     return str(plan_path.relative_to(repo))
 
 
-def repair_repository(repo: Path, mode: str, dry_run: bool) -> Dict[str, object]:
+def repair_repository(repo: Path, mode: str, dry_run: bool, plan_date: str) -> Dict[str, object]:
     skill_root = Path(__file__).resolve().parent.parent
     audit = audit_repository(repo, "standard")
     language = detect_doc_language(repo)
@@ -167,7 +209,7 @@ def repair_repository(repo: Path, mode: str, dry_run: bool) -> Dict[str, object]
         }
 
     prefer_remediation = any(finding["action"] != "safe-fix" for finding in audit["findings"])
-    active_plan = _resolve_active_plan(repo, language, prefer_remediation)
+    active_plan = _resolve_active_plan(repo, language, prefer_remediation, plan_date, dry_run)
 
     for finding in audit["findings"]:
         if finding["action"] != "safe-fix":
@@ -218,9 +260,10 @@ def repair_repository(repo: Path, mode: str, dry_run: bool) -> Dict[str, object]
             language,
             high_risk,
             created + updated,
+            plan_date,
             dry_run,
         )
-        active_plan = _resolve_active_plan(repo, language, True)
+        active_plan = _resolve_active_plan(repo, language, True, plan_date, dry_run)
         plans_path = repo / "docs" / "PLANS.md"
         if plans_path.exists() and is_managed(plans_path):
             write_file(
@@ -272,12 +315,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Repair low-risk Harness drift and plan high-risk corrections")
     parser.add_argument("--repo", default=".", help="Repository root")
     parser.add_argument("--mode", choices=("safe-fix", "report-only"), default="safe-fix")
+    parser.add_argument("--date", default=date.today().isoformat(), help="Plan creation date")
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--format", choices=("json", "md"), default="md")
     args = parser.parse_args()
 
     repo = Path(args.repo).expanduser().resolve()
-    result = repair_repository(repo, args.mode, args.dry_run)
+    result = repair_repository(repo, args.mode, args.dry_run, args.date)
 
     if args.format == "json":
         print(json.dumps(result, ensure_ascii=False, indent=2))

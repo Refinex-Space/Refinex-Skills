@@ -43,7 +43,7 @@ Use this order when deciding whether to auto-fix or escalate:
 2. Treat the repo-local `scripts/check_harness.py` as an input signal, not the whole truth.
 3. Classify findings with `references/repair-policy.md`.
 4. Run `scripts/repair_harness.py` in `safe-fix` mode for low-risk issues.
-5. When high-risk issues remain, create or update `docs/exec-plans/active/harness-garden-remediation.md`.
+5. When high-risk issues remain, create or update a date-prefixed remediation plan such as `docs/exec-plans/active/2026-04-05-harness-garden-remediation.md`.
 
 ## Workflow
 
@@ -98,6 +98,7 @@ python3 scripts/run_fixture_tests.py
 - Do not silently rewrite unmanaged strategic docs with semantic drift.
 - Do not treat every missing file as equally urgent; use severity and repair policy.
 - Do not remove working local `AGENTS.md` just to normalize style.
+- Execution plan filenames under `docs/exec-plans/` must use `YYYY-MM-DD-short-task-title.md`; bare-slug filenames are Harness drift that should be repaired or escalated explicitly.
 - Refresh mechanical files after repair so the next audit sees current facts.
 - Keep remediation plans explicit when the repo still needs human-level semantic decisions.
 

@@ -167,6 +167,8 @@ python3 scripts/run_fixture_tests.py
 
 - Do not accept a root-cause claim without evidence.
 - Do not turn a fix task into a broad refactor unless the evidence demands it.
+- Execution plan filenames must use date-prefixed kebab-case under `docs/exec-plans/`, for example `2026-04-05-provider-timeout-regression.md`.
+- Do not create or keep bare-slug plan files such as `provider-timeout-regression.md`; rename or regenerate them into the date-prefixed form.
 - Do not skip plan updates just because the code change is small.
 - Do not archive a plan if the failure is only mitigated and not resolved.
 - Do not trust stale documentation over current failing behavior, source code, and runtime evidence.

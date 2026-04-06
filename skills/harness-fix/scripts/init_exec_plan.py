@@ -108,7 +108,7 @@ def main() -> int:
     active_dir.mkdir(parents=True, exist_ok=True)
 
     raw_slug = args.slug.strip() if args.slug else args.title.strip()
-    slug = normalize_slug(raw_slug, "fix", args.date.replace("-", ""))
+    slug = normalize_slug(raw_slug, "fix", args.date)
     plan_path = next_markdown_path(active_dir, slug)
     content = render_content(args, plan_path, repo_root, language)
 

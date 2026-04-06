@@ -114,7 +114,7 @@
       "docs/SECURITY.md",
       "docs/design-docs/core-beliefs.md",
       "docs/design-docs/index.md",
-      "docs/exec-plans/active/harness-bootstrap.md",
+      "docs/exec-plans/active/2026-04-05-harness-bootstrap.md",
       "docs/exec-plans/completed/README.md",
       "docs/exec-plans/tech-debt-tracker.md",
       "docs/generated/README.md",
@@ -200,7 +200,7 @@
           "severity": "P2",
           "code": "plans-missing-active-entry",
           "path": "docs/PLANS.md",
-          "message": "PLANS.md does not mention active plan harness-bootstrap.md"
+          "message": "PLANS.md does not mention active plan 2026-04-05-harness-bootstrap.md"
         }
       ]
     }
@@ -278,13 +278,13 @@
         "severity": "P2",
         "code": "plans-missing-active-entry",
         "path": "docs/PLANS.md",
-        "message": "PLANS.md does not mention active plan harness-bootstrap.md"
+        "message": "PLANS.md does not mention active plan 2026-04-05-harness-bootstrap.md"
       }
     ]
   },
   "files": {
     "AGENTS.md": "# Custom Root Agents\n\n这是一份人工维护的根入口文件。\n",
     "docs/PLANS.md": "# Custom Plans\n\n这里暂时还没有规范化的活跃计划入口。\n",
-    "docs/generated/harness-manifest.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Manifest\n\n## 仓库画像\n\n- **项目名**: repo\n- **项目类型**: monorepo\n- **语言**: TypeScript\n- **框架信号**: pnpm Workspace\n- **文档语言**: zh\n- **Profile 指纹**: `1ebd92526b9dc0ae`\n\n## 管理文件\n\n- `ARCHITECTURE.md`\n- `apps/web/AGENTS.md`\n- `docs/DESIGN.md`\n- `docs/FRONTEND.md`\n- `docs/OBSERVABILITY.md`\n- `docs/PRODUCT_SENSE.md`\n- `docs/QUALITY_SCORE.md`\n- `docs/README.md`\n- `docs/RELIABILITY.md`\n- `docs/SECURITY.md`\n- `docs/design-docs/core-beliefs.md`\n- `docs/design-docs/index.md`\n- `docs/exec-plans/active/harness-bootstrap.md`\n- `docs/exec-plans/completed/README.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/README.md`\n- `docs/generated/harness-manifest.md`\n- `docs/product-specs/index.md`\n- `docs/references/index.md`\n- `scripts/check_harness.py`\n\n## 局部 AGENTS 覆盖\n\n- `apps/web`\n\n## 索引与入口\n\n- `docs/PLANS.md`\n- `docs/OBSERVABILITY.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/harness-manifest.md`\n- `docs/references/index.md`\n"
+    "docs/generated/harness-manifest.md": "<!-- HARNESS:MANAGED FILE -->\n# Harness Manifest\n\n## 仓库画像\n\n- **项目名**: repo\n- **项目类型**: monorepo\n- **语言**: TypeScript\n- **框架信号**: pnpm Workspace\n- **文档语言**: zh\n- **Profile 指纹**: `1ebd92526b9dc0ae`\n\n## 管理文件\n\n- `ARCHITECTURE.md`\n- `apps/web/AGENTS.md`\n- `docs/DESIGN.md`\n- `docs/FRONTEND.md`\n- `docs/OBSERVABILITY.md`\n- `docs/PRODUCT_SENSE.md`\n- `docs/QUALITY_SCORE.md`\n- `docs/README.md`\n- `docs/RELIABILITY.md`\n- `docs/SECURITY.md`\n- `docs/design-docs/core-beliefs.md`\n- `docs/design-docs/index.md`\n- `docs/exec-plans/active/2026-04-05-harness-bootstrap.md`\n- `docs/exec-plans/completed/README.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/README.md`\n- `docs/generated/harness-manifest.md`\n- `docs/product-specs/index.md`\n- `docs/references/index.md`\n- `scripts/check_harness.py`\n\n## 局部 AGENTS 覆盖\n\n- `apps/web`\n\n## 索引与入口\n\n- `docs/PLANS.md`\n- `docs/OBSERVABILITY.md`\n- `docs/exec-plans/tech-debt-tracker.md`\n- `docs/generated/harness-manifest.md`\n- `docs/references/index.md`\n"
   }
 }

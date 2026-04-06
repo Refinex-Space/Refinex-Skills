@@ -11,6 +11,7 @@ from string import Template
 from typing import Dict, Iterable, List
 
 MANAGED_MARKER = "<!-- HARNESS:MANAGED FILE -->"
+PLAN_DATE_PREFIX_RE = re.compile(r"^(?P<date>\d{4}-\d{2}-\d{2})-(?P<body>.+)$")
 
 
 def detect_doc_language(repo: Path) -> str:
@@ -67,14 +68,38 @@ def format_block(items: Iterable[str], language: str) -> str:
     return "\n".join(f"  - {value}" for value in values)
 
 
-def normalize_slug(raw: str, fallback_prefix: str, today: str) -> str:
+def _normalize_slug_body(raw: str, fallback_prefix: str) -> str:
     ascii_only = raw.encode("ascii", "ignore").decode("ascii")
     slug = re.sub(r"[^a-zA-Z0-9]+", "-", ascii_only).strip("-").lower()
     slug = re.sub(r"-{2,}", "-", slug)
     if slug:
         return slug[:64].strip("-")
     digest = hashlib.sha1(raw.encode("utf-8")).hexdigest()[:8]
-    return f"{fallback_prefix}-{today}-{digest}"
+    return f"{fallback_prefix}-{digest}"
+
+
+def normalize_slug(raw: str, fallback_prefix: str, date_prefix: str) -> str:
+    body = _normalize_slug_body(raw, fallback_prefix)
+    matched = PLAN_DATE_PREFIX_RE.match(body)
+    if matched:
+        body = matched.group("body")
+    return f"{date_prefix}-{body}".strip("-")
+
+
+def strip_plan_date_prefix(name: str) -> str:
+    stem = Path(name).stem
+    matched = PLAN_DATE_PREFIX_RE.match(stem)
+    return matched.group("body") if matched else stem
+
+
+def plan_display_title(path: Path) -> str:
+    try:
+        for line in path.read_text(encoding="utf-8").splitlines():
+            if line.startswith("# "):
+                return line[2:].strip()
+    except UnicodeDecodeError:
+        pass
+    return strip_plan_date_prefix(path.name).replace("-", " ").title()
 
 
 def next_markdown_path(directory: Path, slug: str) -> Path:
@@ -137,7 +162,7 @@ def render_plans_index(skill_root: Path, repo: Path, language: str) -> str:
     active = active_plans(repo)
     if active:
         active_lines = "\n".join(
-            f"- [{Path(rel_path).stem.replace('-', ' ').title()}]({rel_path})"
+            f"- [{plan_display_title(repo / rel_path)}]({rel_path})"
             for rel_path in active
         )
     else:

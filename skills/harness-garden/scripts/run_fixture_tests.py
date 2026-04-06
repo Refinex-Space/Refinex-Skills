@@ -68,7 +68,7 @@ def _assert_equal(actual: object, expected: object, label: str) -> None:
 
 def _run_bootstrap(repo: Path, language: str) -> Dict[str, object]:
     result = subprocess.run(
-        ["python3", str(_bootstrap_script()), "--repo", str(repo), "--language", language, "--format", "json"],
+        ["python3", str(_bootstrap_script()), "--repo", str(repo), "--language", language, "--date", "2026-04-05", "--format", "json"],
         check=True,
         capture_output=True,
         text=True,
@@ -79,7 +79,7 @@ def _run_bootstrap(repo: Path, language: str) -> Dict[str, object]:
 def _run_repair(repo: Path) -> Dict[str, object]:
     script = _skill_root() / "scripts" / "repair_harness.py"
     result = subprocess.run(
-        ["python3", str(script), "--repo", str(repo), "--mode", "safe-fix", "--format", "json"],
+        ["python3", str(script), "--repo", str(repo), "--mode", "safe-fix", "--date", "2026-04-05", "--format", "json"],
         check=True,
         capture_output=True,
         text=True,

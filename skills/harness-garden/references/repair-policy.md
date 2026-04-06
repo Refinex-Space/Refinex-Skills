@@ -27,7 +27,7 @@ be escalated into an active remediation plan.
 
 When escalation is needed:
 
-1. Create or update `docs/exec-plans/active/harness-garden-remediation.md`
+1. Create or update a date-prefixed remediation plan such as `docs/exec-plans/active/2026-04-05-harness-garden-remediation.md`
 2. Summarize findings by priority
 3. Record skipped risky files explicitly
 4. Keep low-risk repairs separate from high-risk semantic rewrites

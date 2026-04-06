@@ -4,6 +4,10 @@ Use this template when creating a new file under
 `docs/exec-plans/active/` for debugging or repair work. Match the
 repository's documentation language when writing the actual file.
 
+Name the file with a date-prefixed kebab-case slug, for example
+`2026-04-05-provider-timeout-regression.md`. Do not create bare-slug
+filenames.
+
 When deterministic initialization is useful, prefer
 `scripts/init_exec_plan.py` and then refine the generated file instead
 of hand-writing the whole document from scratch.

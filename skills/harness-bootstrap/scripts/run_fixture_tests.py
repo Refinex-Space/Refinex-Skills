@@ -65,7 +65,7 @@ def _assert_equal(actual: object, expected: object, label: str) -> None:
 def _run_bootstrap(repo: Path, language: str) -> Dict[str, object]:
     script = _skill_root() / "scripts" / "bootstrap_harness.py"
     result = subprocess.run(
-        ["python3", str(script), "--repo", str(repo), "--language", language, "--format", "json"],
+        ["python3", str(script), "--repo", str(repo), "--language", language, "--date", "2026-04-05", "--format", "json"],
         check=True,
         capture_output=True,
         text=True,
