@@ -72,6 +72,8 @@ repository.
 
 ## 完成归档说明
 - 在归档前补充完成日期、摘要、周期和关键经验
+- 问题解决后必须执行归档脚本，把计划移出 `active/`
+- 若仓库存在 `docs/generated/harness-manifest.md`，归档后必须刷新生成事实面
 ```
 
 ## Writing Rules

@@ -55,6 +55,7 @@ ${open_assumptions}
 
 - [ ] 同步文档与生成事实
 - [ ] 最终验证
+- [ ] 归档 active 计划并刷新 Harness 生成事实
 
 ## 风险与回滚
 
@@ -73,3 +74,5 @@ ${risk_summary}
 ## 完成归档说明
 
 - 在归档前补充完成日期、摘要、周期和关键经验
+- 归档后确认计划已进入 `docs/exec-plans/completed/`
+- 若仓库存在 `docs/generated/harness-manifest.md`，归档后确认其已刷新

@@ -4,11 +4,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 from string import Template
 from typing import Dict, List, Optional
 
 from profile_repo import build_profile
+
+MANAGED_MARKER = "<!-- HARNESS:MANAGED FILE -->"
 
 
 def _load_template(name: str) -> Template:
@@ -26,6 +29,39 @@ def _detect_language(repo: Path, override: Optional[str]) -> str:
     if override and override != "auto":
         return override
     return str(build_profile(repo)["doc_language"])
+
+
+def _walk_files(repo: Path, max_depth: int = 6) -> List[Path]:
+    files: List[Path] = []
+    for root, dirs, filenames in os.walk(repo):
+        root_path = Path(root)
+        depth = len(root_path.relative_to(repo).parts)
+        dirs[:] = [name for name in dirs if not name.startswith(".") and depth < max_depth]
+        for filename in filenames:
+            if filename.startswith("."):
+                continue
+            path = root_path / filename
+            if len(path.relative_to(repo).parts) <= max_depth:
+                files.append(path)
+    return files
+
+
+def is_managed(path: Path) -> bool:
+    if not path.exists():
+        return False
+    try:
+        content = path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        return False
+    return MANAGED_MARKER in content or "# HARNESS:MANAGED FILE" in content
+
+
+def collect_managed_files(repo: Path) -> List[str]:
+    return sorted(
+        str(path.relative_to(repo))
+        for path in _walk_files(repo)
+        if is_managed(path)
+    )
 
 
 def render_manifest(repo: Path, language: str, managed_files: List[str], local_agents: List[str]) -> str:
@@ -97,12 +133,17 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Install repo-local Harness check files")
     parser.add_argument("--repo", default=".", help="Repository root")
     parser.add_argument("--language", choices=("auto", "zh", "en"), default="auto")
+    parser.add_argument(
+        "--managed-scan",
+        action="store_true",
+        help="Refresh manifest/check from current managed files instead of baseline required files",
+    )
     args = parser.parse_args()
 
     repo = Path(args.repo).expanduser().resolve()
     language = _detect_language(repo, args.language)
     profile = build_profile(repo)
-    managed_files = sorted(set(profile["required_harness_files"]))
+    managed_files = collect_managed_files(repo) if args.managed_scan else sorted(set(profile["required_harness_files"]))
     result = install_repo_harness_check(repo, language, managed_files, profile["local_agent_dirs"])
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

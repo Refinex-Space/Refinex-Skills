@@ -139,9 +139,20 @@ Review and validate in this order:
 - Archive only when acceptance criteria are satisfied and validation
   evidence is recorded.
 - Use the bundled `scripts/archive_exec_plan.py` to prepend the completion header,
-  move the file into `completed/`, and resync `docs/PLANS.md`.
+  move the file into `completed/`, resync `docs/PLANS.md`, and refresh
+  repo-local generated Harness surfaces such as
+  `docs/generated/harness-manifest.md` when present.
 - If `docs/PLANS.md` is unmanaged, preserve it and surface the required
   manual update instead of forcing a rewrite.
+
+### 7. Final Response Gate
+
+- If the task is completed in this turn, do not send the final user-facing
+  answer until the relevant active plan has been archived.
+- Treat archive + generated-surface refresh as part of "done", not an optional
+  follow-up.
+- If work is not complete, leave the plan in `active/` with the next slice,
+  blocker, and evidence instead of implying completion.
 
 ## Preferred Commands
 
@@ -157,6 +168,8 @@ python3 scripts/run_fixture_tests.py
 - Do not start substantive coding before there is a current plan artifact unless the task is obviously trivial.
 - Execution plan filenames must use date-prefixed kebab-case under `docs/exec-plans/`, for example `2026-04-05-provider-context-window-config.md`.
 - Do not create or keep bare-slug plan files such as `provider-context-window-config.md`; rename or regenerate them into the date-prefixed form.
+- Do not describe the task as complete while its plan still lives under `docs/exec-plans/active/`.
+- Do not skip the generated-surface refresh when the repository already exposes `docs/generated/harness-manifest.md` or repo-local Harness checks.
 - Do not let a plan become a diary. Record only decisions, progress, risks, and evidence that reduce future rediscovery.
 - Do not trust stale docs over source code, tests, logs, and generated facts.
 - Do not modify generated files by hand when the repository expects them to be script-generated.

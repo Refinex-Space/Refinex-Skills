@@ -27,6 +27,12 @@ Use `scripts/init_exec_plan.py`, `scripts/sync_plan_state.py`, and
 `scripts/archive_exec_plan.py` to keep this lifecycle deterministic
 whenever the repository's `docs/PLANS.md` is managed.
 
+Repair closure is not complete until the active plan leaves
+`docs/exec-plans/active/`, the archive lands under
+`docs/exec-plans/completed/`, and repo-local generated Harness surfaces
+such as `docs/generated/harness-manifest.md` have been refreshed when
+the repository exposes them.
+
 Those lifecycle scripts are bundled with `harness-fix` itself. They are
 not repository requirements and should not be reported as missing repo
 files.

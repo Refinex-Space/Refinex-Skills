@@ -157,6 +157,45 @@ def run_repo_check(repo: Path) -> Dict[str, object]:
     }
 
 
+def refresh_generated_surfaces(repo: Path, language: str, skill_root: Path) -> Dict[str, object]:
+    signals = repo_harness_signals(repo)
+    if not (signals["has_manifest"] or signals["has_repo_check"]):
+        return {
+            "attempted": False,
+            "written": False,
+            "reason": "No repo-local generated Harness surfaces were present",
+            "refresh_result": None,
+            "repo_check": run_repo_check(repo),
+        }
+
+    refresh_script = skill_root.parent / "harness-bootstrap" / "scripts" / "init_repo_harness_check.py"
+    if not refresh_script.exists():
+        raise FileNotFoundError(f"Harness refresh script is missing: {refresh_script}")
+
+    result = subprocess.run(
+        [
+            "python3",
+            str(refresh_script),
+            "--repo",
+            str(repo),
+            "--language",
+            language,
+            "--managed-scan",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+        timeout=30,
+    )
+    return {
+        "attempted": True,
+        "written": True,
+        "reason": "",
+        "refresh_result": json.loads(result.stdout or "{}"),
+        "repo_check": run_repo_check(repo),
+    }
+
+
 def render_plans_index(skill_root: Path, repo: Path, language: str) -> str:
     template = load_template(skill_root, f"plans-index.{language}.md.tpl")
     active = active_plans(repo)

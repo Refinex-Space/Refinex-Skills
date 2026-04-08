@@ -118,6 +118,14 @@ def _run_case_managed_e2e(repo: Path, fixture: dict) -> dict:
             "2026-04-05",
         ]
     )
+    (repo / "docs" / "generated" / "harness-manifest.md").write_text(
+        "<!-- HARNESS:MANAGED FILE -->\n# stale manifest\n",
+        encoding="utf-8",
+    )
+    (repo / "scripts" / "check_harness.py").write_text(
+        "# HARNESS:MANAGED FILE\n#!/usr/bin/env python3\nprint('stale')\n",
+        encoding="utf-8",
+    )
     archive_result = _run_json(
         [
             "python3",
@@ -140,6 +148,7 @@ def _run_case_managed_e2e(repo: Path, fixture: dict) -> dict:
         "init_result": _normalize_paths(init_result, repo),
         "archive_result": _normalize_paths(archive_result, repo),
         "plans_md": (repo / "docs" / "PLANS.md").read_text(encoding="utf-8"),
+        "manifest_md": (repo / "docs" / "generated" / "harness-manifest.md").read_text(encoding="utf-8"),
         "completed_plan": (repo / archive_result["archived_to"]).read_text(encoding="utf-8"),
     }
 

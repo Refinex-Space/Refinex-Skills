@@ -8,7 +8,7 @@ import subprocess
 from datetime import date
 from pathlib import Path
 
-from _plan_common import detect_doc_language, next_markdown_path, placeholder
+from _plan_common import detect_doc_language, next_markdown_path, placeholder, refresh_generated_surfaces
 
 
 def _resolve_plan_path(repo: Path, value: str) -> Path:
@@ -55,12 +55,14 @@ def archive_exec_plan(repo: Path, plan_path: Path, summary: str, duration: str, 
         capture_output=True,
         text=True,
     )
+    generated_refresh = refresh_generated_surfaces(repo, language, Path(__file__).resolve().parent.parent)
 
     return {
         "repo": str(repo),
         "archived_from": str(plan_path.relative_to(repo)),
         "archived_to": str(destination.relative_to(repo)),
         "sync_result": json.loads(sync_result.stdout),
+        "generated_refresh": generated_refresh,
     }
 
 

@@ -56,6 +56,7 @@ ${docs_sync}
 - [ ] Repair
 - [ ] Regression protection
 - [ ] Validate
+- [ ] Archive the active plan and refresh Harness generated surfaces
 
 ## Risks and Rollback
 
@@ -74,3 +75,5 @@ ${risk_summary}
 ## Archive Notes
 
 - Add completion date, summary, duration, and key learnings before archiving
+- Confirm the plan moved into `docs/exec-plans/completed/` after archiving
+- If `docs/generated/harness-manifest.md` exists, confirm it was refreshed after archiving

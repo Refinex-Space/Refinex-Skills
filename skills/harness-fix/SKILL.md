@@ -150,9 +150,20 @@ python3 scripts/sync_plan_state.py --repo <repo-root>
 - Archive only when reproduction or validation evidence shows the issue
   is resolved.
 - Use the bundled `scripts/archive_exec_plan.py` to prepend the completion header,
-  move the file into `completed/`, and resync `docs/PLANS.md`.
+  move the file into `completed/`, resync `docs/PLANS.md`, and refresh
+  repo-local generated Harness surfaces such as
+  `docs/generated/harness-manifest.md` when present.
 - If `docs/PLANS.md` is unmanaged, preserve it and surface the required
   manual update instead of forcing a rewrite.
+
+### 8. Final Response Gate
+
+- If the issue is resolved in this turn, do not send the final user-facing
+  answer until the relevant active plan has been archived.
+- Treat archive + generated-surface refresh as part of the repair itself,
+  not as an optional follow-up.
+- If the issue is not yet resolved, leave the plan in `active/` with the next
+  debugging slice, blocker, and evidence instead of implying completion.
 
 ## Preferred Commands
 
@@ -169,6 +180,8 @@ python3 scripts/run_fixture_tests.py
 - Do not turn a fix task into a broad refactor unless the evidence demands it.
 - Execution plan filenames must use date-prefixed kebab-case under `docs/exec-plans/`, for example `2026-04-05-provider-timeout-regression.md`.
 - Do not create or keep bare-slug plan files such as `provider-timeout-regression.md`; rename or regenerate them into the date-prefixed form.
+- Do not describe the fix as complete while its plan still lives under `docs/exec-plans/active/`.
+- Do not skip the generated-surface refresh when the repository already exposes `docs/generated/harness-manifest.md` or repo-local Harness checks.
 - Do not skip plan updates just because the code change is small.
 - Do not archive a plan if the failure is only mitigated and not resolved.
 - Do not trust stale documentation over current failing behavior, source code, and runtime evidence.

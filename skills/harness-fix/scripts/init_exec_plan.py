@@ -56,8 +56,10 @@ def default_validation_note(language: str) -> str:
 
 def render_content(args: argparse.Namespace, plan_path: Path, repo_root: Path, language: str) -> str:
     relative_path = plan_path.relative_to(repo_root).as_posix()
-    docs_sync_items = [relative_path, "docs/PLANS.md", *args.doc]
     harness = repo_harness_signals(repo_root)
+    docs_sync_items = [relative_path, "docs/PLANS.md", *args.doc]
+    if harness["has_manifest"]:
+        docs_sync_items.append("docs/generated/harness-manifest.md")
     repo_check = run_repo_check(repo_root)
     template = load_template(Path(__file__).resolve().parent.parent, f"fix-plan.{language}.md.tpl")
     return template.substitute(
