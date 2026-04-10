@@ -10,28 +10,6 @@ Skills，以及面向文档质量的 Write Skills。
 
 ## Skill 套件
 
-### Harness Engineering 套件
-
-四个高约束、高工程规格的 Skill，用于结构化、agent-first 的软件开发：
-
-- `harness-bootstrap`
-- `harness-garden`
-- `harness-feat`
-- `harness-fix`
-
-1. `harness-bootstrap`
-   为仓库初始化或补齐 Harness Engineering 基线。
-2. `harness-garden`
-   审计并修复已存在仓库中的 Harness 漂移。
-3. `harness-feat`
-   通过确定性的计划生命周期执行新功能与结构化重构任务。
-4. `harness-fix`
-   通过确定性的计划生命周期执行调试、修复与回归治理任务。
-
-文档：[docs/harness-suite.zh.md](docs/harness-suite.zh.md)
-
----
-
 ### Office Skills 套件
 
 四个配套 Skill，覆盖常见 Office 家族交付物。它们从原来的文件扩展名式

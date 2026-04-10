@@ -11,30 +11,6 @@ Skills for documentation quality.
 
 ## Skill Suites
 
-### Harness Engineering Suite
-
-Four high-discipline skills for structured, agent-first software development:
-
-- `harness-bootstrap`
-- `harness-garden`
-- `harness-feat`
-- `harness-fix`
-
-These skills are designed to work together as one control-plane stack:
-
-1. `harness-bootstrap`
-   Initialize or complete a repository's Harness Engineering baseline.
-2. `harness-garden`
-   Audit and repair Harness drift in an existing repository.
-3. `harness-feat`
-   Execute new feature work through deterministic plan lifecycle.
-4. `harness-fix`
-   Execute debugging and repair work through deterministic plan lifecycle.
-
-Docs: [docs/harness-suite.en.md](docs/harness-suite.en.md)
-
----
-
 ### Office Skills Suite
 
 Four companion skills for Office-family deliverables. These skills were

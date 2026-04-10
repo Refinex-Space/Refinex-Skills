@@ -1,4 +1,0 @@
-interface:
-  display_name: "Harness Bootstrap"
-  short_description: "Bootstrap an industrial Harness control plane"
-  default_prompt: "Use $harness-bootstrap to profile a repository, scaffold its Harness Engineering control plane, install observability and tech-debt routing docs, and initialize its managed checks and plan artifacts."
