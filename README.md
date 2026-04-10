@@ -70,13 +70,19 @@ Docs: [docs/office-suite.en.md](docs/office-suite.en.md)
 
 ### Write Skills Suite
 
-Two companion skills for producing consistent, high-quality technical
-documentation regardless of the starting point:
+Three complementary skills for technical documentation across planning,
+blank-page authoring, and source-driven reconstruction:
 
+- `tech-planner`
 - `tech-writing`
 - `tech-rewrite`
 
-1. `tech-writing`
+1. `tech-planner`
+   Plan before prose. Positioned for research framing, outline design,
+   series planning, phase naming, and prompt shaping when an idea needs
+   structure before drafting starts.
+
+2. `tech-writing`
    Write from scratch. Enforces a mandatory Pre-Writing Protocol before
    generating any prose — central argument, technical anchors, reader
    audit, scope boundaries, and narrative voice are all locked in before
@@ -87,7 +93,7 @@ documentation regardless of the starting point:
    doc for Y", "compare X and Y", "write an ADR", "explain how X works
    in depth", "create API docs for Z".
 
-2. `tech-rewrite`
+3. `tech-rewrite`
    Reconstruct from existing material of any quality — internal notes,
    meeting summaries, AI-generated drafts, legacy wikis, code comments.
    Enforces strict quarantine between extraction and writing phases.
@@ -125,6 +131,7 @@ Refinex-Skills/
 │   ├── office-pdf/
 │   ├── office-pptx/
 │   ├── office-xlsx/
+│   ├── tech-planner/
 │   ├── tech-writing/
 │   └── tech-rewrite/
 ├── .gitignore
@@ -158,10 +165,19 @@ $harness-feat       -> new feature / refactor work
 $harness-fix        -> bug / regression / incident repair
 ```
 
+**Write Skills — recommended lifecycle:**
+
+```text
+tech-planner  -> turn a topic into a research / outline / series plan
+tech-writing  -> write from a blank page with locked anchors
+tech-rewrite  -> rebuild from notes, drafts, or legacy material
+```
+
 **Write Skills — skill selection quick reference:**
 
 | Starting point | Document type | Skill to use |
 |---|---|---|
+| Topic or idea, but no structure yet | Research plan, outline, series map | `tech-planner` |
 | Topic + opinion, no source material | Blog post, deep-dive | `tech-writing` |
 | Architecture decision to record | ADR | `tech-writing` |
 | New module to design and document | Module design doc | `tech-writing` |

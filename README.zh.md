@@ -63,12 +63,17 @@ Skills，以及面向文档质量的 Write Skills。
 
 ### Write Skills 套件
 
-两个配套 Skill，无论起点如何，都能产出标准一致、质量相当的高质量技术文档：
+三个互补 Skill，分别覆盖技术文档的规划、从零写作、基于材料重建：
 
+- `tech-planner`
 - `tech-writing`
 - `tech-rewrite`
 
-1. `tech-writing`
+1. `tech-planner`
+   先规划，再动笔。定位在研究框架、提纲设计、系列文章规划、阶段命名、
+   prompt 组织等前置工作，适合在正式写作前先把结构搭起来。
+
+2. `tech-writing`
    从零创作。在生成任何正文之前，强制执行**写前协议**——中心论点、具体
    技术锚点、读者认知审计、范围边界、叙述声音，全部在写作开始前确定。
    对抗**锚点饥饿**：AI 在没有具体技术基础时自动滑向百科全书式输出——
@@ -77,7 +82,7 @@ Skills，以及面向文档质量的 Write Skills。
    **触发场景：** 写一篇关于 X 的技术博客、为 Y 起草架构文档、对比 X 和 Y、
    写一份 ADR、深入解析 X 的工作原理、为 Z 编写 API 文档。
 
-2. `tech-rewrite`
+3. `tech-rewrite`
    基于任意质量的现有材料重建——内部笔记、会议纪要、AI 生成的草稿、遗留
    Wiki、代码注释。在提取阶段和写作阶段之间强制建立严格隔离。源材料绝不
    作为写作模板使用；所有事实被提取进结构化的 Fact Register，然后才开始
@@ -111,6 +116,7 @@ Refinex-Skills/
 │   ├── office-pdf/
 │   ├── office-pptx/
 │   ├── office-xlsx/
+│   ├── tech-planner/
 │   ├── tech-writing/
 │   └── tech-rewrite/
 ├── .gitignore
@@ -144,10 +150,19 @@ $harness-feat       -> 新功能 / 重构任务
 $harness-fix        -> Bug / 回归 / 故障修复
 ```
 
+**Write Skills — 推荐生命周期：**
+
+```text
+tech-planner  -> 先把主题变成研究计划 / 提纲 / 系列结构
+tech-writing  -> 在锚点明确后，从空白页直接起草
+tech-rewrite  -> 基于笔记、草稿或遗留文档做重建
+```
+
 **Write Skills — Skill 选择速查表：**
 
 | 起点 | 目标文档类型 | 使用 Skill |
 |---|---|---|
+| 只有主题或想法，还没有结构 | 研究计划、提纲、系列地图 | `tech-planner` |
 | 有主题和观点，无现有材料 | 博客、深度分析 | `tech-writing` |
 | 需要记录一个架构决策 | ADR | `tech-writing` |
 | 需要设计并记录一个新模块 | 模块设计文档 | `tech-writing` |

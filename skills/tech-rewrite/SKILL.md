@@ -1,299 +1,177 @@
 ---
 name: tech-rewrite
-description: >
-  Use this skill whenever the user provides existing documents, notes, drafts, or reference
-  material that needs to be rewritten, improved, or transformed into high-quality technical
-  documentation. Trigger on phrases like "rewrite this", "improve this doc", "this document
-  is bad, fix it", "clean up my notes", "turn this into a proper article", "refactor this
-  documentation", "polish this draft", "I have a rough doc that needs work", or whenever the
-  user pastes existing written material and asks for it to be improved or transformed.
-  Also trigger when the user says "based on this material, write a doc about X" or provides
-  meeting notes, internal wikis, code comments, or AI-generated drafts as source material.
-  This skill enforces a strict quarantine-and-reconstruct discipline: source material is
-  treated as a raw fact source only, never as a writing template. Output quality must
-  exceed the source regardless of how poor the source is.
+description: Transform existing technical material of any quality — rough notes, meeting minutes, AI-generated drafts, legacy wikis, code comments, email threads, chat exports — into high-quality technical documentation. Use this skill whenever the user asks to rewrite, restructure, clean up, polish, formalize, turn notes into an article, improve a draft, or extract documentation from existing material. Companion to the tech-writing skill — tech-writing handles the blank-page case, tech-rewrite handles the case where source material already exists. The two skills share identical quality standards, so a rewrite must be indistinguishable from a from-scratch piece on the same topic. Default output language is Chinese with technical terms in English. This skill enforces a mandatory extraction-before-composition firewall because low-quality sources contaminate AI-rewritten output through specific mechanisms when the source is treated as a template rather than as raw intelligence.
 ---
 
-# Technical Document Rewrite Agent
+# tech-rewrite
 
-You are a principal engineer and technical editor. Your job is not to polish what you are
-given — it is to reconstruct it from scratch using only the facts the source contains.
+A skill for transforming existing technical material into publication-quality documentation. The user has source material of some kind — notes, drafts, legacy docs, an AI-generated first pass — and wants it rewritten. This skill exists to prevent one category of failure: **style contamination**, the set of mechanisms by which low-quality source material degrades the output even when the writer intends to improve it.
 
-The most dangerous failure mode in document rewriting is **style contamination**: the model
-inherits the source's organizational logic, vague claims, hollow transitions, and shallow
-depth because those patterns were the most recent writing it processed. This skill exists
-to prevent that failure by forcing a complete separation between the extraction phase and
-the writing phase. They must never overlap.
+The defense is not stylistic discipline during writing. By the time the writing phase begins, the contamination has usually already happened — it happened during reading, when the writer absorbed the source's structure, gaps, tone, and hedges and started to treat them as constraints. The defense is procedural: an extraction-before-composition firewall that separates reading the source from writing the output, with a Fact Register acting as the only permitted bridge between the two phases.
 
-**The rule is absolute:** You do not begin writing until the extraction and audit phases
-are complete and shown to the user (or confirmed internally before proceeding). Writing
-before extraction is complete is the primary cause of contaminated output.
+This skill is the companion to `tech-writing`. The two skills converge on identical quality standards. A document rebuilt from existing material must be indistinguishable from one written on the same topic from scratch. The shared standards live in files prefixed `shared-` in the references directory and are literal copies of the corresponding files in the `tech-writing` skill. If a quality gate applies to a tech-writing document, it applies to a tech-rewrite document in exactly the same form.
 
 ---
 
-## PHASE 0: Source Triage (mandatory — show this work before writing anything)
+## The failure mode this skill fights
 
-This phase treats the source material as raw intelligence. You are an analyst reading a
-field report of unknown reliability, not an editor reviewing a draft.
+The pathology is counterintuitive. A careful reader who wants to improve a bad source ought to produce a good output. In practice, the careful reading is precisely what introduces the contamination. The reader absorbs the source's structure — its headings, its section order, its pacing — and starts to think of that structure as "the shape of the topic" rather than "one possible shape, and not a good one". The reader absorbs the source's vocabulary and starts to use it reflexively. The reader absorbs the source's gaps without noticing, because a gap is invisible by definition — the reader does not see the thing the source failed to cover. The reader absorbs the source's hedges and converts them into the output's assertions. None of this is intentional. All of it happens anyway.
 
-### Step 0.1 — Structured Fact Extraction
+Academic research documents the effect directly. LLM paraphrasing work has shown that when language models rewrite a source, the output preserves stylistic cues from the source at a level detectable by authorship-attribution classifiers, even when the rewrite was explicitly asked to change the style. Evaluation work on instruction-tuned models has shown that outputs can score well for style and structure while still being factually weak, because surface polish is easier for reviewers to assess than substance. These findings converge on the same practical conclusion: if the rewriter reads the source and then writes, the source leaks into the output. The only reliable defense is to interrupt that flow — to extract from the source into a structured intermediate, then put the source away and write from the intermediate alone.
 
-Read the entire source material. Extract every factual claim into a **Fact Register** using
-this exact format:
-
-```
-FACT REGISTER
-─────────────────────────────────────────────────────────────────
-ID  | Claim                           | Evidence Type    | Confidence | Action
-────|─────────────────────────────────|──────────────────|────────────|─────────────
-F01 | Redis is used for session cache | Stated           | High       | USE
-F02 | "The system is very scalable"   | Vague assertion  | Discard    | DROP
-F03 | Timeout set to 30s              | Stated           | High       | USE — verify why 30s
-F04 | Uses Kafka for event streaming  | Stated           | High       | USE — investigate ordering guarantee
-F05 | "Follows best practices"        | Unsubstantiated  | Discard    | DROP
-─────────────────────────────────────────────────────────────────
-```
-
-**Evidence Type taxonomy:**
-- **Stated**: The source explicitly asserts this with a specific value, name, or behavior.
-- **Implied**: The source's description implies this but does not state it. Flag it.
-- **Vague assertion**: A claim without a mechanism or metric (e.g. "fast", "scalable",
-  "reliable", "industry-standard"). Always DROP — these contain zero technical information.
-- **Contradicted**: The source states X in one place and ¬X in another. Flag for resolution.
-
-**Action taxonomy:**
-- **USE**: Will appear in the output document.
-- **USE — [note]**: Will appear, but requires elaboration, verification flag, or questioning.
-- **DROP**: Contains no technical information. Do not carry forward in any form.
-- **FLAG**: Needs confirmation from the user before use.
-
-Every claim in the source must appear in the Fact Register. There must be no facts in the
-output that are not in the Fact Register, and no facts in the Fact Register marked USE that
-are absent from the output.
+This is how professional editors have always worked. Developmental editors produce a "summary document" from the manuscript and then make all structural decisions from the summary, with the manuscript physically set aside. The rationale is explicit: the language of the manuscript distracts the editor from the structure. A well-written chapter seems to work even when it does not; a poorly written chapter seems broken even when its structure is sound. The only way to see structure clearly is to see it without the language attached. The Fact Register in this skill plays the same role as the editor's summary document, and the extraction firewall plays the same role as the instruction to set the manuscript aside.
 
 ---
 
-### Step 0.2 — Quality Audit
+## Workflow
 
-After completing the Fact Register, diagnose the source material using this checklist.
-Record findings as a brief **Quality Audit** block:
+Every task under this skill follows four phases. The phase boundaries are firewalls, not suggestions. Do not draft while still extracting. Do not re-read the source while writing.
 
-**Structural problems:**
-- [ ] Does the source bury its conclusion? (describes problem and solution before stating thesis)
-- [ ] Are sections ordered by the author's writing sequence rather than the reader's learning sequence?
-- [ ] Are there sections that only exist as padding — background that doesn't advance the argument?
-- [ ] Is there content that belongs in a different document entirely?
-
-**Depth problems:**
-- [ ] Mechanism avoidance: describes what something does without explaining how or why
-- [ ] Missing failure modes: happy path only, no edge cases or error scenarios
-- [ ] Unexplained decisions: states a choice without stating what was rejected
-- [ ] Hollow metrics: uses performance/scale claims without specific numbers
-
-**Style problems:**
-- [ ] AI-smell phrases (see `references/contamination-patterns.md`)
-- [ ] False balance: presents options without committing to a recommendation
-- [ ] Passive voice concealing responsibility or causality
-- [ ] Structural mirroring of a different document type (e.g. a blog formatted as a spec)
-
-**Coverage gaps:**
-List what a high-quality document on this topic would contain that the source does not.
-These gaps must be addressed in the reconstructed document — either by adding the missing
-content (flagged as an addition) or by explicitly scoping it out.
-
-Record findings as:
 ```
-QUALITY AUDIT
-─────────────────────────────────────────────────────────────
-STRUCTURAL:  [findings or NONE]
-DEPTH:       [findings or NONE]
-STYLE:       [findings or NONE]
-GAPS:        [list of missing elements]
-─────────────────────────────────────────────────────────────
+Phase 1: EXTRACTION        → produces a Fact Register
+Phase 2: TARGET DEFINITION → produces an Anchor Sheet (from the Fact Register only)
+Phase 3: WRITING           → produces a draft under tech-writing standards
+Phase 4: VALIDATION        → runs shared quality gates plus rewrite-specific gates
 ```
+
+### Phase 1 — Extraction
+
+In Phase 1, read the source material with one and only one purpose: to populate the Fact Register. Do not yet think about structure, voice, or wording. Do not yet decide what the output will look like. Read only to extract.
+
+The Fact Register has four sections. The first section is **KEPT**, containing every concrete, verifiable, specific claim the source makes. A fact is eligible for the KEPT section only if it is concrete enough to survive being stated without the source's words around it. "The service handles about a million requests per day on a t3.medium instance, with p99 latency around 180ms" is a KEPT fact. "The service is fast and scalable" is not.
+
+The second section is **DISCARDED**, containing every vague, unsubstantiated, or hedged claim the source makes, each with a short reason for the rejection. The DISCARDED section is the skill's defense against Ambiguity Whitewashing — by explicitly cataloging the vague claims and labeling them as rejected, the extraction phase prevents those claims from drifting into the output as polished prose.
+
+The third section is **MISSING**, containing every piece of information the reader would expect to find in a strong document on this topic but which the source does not contain. The MISSING section is the skill's defense against Void Inheritance — the source's gaps become visible as a list of named absences, which forces a decision about each one in Phase 3. Some MISSING items will be filled by research, some by asking the user, some by scoping the output more tightly to exclude them.
+
+The fourth section is **AMBIGUOUS**, containing every claim that the source makes unclearly enough that the reader cannot tell what is meant without guessing. Ambiguous claims are neither KEPT (they are not concrete) nor DISCARDED (they might be valuable once clarified). They are held in AMBIGUOUS until the user confirms the intended meaning, at which point they move to KEPT or DISCARDED.
+
+A contamination risk assessment is run after the four sections are populated. For each of the ten contamination mechanisms, the extractor rates the source's risk as low, medium, or high, with specific evidence from the source. The risk assessment is not decorative. High-risk ratings trigger specific defensive moves in Phase 3 — for example, a high Structural Mirroring risk triggers a mandatory structural redesign step before writing begins.
+
+The detailed extraction protocol is in `references/extraction-protocol.md`. The Fact Register template is in `references/fact-register-template.md`. The contamination risk assessment procedure is in `references/contamination-risk-assessment.md`. All three should be read before the first Phase 1 of any task.
+
+### Phase 2 — Target definition
+
+Phase 2 is where the firewall does its work. At the start of Phase 2, put the source away. Do not look at it again. Work only from the Fact Register.
+
+From the Fact Register, define the target document as if it were a blank-page piece. Write a central argument (falsifiable, defensible, one sentence). Identify the reader. Choose the document type. Select the narrative voice. Bound the scope. Decide which MISSING items will be addressed, which will be scoped out, and which require lookups or user input.
+
+The output of Phase 2 is an Anchor Sheet in the same format as the `tech-writing` skill's Anchor Sheet. The two skills share this format deliberately — it is the point at which the two paths converge. A rewrite's Anchor Sheet should be identical in form to a blank-page Anchor Sheet, and a reader looking only at the Anchor Sheet should not be able to tell which path produced it. The Anchor Sheet format is described in full in the extraction protocol file.
+
+The critical rule of Phase 2 is that the structure of the target document is designed from the Fact Register and the reader, not inherited from the source. If the source had three sections in order A-B-C, the target may have five sections in order D-E-B-F-A — or two sections, or ten — depending on what the argument requires. The source's ordering is not a signal of anything; it is the shape the previous writer happened to use. Let it go.
+
+### Phase 3 — Writing
+
+Phase 3 is identical to tech-writing's drafting phase. The writer uses the Anchor Sheet from Phase 2, picks up the relevant document-type reference file (`shared-doctype-*`), writes in the locked narrative voice, and follows the same drafting discipline. The source is still not being consulted. If the writer feels the urge to re-open the source to "check something", the something should be added to the Fact Register's MISSING list and resolved by lookup or user input, not by re-reading.
+
+Because the writing phase uses the exact same standards as tech-writing, its guidance lives in the shared reference files. The writer consults `references/shared-narrative-voices.md` for voice discipline, `references/shared-anti-patterns.md` for the anti-pattern sweep, `references/shared-language-conventions.md` for Chinese and English conventions, and the appropriate `references/shared-doctype-*.md` file for the document type's specific structure.
+
+### Phase 4 — Validation
+
+Phase 4 runs two checklists in sequence. The first is the shared quality checklist from tech-writing, applied without modification. Any gate that applies to a blank-page document applies to a rewritten document. If the draft fails a shared gate, it fails — the fact that the draft came from a source is not an excuse. The shared checklist is in `references/shared-quality-standards.md`.
+
+The second is the rewrite-specific checklist, which adds gates that only apply when the writing has a source. These gates check for the specific contamination signatures — structural mirroring, surviving DISCARDED items, unresolved MISSING items, inherited hedges, inherited tone, and scope inflation. If the draft fails any rewrite-specific gate, the fix is almost always to return to Phase 2 and redefine the target, not to patch the draft in place. Contamination is structural; the fix is structural. The rewrite-specific checklist is in `references/rewrite-checklist.md`.
+
+A draft that passes both checklists is the deliverable.
 
 ---
 
-### Step 0.3 — Contamination Risk Flags
+## The ten contamination mechanisms (summary)
 
-Before writing, explicitly name the contamination risks from this specific source. These are
-the patterns you must actively resist:
+These are the mechanisms by which a source degrades the output when the firewall fails. Each mechanism is defined fully in `references/contamination-mechanisms.md` with before/after examples and detection heuristics. The summary here is intended as a mental map, not a substitute for the full file.
 
-For each major problem identified in the Quality Audit, write one contamination flag:
+The first seven mechanisms match the original brief. The last three are additions based on research into LLM paraphrasing behavior and real-world examples of AI rewriting that preserved source flaws.
 
-```
-CONTAMINATION FLAGS
-─────────────────────────────────────────────────────────────
-CF-1: Source opens with vague background. Risk: inheriting that opening.
-      Countermeasure: First sentence of output must name a specific problem or tension.
+**1. Structural Mirroring** — the output silently copies the source's section structure, ordering, and pacing, even when a different structure would serve the argument better. The default failure mode; triggered whenever the writer reads the source from front to back and then writes.
 
-CF-2: Source never explains why Redis was chosen over Memcached.
-      Risk: reproducing the choice without the rationale.
-      Countermeasure: Either find the rationale and state it, or flag it as "rationale
-      not documented — requires verification" in the output.
+**2. Void Inheritance** — the source fails to cover some aspect of the topic, and the output silently fails to cover it too, because the writer never noticed the absence. The most insidious mechanism because a gap is invisible by definition.
 
-CF-3: Source has three consecutive sections with identical structure but different topics.
-      Risk: reproducing that monotonous pattern.
-      Countermeasure: Vary section depth and structure based on what each topic requires.
-─────────────────────────────────────────────────────────────
-```
+**3. Ambiguity Whitewashing** — the source contains a vague or hedged claim, and the output polishes the claim into confident prose without adding substance. The polish looks like improvement but is actually a degradation, because the reader can no longer tell the claim is vague.
 
-Read `references/contamination-patterns.md` now. Apply the patterns there to this specific
-source and add additional flags as needed.
+**4. Tone Infiltration** — the source's tone (marketing, tutorial, academic, bureaucratic) bleeds into the output despite the writer's intent to change it. Measurable by authorship-attribution classifiers; not something the writer can fix by "trying harder".
 
----
+**5. Rationale Vacuum** — the source states decisions without reasons, and the output repeats the decisions without reasons. The output looks authoritative because decisions have been asserted, but a senior reader can tell that no one has justified them.
 
-## PHASE 1: Reconstruction Brief
+**6. False Completeness** — the writer assumes the source covers the full topic, and the output inherits that assumption. Scoping decisions are made by reference to the source's scope rather than to the reader's actual needs.
 
-Only after Phase 0 is complete, run the Reconstruction Brief. This is equivalent to the
-Pre-Writing Protocol in the `tech-writing` skill, but driven by extracted facts rather than
-by a topic.
+**7. Scope Inflation** — the source covers too much ground, and the output covers the same too-much ground, because the writer did not exercise the option to narrow.
 
-### Step 1.1 — Argument Synthesis
+**8. Confidence Upgrade** — the source hedges a claim ("we think", "probably", "seems to be"), and the output polishes the hedge out, turning a cautious guess into an unsupported assertion. The output is now _less_ accurate than the source, even though it reads as more polished.
 
-Look at the facts marked USE in the Fact Register. What is the strongest coherent argument
-these facts support? Write it as a single declarative sentence — the same standard as
-tech-writing Step 0.1.
+**9. Terminology Drift** — the source uses a term inconsistently or with drift in meaning. The output either perpetuates the drift or silently picks one meaning and uses it throughout, sometimes changing the meaning of claims the source was making about a different sense of the term.
 
-If the source had no coherent argument (common for AI-generated drafts and internal notes),
-this is your opportunity to supply one. A reconstructed document that merely reorganizes
-the source's facts without adding a thesis is still mediocre. A good reconstruction imposes
-a point of view on the material.
-
-```
-ARGUMENT: [one declarative sentence — the claim the reconstructed document will make]
-```
-
-### Step 1.2 — Anchor Promotion
-
-From the Fact Register, identify which USE facts will serve as **load-bearing anchors**
-— the specific technical details that make the argument credible. These are facts that,
-if removed, would leave the argument unsupported.
-
-Distinguish anchors from supporting facts. Anchors are the ones with specific mechanisms,
-real numbers, or named decisions. Supporting facts elaborate on anchors.
-
-### Step 1.3 — New Structure Design
-
-Design the document structure entirely from scratch. Do not look at the source's section
-headings or ordering as input. The source's structure was organized by whatever order the
-original author thought of things — not by the reader's learning sequence.
-
-Apply the annotated outline format from `tech-writing` PHASE 1: each section heading
-followed by one sentence stating what argument or evidence it contributes.
-
-**The structure test:** Could a reader reconstruct the document's logical flow from the
-section headings alone? If not, the headings are topic labels, not argument waypoints.
-Revise until they are argument waypoints.
-
-### Step 1.4 — Addition and Omission Declaration
-
-State explicitly:
-- **Additions**: Content not in the source that will be added to fill identified gaps.
-  Mark each addition as either INFERRED (derivable from the facts and engineering
-  first principles) or NEEDS VERIFICATION (must be confirmed by the user).
-- **Omissions**: Content in the source that will be dropped and why.
-
-This declaration creates an audit trail. The user must be able to see exactly what was
-taken from the source, what was added, and what was dropped.
-
-### Step 1.5 — Voice Selection
-
-Apply the same voice selection from `tech-writing` Step 0.5:
-
-| Voice | Use When |
-|---|---|
-| **Production War Story** | Source contains real incident/decision context |
-| **Design Tribunal** | Reconstructing an architecture or comparison document |
-| **Mechanism Autopsy** | Reconstructing a deep-dive into how something works |
-| **Migration Field Guide** | Reconstructing a how-to or migration guide |
+**10. Pseudoanchor Import** — the source contains a vague quantitative claim ("handles a lot of traffic", "about a million users"), and the output polishes it into a specific-looking number. The number is invented in exactly the sense that it was not measured, it was polished; it is a fake anchor dressed up as a real one.
 
 ---
 
-## PHASE 2: Reconstruction
+## Writing standards (unchanged from tech-writing)
 
-Write the document following all standards from `tech-writing` PHASE 2 and PHASE 3. The
-writing standards are identical regardless of whether the document is written from scratch
-or reconstructed from source material. Refer to `tech-writing/references/anti-patterns.md`
-and `tech-writing/references/structure-guide.md` for the full writing ruleset.
+This section is deliberately short because the standards are unchanged from tech-writing. Every rule that applies to a blank-page piece applies to a rewritten piece. The full rules live in the shared files.
 
-Key reminders for reconstruction specifically:
+The non-negotiable quality gates — title carries the argument, header info block, 60-second rule, verdict in comparisons, rejected alternatives for design decisions, failure modes as mechanisms, limitations with thresholds, senior-engineer test — are enforced by `references/shared-quality-standards.md`.
 
-**On additions:** When you add content not present in the source (gap-filling), do not
-silently blend it in. For technical blogs, additions can be seamlessly integrated. For
-architecture documents and specs, additions should be marked `[INFERRED — verify]` or
-`[ADDED — not in source]` so the reader can audit the reconstruction. Ask the user which
-approach they prefer if unclear.
+The narrative voice catalog — Production War Story, Design Tribunal, Mechanism Autopsy, Migration Field Guide, Benchmarker's Notebook, Reference Librarian — is in `references/shared-narrative-voices.md`. The voice is chosen during Phase 2 from the Fact Register, not inherited from the source. A source written in Tutorial Voice does not constrain the output to Tutorial Voice.
 
-**On upgrading vague claims:** When the source says something vague ("the system is
-scalable"), you have three options — never four:
-1. Find the specific evidence elsewhere in the source that backs the claim, and replace
-   the vague version with the specific one.
-2. Derive the specific claim from engineering first principles and mark it INFERRED.
-3. Drop the claim entirely.
+The anti-pattern catalog — false balance, empty superlatives, background stuffing, passive responsibility avoidance, hedge stacking, Wikipedia-voice opening, and the rest of the twenty entries — is in `references/shared-anti-patterns.md` and is swept as Gate 9 of the shared quality checklist.
 
-The fourth option — reproduce the vague claim in cleaner prose — is prohibited. "The system
-achieves high scalability through its distributed architecture" is still a vague claim. It
-is worse than dropping it because it wastes the reader's time with confident-sounding noise.
+The Chinese and English conventions — technical terms in English, senior-engineer register, no marketing vocabulary, no tutorial voice, Anglo-Saxon over Latinate — are in `references/shared-language-conventions.md`.
+
+The seven document types — blog post, ADR, design document, comparison, deep-dive, API reference, migration guide — each have a dedicated file in `references/shared-doctype-*.md`. The writer reads the relevant file in Phase 3 before drafting.
 
 ---
 
-## PHASE 3: Dual Quality Gate
+## When to stop and ask the user
 
-After writing, run two gate sets.
+There are five situations in which Phase 1 or Phase 2 should stop and ask the user before proceeding. Each of them reflects a case where the cost of guessing is higher than the cost of asking.
 
-**Gate Set A: Fidelity Gates (reconstruction-specific)**
-- [ ] Every fact in the Fact Register marked USE appears in the output.
-- [ ] No fact appears in the output that is not in the Fact Register (unless added in
-  Step 1.4 with explicit declaration).
-- [ ] Every Contamination Flag from Step 0.3 was actively resisted — verify by rereading
-  the corresponding section.
-- [ ] Vague claims from the source do not appear in any form, even reworded.
-- [ ] The output's structure does not mirror the source's structure unless the source's
-  structure was genuinely optimal (rare — state why if so).
+The first is when the Fact Register's MISSING section contains items that are load-bearing for the argument. If the target document needs a number and the source does not supply it, the writer should ask whether the user has the number, whether the writer should look it up, or whether the argument should be scoped to avoid needing it. Inventing the number is never acceptable.
 
-**Gate Set B: Quality Gates (identical to tech-writing PHASE 3)**
-- [ ] Opening paragraph states the central argument.
-- [ ] Every comparison section has a verdict.
-- [ ] Failure modes section exists with specific mechanisms.
-- [ ] Zero banned phrases (load `references/contamination-patterns.md`).
-- [ ] Would a senior engineer learn something non-obvious from this? If not — deepen or cut.
-- [ ] Compression test: remove a random paragraph. If the argument survives unchanged,
-  the paragraph is decoration. Cut decoration.
+The second is when the AMBIGUOUS section contains items that materially affect the argument. An ambiguous claim in the source must be resolved before Phase 2, because Phase 2 depends on knowing what the central argument actually is. The resolution comes from the user, from research, or from a decision to drop the ambiguous item entirely.
+
+The third is when the contamination risk assessment rates Tone Infiltration high and the user has not yet named the target voice. High Tone Infiltration risk means the source has a strong, distinctive tone that will leak into the output by default. The writer should propose a voice explicitly and confirm with the user before drafting, rather than hoping the tone will naturally reset during writing.
+
+The fourth is when the contamination risk assessment rates Scope Inflation high and the source covers multiple distinct topics. The source may actually be two or three different documents glued together. The writer should propose a split and confirm with the user before proceeding, rather than trying to rewrite the conflation into a single coherent piece.
+
+The fifth is when the source is fundamentally misaligned with the user's stated intent. The user asked for an ADR but the source is a tutorial; the user asked for a deep-dive but the source is a feature announcement. The extracted Fact Register will be insufficient for the requested document type, and the writer should raise the mismatch with the user before spending further effort.
+
+In all five cases, the right move is to ask once, clearly, with specific options. Papering over the gap produces output that will fail Phase 4, which is more expensive than asking.
 
 ---
 
-## PHASE 4: Reconstruction Report (optional but recommended for long documents)
+## Output language defaults
 
-For documents over ~1,500 words, append a brief **Reconstruction Report** for the user:
-
-```
-RECONSTRUCTION REPORT
-─────────────────────────────────────────────────────────────
-Source facts used:      [N facts from Fact Register]
-Additions (inferred):   [list with brief rationale]
-Additions (needs verify):[list — user must confirm these]
-Dropped:                [list with reason]
-Structure changes:      [brief description of how the structure changed and why]
-Main contamination risk avoided: [the CF that required most active resistance]
-─────────────────────────────────────────────────────────────
-```
-
-This report allows the user to quickly audit the reconstruction without reading the entire
-document against the source.
+The defaults are identical to tech-writing. The output language is Chinese with technical terms kept in English, unless the user explicitly requests English. A source written in one language does not constrain the output to that language — a Chinese source can be rewritten into an English deliverable and vice versa, but translation is not done sentence by sentence. The source is extracted into the language-independent Fact Register, and then the output is re-drafted in the target language from the register, following the conventions in `references/shared-language-conventions.md`.
 
 ---
 
-## Language Rules
+## Reference file map
 
-Apply all language rules from `tech-writing` PHASE 4. They are identical for reconstruction.
-The source material's language — even if the source is in the target language — is never a
-guide for register, code-switching, or formality level. The target register is always:
-a senior engineer explaining a hard problem to a peer in a design review.
+All reference files are one level below `SKILL.md`. The files prefixed `shared-` are literal copies of the corresponding files in the `tech-writing` skill and enforce identical quality standards across both skills. The files without the prefix are rewrite-specific.
+
+Rewrite-specific files:
+
+- `references/contamination-mechanisms.md` — full catalog of the ten mechanisms with before/after examples
+- `references/extraction-protocol.md` — detailed Fact Register methodology with worked examples
+- `references/fact-register-template.md` — the working template for the Fact Register
+- `references/contamination-risk-assessment.md` — diagnostic tool for Phase 1
+- `references/rewrite-checklist.md` — rewrite-specific gates for Phase 4
+
+Shared files (copies from tech-writing):
+
+- `references/shared-quality-standards.md` — the full quality checklist
+- `references/shared-narrative-voices.md` — the six narrative voices
+- `references/shared-anti-patterns.md` — the anti-pattern catalog
+- `references/shared-language-conventions.md` — Chinese and English conventions
+- `references/shared-doctype-blog-post.md` — technical blog post structure
+- `references/shared-doctype-adr.md` — ADR structure
+- `references/shared-doctype-design-doc.md` — design document structure
+- `references/shared-doctype-comparison.md` — technology comparison structure
+- `references/shared-doctype-deep-dive.md` — source code / mechanism deep-dive structure
+- `references/shared-doctype-api-doc.md` — API reference structure
+- `references/shared-doctype-migration-guide.md` — migration guide structure
 
 ---
 
-## Reference Files
+## Final reminder
 
-- `references/contamination-patterns.md` — Specific contamination mechanisms with
-  countermeasures. Load during Phase 0 Step 0.3 and again during Phase 3 Gate Set A.
+The entire skill rests on one load-bearing claim: **the firewall between extraction and composition must not be crossed**. Every failure mode of AI rewriting — every mechanism in the catalog — traces back to the writer reading the source and then writing, without a strict intermediate that breaks the source's hold on the output's shape. The Fact Register is the intermediate. Once it exists, the source can and must be set aside. If the writer finds themselves re-reading the source during writing, the skill has been bypassed and the output is now contaminated regardless of how polished it looks.
