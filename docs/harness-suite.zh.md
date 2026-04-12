@@ -171,6 +171,32 @@ $harness-fix        -> 基于根因证据修复故障
 
 ---
 
+## 最佳使用案例
+
+建议把套件当作组合操作模型使用，而不是零散命令。以下场景通常收益最高。
+
+| 使用案例 | 推荐顺序 | 适配原因 | 预期结果 |
+| --- | --- | --- | --- |
+| 历史仓库文档不一致，agent 缺乏稳定上下文 | `harness-bootstrap` -> `harness-garden` | 先补齐控制面，再清理陈旧假设 | 控制面稳定、AGENTS/docs 可可信、仓库可 preflight |
+| 已接入 Harness 的仓库进入新一轮 feature 迭代 | `harness-garden` -> `harness-feat` | 先消除漂移，再进入功能交付，减少执行偏差 | feature 交付可预测，计划与验证证据完整 |
+| 合并后 CI 失败且原因不明 | `harness-fix`（若文档明显陈旧可先 `harness-garden`） | fix 协议强制复现 -> 隔离 -> 最小修复 -> 回归保护 | 具备根因证据的修复计划、最小补丁、回归测试补齐 |
+| 多模块 monorepo，agent 频繁交接 | `harness-bootstrap` -> 周期性 `harness-garden` -> 任务级 `harness-feat`/`harness-fix` | 统一术语 + 持续去漂移，保证跨会话连续性 | 交接成本低，模块间执行质量一致 |
+| flaky 测试导致发布窗口不稳定 | 使用 `harness-fix` 的 flaky 诊断协议 | 统计复现与假设日志可避免“拍脑袋补丁” | 测试确定性恢复，或形成可升级的边界化诊断结果 |
+| 新项目从 Day 1 计划大规模自治编码 | `harness-bootstrap` -> `harness-feat` -> 持续 `harness-garden` | 在代码规模上升前先建立治理，再持续维护真实性 | agent 规模化提速，同时保持可维护性 |
+
+### 推荐落地节奏
+
+多数团队可采用以下顺序获得最佳性价比：
+
+1. 每个仓库基线阶段执行一次 `harness-bootstrap`。
+2. 将 `harness-garden` 作为周期性养护任务。
+3. 所有建设型任务走 `harness-feat`。
+4. 所有修复型任务走 `harness-fix`。
+
+这样可以在控制流程开销的同时，维持一致的执行标准。
+
+---
+
 ## 质量模型
 
 这套技能强调五条不变式：

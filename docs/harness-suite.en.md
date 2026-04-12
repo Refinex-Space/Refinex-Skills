@@ -171,6 +171,32 @@ If multiple situations apply, sequence them:
 
 ---
 
+## Best Use Cases
+
+Use the suite as a composed operating pattern, not as isolated commands. The following scenarios are high-leverage defaults.
+
+| Use case | Recommended sequence | Why this works | Expected outcome |
+| --- | --- | --- | --- |
+| Legacy repo with inconsistent docs and no reliable agent context | `harness-bootstrap` -> `harness-garden` | Bootstrap establishes a control plane; garden immediately removes stale assumptions | Stable control plane, trustworthy AGENTS/docs, preflight-ready repository |
+| Team starts a feature sprint in a previously harnessed repo | `harness-garden` -> `harness-feat` | Garden prevents stale-command failures before implementation begins | Predictable feature delivery with versioned plan and verification evidence |
+| CI started failing after a recent merge and cause is unclear | `harness-fix` (optionally preceded by `harness-garden` if docs look stale) | Fix protocol enforces reproduce -> isolate -> minimal repair -> regression guard | Root-cause-backed fix plan, minimal patch, new regression protection |
+| Monorepo with multiple modules and frequent agent handoffs | `harness-bootstrap` -> periodic `harness-garden` -> task-level `harness-feat`/`harness-fix` | Shared control plane vocabulary plus periodic drift correction preserves cross-session continuity | Low handoff friction and consistent execution quality across modules |
+| Flaky test path causing intermittent release delays | `harness-fix` with flaky-path protocol | Statistical reproduction and hypothesis logging prevent symptom-level patching | Deterministic test behavior or explicit bounded diagnosis with escalation artifact |
+| New project kickoff where autonomous coding is planned from day one | `harness-bootstrap` -> `harness-feat` -> ongoing `harness-garden` | Governance is created before code volume explodes; drift is managed continuously | Faster scaling of agent work without losing maintainability |
+
+### Practical rollout pattern
+
+For most teams, this rollout order gives the best cost-benefit profile:
+
+1. Apply `harness-bootstrap` once per repository baseline.
+2. Schedule `harness-garden` as recurring maintenance.
+3. Route all build work through `harness-feat`.
+4. Route all repair work through `harness-fix`.
+
+This keeps execution standards consistent while minimizing process overhead.
+
+---
+
 ## Quality Model
 
 The suite enforces five invariants:
