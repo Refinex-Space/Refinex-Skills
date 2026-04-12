@@ -197,6 +197,104 @@ This keeps execution standards consistent while minimizing process overhead.
 
 ---
 
+## Recommended Usage Templates
+
+### Template 1: Bootstrap a New or Legacy Repository
+
+```text
+Set up Harness Engineering control plane for this repository.
+
+Context:
+- Repository type: [frontend/backend/full-stack/monorepo/library]
+- Current state: [new repo / partial docs / no AGENTS.md]
+- Constraints: [security/compliance/performance/team conventions]
+
+Expected outcome:
+- Root + module AGENTS.md (where justified)
+- docs/ control plane files and execution-plan directories
+- Generated manifest
+- Working scripts/check_harness.py
+```
+
+Use this when the repository has no reliable control plane, or its current control plane is incomplete.
+
+### Template 2: Run a Drift Audit and Repair
+
+```text
+Run a Harness drift audit and repair low-risk issues.
+
+Focus areas:
+- AGENTS.md accuracy
+- docs link/path validity
+- command freshness in OBSERVABILITY
+- manifest completeness
+
+Output requirements:
+- Drift findings summary
+- Auto-fixed items list
+- High-risk remediation plan for manual review
+```
+
+Use this when agent outputs suggest stale instructions, broken links, or outdated command references.
+
+### Template 3: Deliver a New Feature Safely
+
+```text
+Implement this feature using Harness workflow.
+
+Feature request:
+[paste user requirement]
+
+Requirements:
+- Preflight first
+- Rewrite into task brief + sprint contract
+- Create execution plan in docs/exec-plans/active
+- Implement in small verified steps
+- Archive plan and update docs/PLANS.md
+```
+
+Use this for feature development, capability delivery, and structured refactoring.
+
+### Template 4: Diagnose and Fix a Bug or Regression
+
+```text
+Diagnose and fix this issue using Harness fix protocol.
+
+Bug report:
+[paste symptom / error / failing test]
+
+Requirements:
+- Capture known-broken baseline
+- Produce structured bug brief
+- Reproduce before fixing
+- Isolate root cause with evidence
+- Apply minimal fix with scope guard
+- Add regression protection and archive fix plan
+```
+
+Use this for bug fixes, regression repair, incidents, and flaky test paths.
+
+### Template 5: End-to-End Sprint Pattern (Build + Repair)
+
+```text
+Run a full Harness sprint for this repository iteration.
+
+Phase order:
+1) Validate control plane health
+2) Execute planned feature work
+3) Diagnose and fix any regressions introduced or discovered
+4) Archive all plans and summarize outcomes
+
+Deliverables:
+- Completed plan links
+- Verification evidence summary
+- Remaining risk/tech-debt notes
+```
+
+Use this when a team wants a single, governed cycle from planned delivery to verified stabilization.
+
+---
+
 ## Quality Model
 
 The suite enforces five invariants:

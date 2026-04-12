@@ -197,6 +197,104 @@ $harness-fix        -> 基于根因证据修复故障
 
 ---
 
+## 推荐使用模板
+
+### 模板 1：为新仓库或历史仓库建立控制面
+
+```text
+请为这个仓库建立 Harness Engineering 控制面。
+
+上下文：
+- 仓库类型：[frontend/backend/full-stack/monorepo/library]
+- 当前状态：[新仓库 / 仅有部分文档 / 无 AGENTS.md]
+- 约束条件：[安全/合规/性能/团队规范]
+
+期望结果：
+- Root + 必要 module AGENTS.md
+- docs/ 控制面文件与 execution-plan 目录
+- 生成的 manifest
+- 可执行的 scripts/check_harness.py
+```
+
+适用：仓库没有可靠控制面，或已有控制面不完整。
+
+### 模板 2：执行漂移审计并修复低风险问题
+
+```text
+请执行一次 Harness 漂移审计，并自动修复低风险问题。
+
+重点范围：
+- AGENTS.md 内容准确性
+- docs 链接与路径有效性
+- OBSERVABILITY 中命令新鲜度
+- manifest 完整性
+
+输出要求：
+- 漂移问题摘要
+- 自动修复清单
+- 需要人工评审的高风险修复计划
+```
+
+适用：agent 输出出现“说明过期、链接失效、命令失效”等迹象。
+
+### 模板 3：安全交付新功能
+
+```text
+请使用 Harness 工作流交付这个功能。
+
+功能需求：
+[粘贴用户需求]
+
+要求：
+- 先执行 preflight
+- 先重写为任务简报 + sprint contract
+- 在 docs/exec-plans/active 创建 execution plan
+- 小步实现并逐步验证
+- 归档计划并更新 docs/PLANS.md
+```
+
+适用：新功能开发、能力扩展、结构化重构。
+
+### 模板 4：诊断并修复 Bug 或回归
+
+```text
+请按 Harness fix 协议诊断并修复这个问题。
+
+问题描述：
+[粘贴症状 / 报错 / 失败测试]
+
+要求：
+- 固化 known-broken baseline
+- 生成结构化 bug brief
+- 必须先复现再修复
+- 用证据隔离 root cause
+- 在 scope guard 下做最小修复
+- 增加 regression protection 并归档 fix plan
+```
+
+适用：bug 修复、回归修复、故障响应、flaky 路径诊断。
+
+### 模板 5：端到端迭代（建设 + 修复）
+
+```text
+请执行一次完整的 Harness 迭代周期。
+
+阶段顺序：
+1) 验证控制面健康状态
+2) 执行计划内 feature 交付
+3) 诊断并修复本轮引入或暴露的回归问题
+4) 归档计划并输出结果总结
+
+交付物：
+- 已完成计划链接
+- 验证证据摘要
+- 剩余风险/tech-debt 记录
+```
+
+适用：团队希望在同一治理循环内完成“建设到稳定”的闭环。
+
+---
+
 ## 质量模型
 
 这套技能强调五条不变式：
