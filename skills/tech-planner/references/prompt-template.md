@@ -17,9 +17,9 @@ Every per-article prompt is wrapped in the following format, which is designed f
 
 The `/tech-write` token is the skill invocation. The `<prompt>` and `</prompt>` tags mark the content boundary. The content inside the tags is the Anchor Sheet in natural language form — not a structured YAML or table, but a paragraph-by-paragraph description of what the article should be. Natural language is preferred because the tech-writing skill's Phase 1 is already designed to accept natural-language specifications, and because natural language carries rationale and context that a structured format would strip.
 
-The content inside the wrapping must cover seven specific pieces of information. Each piece corresponds to a field in the tech-writing Anchor Sheet, and all seven must be present for the prompt to be considered complete.
+The content inside the wrapping must cover nine specific pieces of information. Each piece corresponds to a field in the tech-writing Anchor Sheet or its drafting contract, and all nine must be present for the prompt to be considered complete.
 
-## The seven required pieces
+## The nine required pieces
 
 The first piece is the **central argument**, stated as a single falsifiable sentence. The central argument is the core claim the article will make, written in the form "X is Y, because Z, and the usual objection W is wrong for reason V" or a similar defensible construction. The argument should be specific enough that a reader who disagreed with it could point to specific evidence, and it should be sharp enough that a reader who has not read the article yet can tell what they will be asked to believe. A central argument like "Spring AI's `ChatClient` is a clean abstraction" is too vague and fails; "Spring AI's `ChatClient` is a clean abstraction in the synchronous case but leaks abstraction as soon as you enable streaming with tool calls, and the leak is specifically in `AdvisorChain`'s assumption that advisors are pure functions" passes.
 
@@ -35,9 +35,13 @@ The sixth piece is the **scope boundary**, with both "in scope" and "explicitly 
 
 The seventh piece is the **source references**, a list of specific links or pointers to the primary sources the writing phase should consult. These are the same reference links that appear in the Markdown outline's article section, reproduced in the prompt so the writing phase has them at hand. Each reference is specific (a URL to a documentation page, a source file path, a conference talk timestamp) and annotated (what to extract from it).
 
+The eighth piece is the **visual explanation plan**. When the article's central claim depends on a mechanism, topology, lifecycle, or timeline that would be expensive to track in prose alone, the prompt specifies the reader question the diagram must answer and the Mermaid type that best fits it. The planner chooses the type from the question rather than by habit: `sequenceDiagram` for temporal call order, `flowchart` for branching pipelines, `stateDiagram-v2` for state transitions, `classDiagram` or `erDiagram` for static relationships, and `timeline` for change over time. A planner that omits this field for a mechanism-heavy article is silently pushing cognitive work onto the downstream writer.
+
+The ninth piece is the **depth and completeness contract**. This is the downstream writing instruction that prevents the article from turning into a short, nervous summary. The contract states that the writer must not stop because the piece is already "long enough"; they stop only after every load-bearing anchor, mechanism, rejected alternative, and boundary promised by the prompt has been discharged or explicitly scoped out. This is not permission for padding. It is a guard against premature stopping.
+
 ## Template
 
-The seven pieces are assembled into a natural-language paragraph form. The template below shows the structure with placeholders; a filled-in example follows in the next section.
+The nine pieces are assembled into a natural-language paragraph form. The template below shows the structure with placeholders; a filled-in example follows in the next section.
 
 ```
 /tech-write
@@ -75,6 +79,17 @@ that cover the out-of-scope material.]
 [Source references paragraph: list the specific URLs, file paths, and
 other references the writing phase should consult, each annotated with
 what to extract from it.]
+
+[Visual explanation paragraph: if the article needs one or more diagrams,
+state the question each diagram answers, the Mermaid type, and the reader
+payoff. Example: "Include a sequenceDiagram showing how X calls Y and how
+the retry loop re-enters Z; the point is to make the once-per-request
+interceptor boundary visible."]
+
+[Depth/completeness paragraph: instruct the writer to continue until every
+load-bearing anchor, mechanism, rejected alternative, and boundary in this
+prompt has been paid off or explicitly scoped out. Make it clear that
+brevity is not a stopping condition and padding is not allowed.]
 
 Follow the full tech-writing skill workflow: Phase 1 pre-writing protocol,
 Phase 2 drafting in the specified voice, Phase 3 validation against the
@@ -157,6 +172,22 @@ the documented advisor lifecycle and note the absence of any mention of
 tool-call iteration; (4) the Spring AI 1.0.0-RC2 release notes — extract
 the two bug fixes that landed.
 
+Visual explanation plan: include a `sequenceDiagram` showing one
+`ChatClient.call()` from advisor entry to the first provider response, then
+the internal tool-call iteration and the point at which control re-enters
+the model without re-entering `AdvisorChain.around()`. The reader should be
+able to see, at a glance, why the once-per-call boundary creates the four
+bugs. Also include a small `flowchart` showing the three execution modes
+(sync without tools, streaming without tools, streaming with tools) and
+highlight that only one branch crosses the broken path.
+
+Depth and completeness contract: do not stop after naming the four bugs.
+For each bug, pay off the full chain: trigger condition, internal cause,
+observable symptom, evidence in source or issue tracker, workaround, and
+version boundary if the fix status changed. If any one of the four cannot
+be discharged with the available evidence, say so explicitly rather than
+compressing it into a vague paragraph.
+
 Follow the full tech-writing skill workflow: Phase 1 pre-writing protocol,
 Phase 2 drafting in the specified voice, Phase 3 validation against the
 shared quality checklist. The article should end on a reusable mental
@@ -170,7 +201,7 @@ Output language is Chinese with technical terms in English.
 </prompt>
 ```
 
-Notice the specificity of the filled-in version. Every anchor is concrete enough to be verifiable. Every reference link names a specific resource, not a homepage. The scope is bounded in both directions. The central argument is falsifiable — a reader who disagreed with it would know what evidence would settle the question. The prerequisites are explicit and cumulative, referring to earlier articles in the series by number.
+Notice the specificity of the filled-in version. Every anchor is concrete enough to be verifiable. Every reference link names a specific resource, not a homepage. The scope is bounded in both directions. The central argument is falsifiable — a reader who disagreed with it would know what evidence would settle the question. The prerequisites are explicit and cumulative, referring to earlier articles in the series by number. The visual plan is explicit, and the depth contract prevents the downstream writer from silently collapsing the article into a shallow summary.
 
 A prompt that looks like this can be copied into tech-writing without modification and will produce a draft that needs no further input from the user. That is the target the template is designed to hit.
 
@@ -186,4 +217,4 @@ When the user has requested Chinese output (the default), the prompt is generate
 
 When the user has requested English output, the entire prompt is in English and the closing instruction names English. The prompt structure does not change between languages; only the natural-language sections switch.
 
-The seven required pieces remain the same in either language. A prompt that is short or vague in one language will be short or vague in the translation. The work of filling in the seven pieces with specific content happens in Phase 3 regardless of the output language, and the language choice affects only the surface form of the result.
+The nine required pieces remain the same in either language. A prompt that is short or vague in one language will be short or vague in the translation. The work of filling in the nine pieces with specific content happens in Phase 3 regardless of the output language, and the language choice affects only the surface form of the result.

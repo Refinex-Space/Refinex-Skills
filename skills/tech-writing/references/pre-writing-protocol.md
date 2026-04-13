@@ -4,7 +4,7 @@ The single most important part of this skill. Every piece starts here. If this p
 
 The protocol produces an **Anchor Sheet** — a short internal document that contains the argument, the anchors, the reader model, the scope, and the chosen voice. The Anchor Sheet exists on paper (or in the chat) *before any prose is drafted*. Show it to the user before drafting so they can catch a weak argument or a missing anchor while it is still cheap to fix.
 
-## The five steps
+## The six steps
 
 ### 1. Central argument
 
@@ -53,7 +53,30 @@ For ADRs, design docs, and comparisons this is mandatory. For blog posts it is s
 
 **Boundary conditions with thresholds.** Every strong technical claim has a boundary beyond which it stops being true. Finding the boundary and stating it explicitly is how you earn the reader's trust. "This works up to ~10k rows per partition; past that, Cassandra's tombstone scan costs overtake the read path, and you want a different data model." That one sentence is worth more than three paragraphs of hedging.
 
-### 3. Reader audit
+### 3. Visual explanation plan
+
+Before drafting, ask whether the reader will have to simulate too many moving parts in their head. If the answer is yes, plan the diagram now instead of hoping to notice it later.
+
+The key move is to write the **reader question** first and choose the Mermaid type from that question:
+
+- "Who calls whom, and in what order?" → `sequenceDiagram`
+- "Where does the pipeline branch or loop?" → `flowchart`
+- "What state transitions are legal?" → `stateDiagram-v2`
+- "How do these components or types relate statically?" → `classDiagram`
+- "How do these entities relate in storage?" → `erDiagram`
+- "What changed across releases or over incident time?" → `timeline`
+
+Use `references/diagram-selection-guide.md` when the choice is not obvious. Do not default to `flowchart` out of habit. Flowcharts are for branching flow, not for every technical problem.
+
+The visual plan is part of the Anchor Sheet, not a decoration added during editing. For each planned diagram, record:
+
+1. The question the diagram answers.
+2. The Mermaid type.
+3. The specific claim the reader should understand after seeing it.
+
+If prose can do the job more clearly, skip the diagram. If prose cannot, make the diagram mandatory before drafting starts.
+
+### 4. Reader audit
 
 Answer three questions in writing:
 
@@ -63,7 +86,7 @@ Answer three questions in writing:
 
 If the reader audit describes two very different readers ("beginners and experts"), you have two pieces, not one. Pick one and write it. The "accessible to both" piece is a myth; it always turns into a piece that bores the experts and confuses the beginners.
 
-### 4. Scope boundary
+### 5. Scope boundary
 
 Two lists.
 
@@ -75,7 +98,7 @@ Two lists.
 
 Writing out-of-scope lists well is a senior skill. It is how you turn "I ran out of time" into "I made a deliberate choice about what this piece is".
 
-### 5. Voice selection
+### 6. Voice selection
 
 Pick exactly one voice from `narrative-voices.md` and name it in the Anchor Sheet. Do not leave this implicit. Naming it up front is what lets you catch drift later. If during drafting you find yourself writing in a different voice, you have two choices: revert, or scrap the draft and restart in the new voice. You do not get to blend.
 
@@ -106,6 +129,12 @@ Use this as a working document at the top of every piece. Keep it short; a full 
 - Who: <...>
 - Knows already: <...>
 - Misknows: <...>
+
+## Visual explanation plan
+- Diagram: <question the diagram answers>
+  - Type: <sequenceDiagram | flowchart | stateDiagram-v2 | classDiagram | erDiagram | timeline | none>
+  - Why this type: <...>
+  - Reader payoff: <what becomes predictable after seeing it>
 
 ## Scope
 - In: <...>
@@ -165,6 +194,19 @@ tool-call,AdvisorChain 的 around 语义就会暴露:它假设 advisor 是纯函
   - 以为 spring-ai-openai 的 tool-call 是基于 function_call 协议 —— 错,
     M5 开始已经切到 tools 协议,命名仍保留 function 是历史原因
 
+## Visual explanation plan
+- Diagram: `ChatClient.call()` 到 tool-call re-entry 的完整调用顺序到底是怎样的?
+  - Type: sequenceDiagram
+  - Why this type: 这里的难点是时间顺序和跨组件 re-entry,不是静态结构
+  - Reader payoff: 读者看完后能准确指出 `AdvisorChain.around()` 被调用的时点,
+    以及为什么后续 tool-call 轮次绕过了它
+- Diagram: 哪些场景会触发 bug,哪些不会?
+  - Type: flowchart
+  - Why this type: 这里的核心是 branching 条件,即 sync / streaming /
+    tool-call 的组合空间
+  - Reader payoff: 读者看完后能快速判断自己的调用路径是否落在 bug
+    触发区间
+
 ## Scope
 - In: AdvisorChain 的 around 语义 + 四个 bug 的源码级根因 + 可用的 workaround
 - Out:
@@ -189,6 +231,7 @@ A thin Anchor Sheet has any of these smells:
 - Argument is actually a topic ("探讨 Spring AI 的设计").
 - Anchors are adjectives ("fast", "robust").
 - Rejected alternatives section is empty or says "none considered".
+- Mechanism-heavy piece has no visual plan, even though the reader would have to hold multiple actors, states, or branches in working memory.
 - Reader audit is "developers".
 - "Out of scope" is empty.
 - Voice is unclear.

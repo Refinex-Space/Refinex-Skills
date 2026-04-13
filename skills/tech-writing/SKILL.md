@@ -31,7 +31,7 @@ Phase 3: VALIDATION LOOP        → checks against gates, revises, repeats
 
 ### Phase 1 — Pre-writing protocol (MANDATORY; do not skip)
 
-Before writing any prose, produce an **Anchor Sheet**. This is an internal working document — show it to the user at the start so they can correct missing or wrong anchors. The five steps:
+Before writing any prose, produce an **Anchor Sheet**. This is an internal working document — show it to the user at the start so they can correct missing or wrong anchors. The six steps:
 
 1. **Central argument.** Write one sentence. It must be falsifiable and defensible. "Spring AI's `ChatClient` is a thoughtful abstraction" is not an argument — it cannot be falsified. "Spring AI's `ChatClient` improves ergonomics for synchronous chat but leaks abstraction the moment you need tool-call streaming, and the leak is in `AdvisorChain`, not in the fluent API" is an argument. If you cannot write the sentence, you do not yet have a piece to write — ask the user for more context before proceeding.
 
@@ -41,13 +41,15 @@ Before writing any prose, produce an **Anchor Sheet**. This is an internal worki
    - **Rejected alternatives with reasons**: what else was considered, and precisely why each was set aside.
    - **Boundary conditions with thresholds**: where does the claim stop being true? ("This pattern holds up to ~10k rows per partition; beyond that, Cassandra's tombstone scan cost overtakes the read path.")
 
-3. **Reader audit.** Who is the reader? What do they already know (so you don't waste their time)? What do they probably *mis*know (so you correct it early)? A Java backend engineer reading a Spring AI post already knows what a bean is — spending two paragraphs explaining IoC is an insult to their time and a tell that you have nothing to say.
+3. **Visual explanation plan.** Decide whether any load-bearing mechanism, topology, lifecycle, or timeline is clearer in a diagram than in prose alone. If yes, pre-commit the diagram and pick the Mermaid type by question, not by habit: `sequenceDiagram` for temporal call order, `flowchart` for branching pipelines, `stateDiagram-v2` for state transitions, `classDiagram` or `erDiagram` for structural relationships, `timeline` for version/change chronology. Read `references/diagram-selection-guide.md` when the choice is not obvious.
 
-4. **Scope boundary.** Write two lists: "in scope" and "explicitly not in scope". The second list is the more important one. It is how you earn the right to ignore things without the reader feeling cheated.
+4. **Reader audit.** Who is the reader? What do they already know (so you don't waste their time)? What do they probably *mis*know (so you correct it early)? A Java backend engineer reading a Spring AI post already knows what a bean is — spending two paragraphs explaining IoC is an insult to their time and a tell that you have nothing to say.
 
-5. **Voice selection.** Pick exactly one narrative voice from the catalog in `references/narrative-voices.md` and commit to it for the whole piece. Voice is not tone; it is the stance from which the piece is argued.
+5. **Scope boundary.** Write two lists: "in scope" and "explicitly not in scope". The second list is the more important one. It is how you earn the right to ignore things without the reader feeling cheated.
 
-If any of the five is thin — especially real numbers or rejected alternatives — **stop and tell the user**. Say what is missing. Offer options: (a) the user supplies the missing anchors, (b) you run specific lookups with tools, (c) the piece is narrowed so the missing anchor is no longer needed. Never paper over a missing anchor with generic prose.
+6. **Voice selection.** Pick exactly one narrative voice from the catalog in `references/narrative-voices.md` and commit to it for the whole piece. Voice is not tone; it is the stance from which the piece is argued.
+
+If any of the six is thin — especially real numbers, rejected alternatives, or the visual plan for a mechanism-heavy piece — **stop and tell the user**. Say what is missing. Offer options: (a) the user supplies the missing anchors, (b) you run specific lookups with tools, (c) the piece is narrowed so the missing anchor is no longer needed. Never paper over a missing anchor with generic prose.
 
 For the detailed protocol with worked examples, read `references/pre-writing-protocol.md`.
 
@@ -59,6 +61,8 @@ Only after the Anchor Sheet is complete and any gaps have been resolved:
 2. **Write in the selected voice only.** If you feel the voice shifting mid-draft (for example, from "Design Tribunal" into "Mechanism Autopsy" because you got interested in the internals), stop and decide: either the piece is actually a different voice and you restart the draft, or this is drift and you rein it back in. Voice drift is a leading cause of muddy technical writing.
 3. **Apply the 60-second rule**: the opening paragraph must state the central argument. A reader who stops after 60 seconds should still know what you are claiming. No throat-clearing. No "In recent years, as AI has grown in importance…". No background stuffing.
 4. **Apply the title rule**: the title carries the argument, not a topic tag. "Spring AI ChatClient 实战" is a topic. "Spring AI ChatClient 的抽象只在同步场景成立:AdvisorChain 在流式 tool-call 下的四种裂缝" is an argument.
+5. **Make the visual plan real.** If the Anchor Sheet said a mechanism, topology, lifecycle, or timeline needs a diagram, draw it with the best-fit Mermaid type. Do not downgrade to prose-only because diagrams take effort, and do not force a diagram where prose is already clearer.
+6. **Honor the depth contract.** Do not stop because the draft is "already long enough". Stop only when every load-bearing anchor, mechanism, rejected alternative, and boundary promised by the Anchor Sheet has been discharged or explicitly scoped out. Depth is measured by paid-off obligations, not by word count.
 
 ### Phase 3 — Validation loop
 
@@ -121,7 +125,9 @@ These are enforced by `references/quality-checklist.md`. The summary is here so 
 **Depth:**
 
 - Failure modes name specific mechanisms, not general categories.
+- Load-bearing mechanisms, topologies, lifecycles, and timelines get the right visual support when prose alone would overload the reader.
 - A limitations / boundary section exists with concrete thresholds.
+- Every load-bearing item in the Anchor Sheet is actually discharged in the body; the piece does not open lines of argument it never cashes out.
 - **Senior-engineer test**: for every section, ask "does this teach a senior engineer anything they couldn't get from the official docs in five minutes?" If no, cut or deepen the section. There is no third option.
 
 **Language:**
@@ -164,6 +170,7 @@ All reference files are one level below `SKILL.md`. Read the file when its topic
 - `references/narrative-voices.md` — six voices, before/after examples per voice, drift diagnostics
 - `references/anti-patterns.md` — full AI-scented anti-pattern catalog with detection heuristics
 - `references/quality-checklist.md` — executable validation loop; run before every delivery
+- `references/diagram-selection-guide.md` — choose the right Mermaid diagram for mechanisms, topology, state, or time
 - `references/language-conventions.md` — Chinese and English writing conventions
 - `references/doctype-blog-post.md` — technical blog post structure
 - `references/doctype-adr.md` — ADR structure (Nygard + MADR variants)
@@ -177,4 +184,4 @@ All reference files are one level below `SKILL.md`. Read the file when its topic
 
 ## Final reminder
 
-The entire skill rests on one load-bearing claim: **anchors first, prose second**. If a draft is weak, the fix is almost never "rewrite the prose". The fix is almost always "the Anchor Sheet was thin; go back and fill it in". When the anchors are real, the prose almost writes itself. When the anchors are fake, no amount of prose polish will save the piece.
+The entire skill rests on one load-bearing claim: **anchors first, prose second**. If a draft is weak, the fix is almost never "rewrite the prose". The fix is almost always "the Anchor Sheet was thin; go back and fill it in". When the anchors are real, the prose almost writes itself. When the anchors are fake, no amount of prose polish will save the piece. The same applies to depth and diagrams: if the obligations were not made explicit in the Anchor Sheet, they will almost always be skipped in the draft.

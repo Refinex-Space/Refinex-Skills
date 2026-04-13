@@ -22,6 +22,8 @@ The walkthrough section is the body of the deep-dive. It follows the execution p
 
 The walkthrough is where most deep-dives succeed or fail. The common failure mode is to describe the code rather than quote it, which forces the reader to take the writer's word for what the code does. The strong move is to quote the code, point at the specific part that does the interesting thing, and explain that specific part in the writer's own words. The reader should feel that they are looking over the writer's shoulder at the source.
 
+Deep-dives should also assume that some mechanisms are easier to verify visually than verbally. If the walkthrough spans multiple actors, loops, branches, or state transitions, include the best-fit Mermaid diagram from `diagram-selection-guide.md`. Use `sequenceDiagram` for temporal call order, `flowchart` for branching paths, and `stateDiagram-v2` for state transitions. Do not use one generic flowchart to paper over all three.
+
 The insight section is where the specific case becomes a general mental model. After walking the reader through the specific case, the writer steps back and names the pattern: "here is the picture you can carry away, and here is how it lets you predict behavior in related cases". The insight section is short — usually a few paragraphs — but it is what distinguishes a deep-dive from a walkthrough-for-its-own-sake.
 
 The closing is a specific reusable takeaway. Not a summary. A named mental model, a rule of thumb, a diagnostic heuristic, or a concrete prediction the reader can now make. The closing answers the question "what do I do differently now that I have read this".
@@ -51,6 +53,8 @@ The third gate checks the "magic" vocabulary. Search the draft for "magic", "und
 The fourth gate checks the insight section. Verify that the deep-dive ends on a generalizable mental model rather than a summary. Read the closing paragraph and ask: "would a reader who skipped the walkthrough but read this closing still learn something useful?" If the answer is no, the closing is a summary and needs to be rewritten as an insight.
 
 The fifth gate checks that the specific case is representative. Ask whether the reader, after reading the piece, could correctly predict behavior in a related case that the piece did not cover. If not, the piece has either chosen an unrepresentative case or failed to extract the pattern.
+
+The sixth gate checks visual explanation quality. If the walkthrough asks the reader to track multiple actors, time steps, branches, or states, the piece includes the right Mermaid diagram and that diagram answers a specific question the prose refers back to. Decorative or wrong-type diagrams fail this gate.
 
 ## Common failure patterns
 

@@ -108,13 +108,15 @@ The first seven mechanisms match the original brief. The last three are addition
 
 This section is deliberately short because the standards are unchanged from tech-writing. Every rule that applies to a blank-page piece applies to a rewritten piece. The full rules live in the shared files.
 
-The non-negotiable quality gates — title carries the argument, header info block, 60-second rule, verdict in comparisons, rejected alternatives for design decisions, failure modes as mechanisms, limitations with thresholds, senior-engineer test — are enforced by `references/shared-quality-standards.md`.
+The non-negotiable quality gates — title carries the argument, header info block, 60-second rule, verdict in comparisons, rejected alternatives for design decisions, failure modes as mechanisms, limitations with thresholds, visual explanations where they materially reduce cognitive load, Anchor-Sheet completeness, and the senior-engineer test — are enforced by `references/shared-quality-standards.md`.
 
 The narrative voice catalog — Production War Story, Design Tribunal, Mechanism Autopsy, Migration Field Guide, Benchmarker's Notebook, Reference Librarian — is in `references/shared-narrative-voices.md`. The voice is chosen during Phase 2 from the Fact Register, not inherited from the source. A source written in Tutorial Voice does not constrain the output to Tutorial Voice.
 
 The anti-pattern catalog — false balance, empty superlatives, background stuffing, passive responsibility avoidance, hedge stacking, Wikipedia-voice opening, and the rest of the twenty entries — is in `references/shared-anti-patterns.md` and is swept as Gate 9 of the shared quality checklist.
 
 The Chinese and English conventions — technical terms in English, senior-engineer register, no marketing vocabulary, no tutorial voice, Anglo-Saxon over Latinate — are in `references/shared-language-conventions.md`.
+
+The diagram selection rules — when a rewritten piece needs Mermaid support and which diagram type to choose — are in `references/shared-diagram-selection-guide.md`. The rewritten output does not inherit the source's visuals; it earns its own visual plan from the Fact Register and Anchor Sheet.
 
 The seven document types — blog post, ADR, design document, comparison, deep-dive, API reference, migration guide — each have a dedicated file in `references/shared-doctype-*.md`. The writer reads the relevant file in Phase 3 before drafting.
 
@@ -162,6 +164,7 @@ Shared files (copies from tech-writing):
 - `references/shared-narrative-voices.md` — the six narrative voices
 - `references/shared-anti-patterns.md` — the anti-pattern catalog
 - `references/shared-language-conventions.md` — Chinese and English conventions
+- `references/shared-diagram-selection-guide.md` — choose the right Mermaid diagram for mechanisms, topology, state, or time
 - `references/shared-doctype-blog-post.md` — technical blog post structure
 - `references/shared-doctype-adr.md` — ADR structure
 - `references/shared-doctype-design-doc.md` — design document structure

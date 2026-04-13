@@ -181,6 +181,7 @@ Short summary of what the writer needs to know before drafting:
 - HIGH contamination risks with required defensive moves: <...>
 - Proposed central argument (if clear from extraction): <...>
 - Proposed target voice (if clear from extraction): <...>
+- Visual candidates worth planning in Phase 2: <mechanism / topology / state / timeline + why prose alone would be expensive>
 - Source is now CLOSED. All further work proceeds from the Fact Register alone.
 ```
 

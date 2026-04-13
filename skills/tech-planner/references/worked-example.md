@@ -287,6 +287,25 @@ with design decisions that prioritize Spring's programming model.
 - Spring AI GitHub repository, main branch as of 1.0.0-M6 tag — extract
   the source files listed in the anchors section
 
+**Visual explanation plan**:
+- Include a `sequenceDiagram` showing the single
+  `ChatClient.prompt().user(...).call()` path from fluent builder to
+  advisor-chain construction to `ChatModel` delegation. The question the
+  diagram answers is "where does each abstraction layer hand off to the
+  next one?"
+- Include a compact `classDiagram` for the static relationship between
+  `ChatClient`, `DefaultChatClient`, `DefaultChatClientBuilder`,
+  `AdvisorChain`, and `ChatModel`. The point is to separate static
+  ownership from runtime call order rather than mixing both into one
+  overloaded diagram.
+
+**Depth and completeness contract**: Do not stop at "ChatClient is a
+facade". Prove the claim end to end: show the fluent entry point, the
+intermediate request-specification layer, the advisor-chain construction,
+and the terminal `ChatModel` handoff, all with source anchors. If one of
+the three abstraction layers cannot be demonstrated from source, say so
+explicitly rather than flattening it into a hand-wavy sentence.
+
 **Additional guidance**: The article should end with a mental model the
 reader can reuse: given a ChatClient call they have not seen before, they
 should be able to predict which parts of its behavior live in the fluent
@@ -304,7 +323,7 @@ The remaining phases would follow the same overall structure.]
 
 ## Phase 4 — Validation summary for this example
 
-The deliverable above passes the outline quality checklist on the following bases. Gate 1 passes because the series argument is falsifiable and the individual article arguments collectively support it. Gate 2 passes because every article title states a claim rather than a topic. Gate 3 passes because the phase names reflect cognitive transitions (Rebuilding, Mastering, Revelation, Realities). Gate 4 passes because the series structure diverges from the official docs' feature-tour structure, with the divergence made explicit in the overview. Gate 5 passes because the article dependency order is verified — each article's prerequisites are covered by earlier articles. Gate 6 passes because overlapping revisits (the ChatClient-facade concept introduced in 1.2 and revisited in 2.1 and 3.2) are spiral revisits with distinct aspects. Gate 7 passes because the reference links are specific and annotated. Gate 8 passes because each prompt contains the seven required pieces. Gate 9 passes because each phase contains three or four articles. Gate 10 passes because the total of thirteen articles is appropriate for a medium-length spiral series. Gate 11 passes because two aha-moment articles are present (1.2 and 3.2). Gate 12 passes because the coherence notes are substantive.
+The deliverable above passes the outline quality checklist on the following bases. Gate 1 passes because the series argument is falsifiable and the individual article arguments collectively support it. Gate 2 passes because every article title states a claim rather than a topic. Gate 3 passes because the phase names reflect cognitive transitions (Rebuilding, Mastering, Revelation, Realities). Gate 4 passes because the series structure diverges from the official docs' feature-tour structure, with the divergence made explicit in the overview. Gate 5 passes because the article dependency order is verified — each article's prerequisites are covered by earlier articles. Gate 6 passes because overlapping revisits (the ChatClient-facade concept introduced in 1.2 and revisited in 2.1 and 3.2) are spiral revisits with distinct aspects. Gate 7 passes because the reference links are specific and annotated. Gate 8 passes because each prompt contains the nine required pieces, including the visual explanation plan and the depth/completeness contract. Gate 9 passes because each phase contains three or four articles. Gate 10 passes because the total of thirteen articles is appropriate for a medium-length spiral series. Gate 11 passes because two aha-moment articles are present (1.2 and 3.2). Gate 12 passes because the coherence notes are substantive.
 
 A planner running Phase 4 on a real series would produce a similar validation summary, grouping any gate failures by the phase they need to return to and re-running the loop until the outline passes cleanly.
 

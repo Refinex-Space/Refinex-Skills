@@ -20,6 +20,8 @@ Blog posts have more structural freedom than ADRs or design docs, but the follow
 
 4. **Body.** The body proves the claim from the hook. Its structure depends on the voice — a Production War Story body will be chronological, a Design Tribunal body will be criterion-by-criterion, a Mechanism Autopsy body will follow the call chain. Whatever the structure, every section in the body exists to advance the central claim; sections that do not advance the claim are cut.
 
+If the central claim depends on a mechanism, branching flow, lifecycle, or structural relationship that is hard to keep in working memory, the body includes a diagram chosen with `diagram-selection-guide.md`. A strong blog post is allowed to use one or two hard-working diagrams; it is not restricted to prose-only just because it is "a blog post".
+
 5. **Concrete ending move.** The last paragraph is not a summary. It is one of four moves (pick one, not several):
    - **A mental model** — "here is the picture you should carry away, so you can predict behavior of similar systems."
    - **A structural lesson** — "here is what we would do differently, and what generalizes beyond this specific case."
@@ -44,15 +46,16 @@ Mixing voices in a single blog post is the most common failure mode for experien
 
 ## Length
 
-There is no minimum. There is a practical maximum of about 3000 words for a single blog post; beyond that, the reader's attention falls off a cliff, and the piece should either be split or republished as a whitepaper.
+There is no minimum. There is no fixed target length either. Many strong technical blog posts land around 1500 to 3000 words, but mechanism-heavy or decision-heavy posts often need 2500 to 4000+ words to prove the claim honestly. Do not compress a piece just to make it feel blog-sized; split it only when it has more than one central idea.
 
-The right length is "exactly long enough to prove the central claim, and no longer". Strong posts are often 1200–2000 words. Posts that feel like they are reaching for length almost always benefit from aggressive cutting.
+The right length is "exactly long enough to prove the central claim, and no shorter". A post that feels padded should be cut. A post that still has unpaid technical obligations should be deepened, even if it is already long.
 
 ## Gates specific to blog posts (run in addition to the main checklist)
 
 - [ ] **One-central-idea test.** Can the central idea be stated in a single tweet-length sentence? If not, the post is trying to do too much.
 - [ ] **Hook test.** If you read only the first paragraph, do you know what the post will claim and why you should care? If not, rewrite the hook.
 - [ ] **30-second test.** A reader who skims only the title, hook, and section headings should still know what the post's argument is. Do the headings carry meaning, or are they generic ("Introduction", "Background", "Conclusion")? Generic headings fail the test.
+- [ ] **Visual test.** If the post's load-bearing mechanism would be clearer as a diagram, the post includes the right Mermaid diagram and the prose explicitly interprets it.
 - [ ] **Ending move test.** Does the last paragraph do one of the four moves? If it is a summary, rewrite it.
 - [ ] **Senior-engineer test, per section.** Every section teaches something the target reader could not get from the official docs in five minutes. If a section fails this test, deepen it or delete it.
 - [ ] **No marketing vocabulary.** Search for "powerful", "elegant", "seamless", "robust", "cutting-edge". Every hit is a candidate for deletion.

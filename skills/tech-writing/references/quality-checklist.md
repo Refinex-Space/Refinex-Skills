@@ -13,6 +13,7 @@ Before anything else, look at the Anchor Sheet from Phase 1. If it is thin — i
 - [ ] Central argument is one falsifiable sentence, not a topic.
 - [ ] At least three concrete numbers are present in the anchors (or the piece is explicitly non-quantitative and the user has confirmed this).
 - [ ] At least one rejected alternative is named with a specific reason, for any piece that makes a design recommendation.
+- [ ] Any mechanism-, topology-, state-, or timeline-heavy section has an explicit visual plan when prose alone would overload the reader.
 - [ ] Reader audit names one reader type, not two.
 - [ ] Voice is named and matches the document type.
 
@@ -82,6 +83,7 @@ Any claim about how something fails must describe a causal chain, not a category
 
 - [ ] No sentences of the form "this can fail under load", "this is prone to errors", "this has performance issues". These are category-labels, not mechanisms.
 - [ ] Every failure claim names: the triggering condition, the internal behavior that causes the failure, and the observable symptom.
+- [ ] If the mechanism spans multiple actors, time steps, states, or branches, the draft uses the best-fit Mermaid diagram rather than forcing prose to carry the full load alone.
 - [ ] Where a mechanism is not known, the piece says "we did not determine the root cause" rather than guessing. Honesty beats speculation.
 
 **Fix pattern.** For every failure claim, ask "could I draw this as a flowchart?" If not, it is not a mechanism yet. Either dig deeper or soften the claim.
@@ -104,6 +106,7 @@ For every section of the piece, apply this test: **would a senior engineer in th
 
 - [ ] Every section passes. Sections that do not pass are either deepened (add the insight that makes them worth reading) or deleted.
 - [ ] The test is applied *per section*, not to the piece as a whole. A piece can have a great central insight and still waste the reader's time with padding sections; those sections must go.
+- [ ] Every load-bearing item from the Anchor Sheet is discharged in the body. If the opening promises three mechanisms, the body actually proves three mechanisms.
 - [ ] There is no third option between "deepen" and "cut". "Leave it in as background" is not permitted — background that does not teach is padding.
 
 This is the sharpest gate in the checklist. It will cut a lot. Let it.
@@ -155,6 +158,7 @@ Read the last paragraph of the piece. Now read only the opening and the last par
 
 - [ ] The last paragraph pays off the opening's claim. The reader who only read the opening and the ending gets a complete, if compressed, argument.
 - [ ] The last paragraph does not restate the opening verbatim (that is a concession that the middle taught nothing). It states the opening's claim *with the weight of what the middle proved*.
+- [ ] No load-bearing promise from the opening or header is left unresolved by the time the ending arrives.
 - [ ] The last paragraph is not a recap. Recaps are for readers who stopped paying attention; pieces that earn the reader's attention do not need them.
 
 A piece that fails this gate usually has a strong opening, a strong middle, and a weak ending — the writer ran out of steam. The fix is to write a real ending that takes responsibility for the argument.
@@ -181,7 +185,7 @@ Open the reference file for the document type and run its specific gates at the 
 2. Go through Gates 0–12 in order. For each one, mark PASS or FAIL with a one-line note on why.
 3. Fix all FAILs, starting with Gate 0 (if it failed, stop and go back to Phase 1) and working down. Low-numbered gates often implicate higher-numbered ones; fixing a weak Gate 1 title sometimes forces a rewrite that fixes Gate 3 for free.
 4. Re-run the full loop on the fixed draft. If all gates pass, deliver. If any gate newly fails, fix and re-run.
-5. Stop after the draft has passed the full loop once cleanly. Do not over-polish — the gates are calibrated for the point at which further revision stops helping.
+5. Stop after the draft has passed the full loop once cleanly. Do not over-polish — the gates are calibrated for the point at which further revision stops helping. Length is not a stopping condition; gate completion is.
 
 A strong draft passes the loop on the second or third pass. A weak draft reveals the weakness during the first pass and triggers a return to Phase 1, which is expensive but correct.
 
