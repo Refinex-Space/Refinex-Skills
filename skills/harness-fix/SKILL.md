@@ -21,6 +21,20 @@ Diagnose bugs, repair regressions, remediate incidents, and investigate flaky pa
 
 This is a **low-medium freedom** skill. The seven-step diagnosis protocol is rigid (preflight → bug brief → reproduce → isolate root cause → minimal fix → verify → archive) and must be followed in order. The agent has latitude in investigation techniques — choosing which debugging tools to apply, how to narrow the search space, what kind of reproduction test to write — but the sequence of phases is non-negotiable, and skipping reproduction or root cause isolation is never acceptable.
 
+**Announce at start:** `I'm using harness-fix to reproduce, isolate, and repair this failure.`
+
+---
+
+## Iron laws
+
+```text
+NO FIX WITHOUT REPRODUCTION EVIDENCE
+NO ROOT CAUSE CLAIM WITHOUT EXPLICIT EVIDENCE
+THREE FAILED FIX ATTEMPTS MEAN STOP AND REPLAN
+```
+
+If any of these rules is violated, the workflow has already degraded into guesswork.
+
 ---
 
 ## Why this skill exists
@@ -233,6 +247,20 @@ The reference file covers each technique in full. Here's the essential logic:
 
 - **Five Whys**: ask "why" iteratively to trace the causal chain from symptom to root cause. Stop when you reach a cause that's directly actionable.
 
+### 4.3 Retry discipline
+
+Track hypothesis cycles and fix attempts explicitly.
+
+- After each failed hypothesis or failed fix attempt, record what was tested and what was learned
+- Do not stack speculative edits on top of each other
+- If you reach **three failed fix attempts**, stop implementation work
+
+At that point, do one of these before continuing:
+
+1. re-open root cause analysis from the evidence log
+2. create a revised fix plan with a different strategy
+3. escalate that the issue is likely architectural, cross-cutting, or wrongly scoped
+
 ### 4.5 Document root cause
 
 Update the fix plan with:
@@ -290,7 +318,7 @@ The fix scope guard prevents fix sprawl. Track these metrics during Step 5:
 | Metric              | Threshold         | Action when exceeded                                               |
 | ------------------- | ----------------- | ------------------------------------------------------------------ |
 | Files modified      | ≤ 5               | Stop, replan — the fix may be in the wrong layer                   |
-| Fix attempts        | ≤ 3               | Stop, write hypothesis log, ask user for guidance                  |
+| Fix attempts        | ≤ 3               | Stop, write hypothesis log, treat this as a replanning event       |
 | Unrelated changes   | 0                 | Revert unrelated changes immediately                               |
 | Lines changed (net) | Context-dependent | Larger than expected? Verify you're fixing root cause, not symptom |
 
@@ -299,6 +327,7 @@ If you hit any threshold, stop and reassess:
 1. Re-read the root cause analysis — is it correct?
 2. Is this the right layer to fix? Would a fix upstream or downstream be smaller?
 3. Are you fixing root cause or symptom?
+4. If this is the **third failed attempt**, stop and reframe the issue as an architectural or scoping problem before touching code again
 
 ---
 
@@ -344,6 +373,8 @@ Compare with the baseline from Step 1.3:
 - The previously-failing test that captured the bug must now pass
 - The new regression test must pass
 - Pre-existing failures unrelated to this bug should remain unchanged
+
+Apply `harness-verify` discipline here: the fix is not complete until the reproduction, regression test, and suite results are freshly re-run and inspected.
 
 ### 6.4 Run lint and type checks
 

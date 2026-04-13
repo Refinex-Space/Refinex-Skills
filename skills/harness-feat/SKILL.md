@@ -20,6 +20,8 @@ Implement features, deliver capabilities, and perform structured refactoring wit
 
 This is a **medium-freedom** skill. The five-step workflow is rigid (preflight → plan → implement → verify → archive) and must be followed in order. Within each step, the agent has latitude in HOW it accomplishes the work — choosing implementation strategies, test approaches, and refactoring patterns — but every decision must be recorded in the execution plan.
 
+**Announce at start:** `I'm using harness-feat to deliver this work inside the Harness control plane.`
+
 ---
 
 ## Why this skill exists
@@ -133,6 +135,28 @@ Each implementation step should be 2-5 minutes of focused agent work (aligned wi
 
 If a step seems bigger than that, break it down further. If a step seems trivially small (rename a variable), consider merging it with the next step.
 
+#### Plan quality bar: no placeholders
+
+Execution plans are audit artifacts, not wishful outlines. Do not write:
+
+- `TODO`, `TBD`, `implement later`, or other placeholders
+- vague steps like "handle edge cases" without naming the edge cases
+- "write tests" without naming the test target or verification command
+- alternate planning directories such as `docs/superpowers/plans/`
+
+Keep all plan state in `docs/exec-plans/active/` and `docs/PLANS.md`.
+
+#### Plan detail model
+
+Harness plans must be **decision-complete**, but they remain audit-oriented:
+
+- include exact paths, acceptance criteria, and verification commands
+- name the architectural constraints that matter
+- break work into verifiable steps
+- do **not** inline full implementation code for every step unless the change genuinely requires that precision
+
+The goal is an executable plan without creating a second source of truth that competes with the code.
+
 ### 2.3 Register the plan
 
 Add the plan to `docs/PLANS.md` under "Active Plans":
@@ -157,6 +181,18 @@ The plan is now a versioned artifact. Its creation is separate from its implemen
 ## Step 3 — Incremental Implementation
 
 Execute the plan one step at a time. Resist the urge to batch multiple steps together — incremental progress with verification is slower per-step but faster overall because it catches mistakes early and creates clean rollback points.
+
+### Delegated execution protocol
+
+If implementation is delegated to subagents or worker sessions, the controller keeps ownership of the plan and review loop:
+
+1. Provide the current step text, constraints, and relevant file paths directly
+2. Require the implementer to self-review before reporting completion
+3. Run **spec compliance review first**
+4. Run **code quality review second**
+5. Loop until approved or escalate with evidence
+
+Do not make delegated workers discover the plan on their own from some alternate file tree. The active execution plan remains the only planning source of truth.
 
 ### For each plan step:
 
@@ -256,6 +292,8 @@ Go through each acceptance criterion from the execution plan. For each one:
 - Record the evidence (test output, command result, file state)
 - Mark it as PASS or FAIL in the plan
 - If any criterion fails, go back to Step 3 and add a step to address it
+
+Apply `harness-verify` discipline here: no completion claim is valid until the proving commands have been run in the current turn and their output actually supports the claim.
 
 ### 4.3 Run lint and type checks
 
@@ -439,13 +477,15 @@ These rules prevent well-intentioned automation from producing architectural dam
 
 4. **The execution plan is the source of truth.** If it's not in the plan, it shouldn't be in the code. If you need to do something unplanned, update the plan first.
 
-5. **Respect architectural constraints from AGENTS.md.** Key Patterns in AGENTS.md encode architectural decisions. If your implementation would violate a stated pattern, stop and discuss with the user rather than silently breaking the constraint.
+5. **Delegated review order is fixed.** When using delegated execution, review for spec compliance before reviewing for code quality. Quality review on the wrong spec is wasted work.
 
-6. **Leave the repo in a state where another agent can pick up seamlessly.** This means: all tests pass, the execution plan accurately reflects what was done, the control plane is updated, and there are no uncommitted changes.
+6. **Respect architectural constraints from AGENTS.md.** Key Patterns in AGENTS.md encode architectural decisions. If your implementation would violate a stated pattern, stop and discuss with the user rather than silently breaking the constraint.
 
-7. **Git commits are checkpoints, not afterthoughts.** Each commit implements one plan step and references it. Avoid mega-commits that bundle many steps — they make rollback and understanding impossible.
+7. **Leave the repo in a state where another agent can pick up seamlessly.** This means: all tests pass, the execution plan accurately reflects what was done, the control plane is updated, and there are no uncommitted changes.
 
-8. **Log deviations, don't hide them.** When you deviate from the plan (and you will — plans never survive contact with implementation perfectly), record the deviation BEFORE acting on it. The deviation log is how future agents learn about the real complexity.
+8. **Git commits are checkpoints, not afterthoughts.** Each commit implements one plan step and references it. Avoid mega-commits that bundle many steps — they make rollback and understanding impossible.
+
+9. **Log deviations, don't hide them.** When you deviate from the plan (and you will — plans never survive contact with implementation perfectly), record the deviation BEFORE acting on it. The deviation log is how future agents learn about the real complexity.
 
 ---
 

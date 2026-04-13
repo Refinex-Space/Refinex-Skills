@@ -20,6 +20,8 @@ Detect and repair drift between the Harness Engineering control plane and the ac
 
 This is a **low-freedom** skill. Drift detection must be systematic and exhaustive. Remediation must be conservative and mechanically verifiable. Follow the four phases below in order. Do not skip phases. Do not auto-fix anything until Phase 2 (Semantic Drift Audit) is complete and all findings are triaged.
 
+**Announce at start:** `I'm using harness-garden to audit and repair control plane drift.`
+
 ---
 
 ## Why this skill exists

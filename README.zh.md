@@ -1,7 +1,7 @@
 # Refinex-Skills
 
 基于 MIT License 的个人技能仓库，面向 agent-first 软件开发与技术交付。
-当前包含三组互补能力：
+当前包含三组互补能力，以及一组内部验证资产：
 
 - Harness Engineering 套件：控制面初始化、漂移养护、功能交付、故障修复
 - Office Skills 套件：DOCX、PDF、PPTX、XLSX 文档交付
@@ -13,12 +13,14 @@
 
 ### Harness Engineering 套件
 
-四个技能已全部完成：
+Harness 家族现由四个核心工作流技能与两个横切技能构成：
 
 - `harness-bootstrap`：初始化或补齐仓库控制面
 - `harness-garden`：审计并修复控制面漂移
 - `harness-feat`：在执行计划下交付新功能与结构化重构
 - `harness-fix`：基于根因证据修复 bug、回归与故障
+- `harness-using`：为仓库任务路由到正确的 Harness 工作流
+- `harness-verify`：在宣称完成前强制要求新鲜验证证据
 
 文档：[docs/harness-suite.zh.md](docs/harness-suite.zh.md)
 
@@ -48,10 +50,12 @@
 ## 推荐 Harness 流程
 
 ```text
-$harness-bootstrap  -> 建立控制面
-$harness-garden     -> 保持控制面真实
+$harness-using      -> 先路由任务
+$harness-bootstrap  -> 缺控制面时先建基线
+$harness-garden     -> 怀疑漂移时先恢复真实性
 $harness-feat       -> 安全交付新能力
 $harness-fix        -> 证据驱动修复故障
+$harness-verify     -> 宣称成功前做最终验证
 ```
 
 ---
@@ -72,6 +76,8 @@ Refinex-Skills/
 │   ├── harness-garden/
 │   ├── harness-feat/
 │   ├── harness-fix/
+│   ├── harness-using/
+│   ├── harness-verify/
 │   ├── office-docx/
 │   ├── office-pdf/
 │   ├── office-pptx/
@@ -79,6 +85,9 @@ Refinex-Skills/
 │   ├── tech-planner/
 │   ├── tech-writing/
 │   └── tech-rewrite/
+├── .codex/
+│   └── INSTALL.md
+├── tests/
 ├── LICENSE
 ├── README.md
 └── README.zh.md
@@ -99,6 +108,20 @@ Office Skills：
 Write Skills：
 - English: [docs/write-suite.en.md](docs/write-suite.en.md)
 - 中文: [docs/write-suite.zh.md](docs/write-suite.zh.md)
+
+## 验证
+
+仓库现在包含：
+
+- Harness skill 规则的静态/内容测试
+- `check_harness.py` 的 validator fixture 集成测试
+- 可选启用的 Codex live trigger 测试
+
+本地完整测试入口：
+
+```bash
+bash tests/run-all.sh
+```
 
 ---
 

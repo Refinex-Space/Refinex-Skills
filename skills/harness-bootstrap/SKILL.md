@@ -19,6 +19,8 @@ Initialize the Harness Engineering control plane for a repository so that coding
 
 This is a **low-freedom** skill. Harness initialization must be precise, deterministic, and mechanically verifiable. Follow the three phases below in order. Do not skip phases. Do not start creating files until Phase 1 (Reconnaissance) is complete.
 
+**Announce at start:** `I'm using harness-bootstrap to establish the repository control plane.`
+
 ---
 
 ## Why this skill exists

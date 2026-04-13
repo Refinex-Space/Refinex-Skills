@@ -1,6 +1,6 @@
 ## Harness Engineering 套件
 
-Harness Engineering 套件是一组面向 agent-first 软件开发的四技能控制面能力。它把随意编码转成可治理闭环：先做 preflight，再做版本化执行计划，再用验证证据收口，最后归档形成可交接资产。
+Harness Engineering 套件是一组面向 agent-first 软件开发的仓库控制面能力。稳定内核仍然是四个工作流技能，但现在补上了两个横切技能，分别负责任务路由与完成验证。它把随意编码转成可治理闭环：先做 preflight，再做版本化执行计划，再用验证证据收口，最后归档形成可交接资产。
 
 这套能力面向真实仓库长期运行场景，目标是在持续交付代码的同时，保持架构一致性、可审计性和跨会话连续性。
 
@@ -19,7 +19,7 @@ Harness 套件把这些风险拆解为四类职责：初始化、养护、建设
 
 ---
 
-## 四个技能
+## 核心四件套 + 两个横切技能
 
 | Skill | 核心使命 | 典型触发 |
 | --- | --- | --- |
@@ -27,6 +27,8 @@ Harness 套件把这些风险拆解为四类职责：初始化、养护、建设
 | `harness-garden` | 审计并修复控制面漂移 | 文档陈旧、链接失效、命令失效 |
 | `harness-feat` | 在控制面内交付新功能与结构化重构 | 新能力开发、计划内增强 |
 | `harness-fix` | 在控制面内诊断并修复 bug/回归/故障 | 测试失败、线上问题、flaky 路径 |
+| `harness-using` | 为仓库任务路由到正确的 Harness 工作流 | 会话开始、工作流归属不明确 |
+| `harness-verify` | 在宣称完成前强制要求新鲜证据 | “完成了/修好了/通过了/ready” 这类时刻 |
 
 ---
 
@@ -34,18 +36,22 @@ Harness 套件把这些风险拆解为四类职责：初始化、养护、建设
 
 把它看作同一个操作模型：
 
-1. `harness-bootstrap` 先建立控制面基线。
-2. `harness-garden` 持续保证控制面描述仍然真实。
-3. `harness-feat` 在控制面内做增量建设。
-4. `harness-fix` 在控制面内做证据驱动修复。
+1. `harness-using` 先判断任务应该进入哪条 Harness 流程。
+2. `harness-bootstrap` 在缺基线时先建立控制面。
+3. `harness-garden` 持续保证控制面描述仍然真实。
+4. `harness-feat` 在控制面内做增量建设。
+5. `harness-fix` 在控制面内做证据驱动修复。
+6. `harness-verify` 在结束前拦截不具备证据的成功宣称。
 
 推荐生命周期：
 
 ```text
+$harness-using      -> 先路由任务
 $harness-bootstrap  -> 建立控制面
 $harness-garden     -> 保持控制面真实
 $harness-feat       -> 安全交付新能力
 $harness-fix        -> 基于根因证据修复故障
+$harness-verify     -> 在收口前验证证据
 ```
 
 ---
@@ -61,6 +67,8 @@ $harness-fix        -> 基于根因证据修复故障
 - 漂移跟踪与生成状态: `docs/generated/harness-manifest.md`
 
 统一语义的价值在于：不同技能之间切换时不需要重新建立上下文。
+
+其中四件套 (`bootstrap`、`garden`、`feat`、`fix`) 仍然负责生命周期主流程；`harness-using` 与 `harness-verify` 负责横切约束，不争夺主流程所有权。
 
 ---
 

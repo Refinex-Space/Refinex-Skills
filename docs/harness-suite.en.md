@@ -1,6 +1,6 @@
 ## Harness Engineering Suite
 
-The Harness Engineering Suite is a four-skill control plane for agent-first software development inside real repositories. It turns ad-hoc coding into a governed loop with explicit preflight checks, versioned execution plans, verification evidence, and archive-ready handoff artifacts.
+The Harness Engineering Suite is a repository control plane for agent-first software development inside real repositories. Its stable core is four workflow skills, now reinforced by two cross-cutting skills for routing and completion verification. Together they turn ad-hoc coding into a governed loop with explicit preflight checks, versioned execution plans, verification evidence, and archive-ready handoff artifacts.
 
 This suite is designed for teams that want agents to deliver production code continuously without losing architectural coherence, auditability, or cross-session continuity.
 
@@ -19,7 +19,7 @@ The Harness suite addresses these risks with four focused skills that map to the
 
 ---
 
-## The Four Skills
+## Core Four + Cross-Cutting Two
 
 | Skill | Primary mission | Typical trigger |
 | --- | --- | --- |
@@ -27,6 +27,8 @@ The Harness suite addresses these risks with four focused skills that map to the
 | `harness-garden` | Audit and repair control plane drift | Stale docs, broken links, outdated commands |
 | `harness-feat` | Deliver new features and structured refactors | New capability, planned enhancement |
 | `harness-fix` | Diagnose and repair bugs, regressions, incidents | Failing tests, production bug, flaky path |
+| `harness-using` | Route repository work into the correct Harness workflow | Start of repo task, ambiguous workflow ownership |
+| `harness-verify` | Enforce fresh evidence before success claims | "done", "fixed", "passing", "ready" moments |
 
 ---
 
@@ -34,18 +36,22 @@ The Harness suite addresses these risks with four focused skills that map to the
 
 Think of the suite as one operating model:
 
-1. `harness-bootstrap` creates the baseline control plane.
-2. `harness-garden` keeps that baseline truthful over time.
-3. `harness-feat` executes planned feature delivery inside the control plane.
-4. `harness-fix` executes evidence-driven diagnosis and minimal repair inside the control plane.
+1. `harness-using` routes the task.
+2. `harness-bootstrap` creates the baseline control plane when needed.
+3. `harness-garden` keeps that baseline truthful over time.
+4. `harness-feat` executes planned feature delivery inside the control plane.
+5. `harness-fix` executes evidence-driven diagnosis and minimal repair inside the control plane.
+6. `harness-verify` gates completion claims with fresh evidence.
 
 Recommended lifecycle:
 
 ```text
+$harness-using      -> route the task
 $harness-bootstrap  -> establish control plane
 $harness-garden     -> keep control plane accurate
 $harness-feat       -> build new capabilities safely
 $harness-fix        -> repair failures with root-cause evidence
+$harness-verify     -> validate claims before handoff
 ```
 
 ---
@@ -61,6 +67,8 @@ All four skills use shared terminology and artifacts:
 - Drift tracking and generated state: `docs/generated/harness-manifest.md`
 
 This shared vocabulary lets teams switch between skills without translation cost.
+
+The core four (`bootstrap`, `garden`, `feat`, `fix`) remain the primary lifecycle owners. `harness-using` and `harness-verify` are horizontal controls that improve routing discipline and honesty of completion claims without stealing ownership from the core workflow.
 
 ---
 

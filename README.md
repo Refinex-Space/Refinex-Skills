@@ -1,6 +1,6 @@
 # Refinex-Skills
 
-MIT-licensed personal skill suite for agent-first software development and technical delivery. The repository currently includes three complementary suites:
+MIT-licensed personal skill suite for agent-first software development and technical delivery. The repository currently includes three complementary suites plus internal verification assets:
 
 - Harness Engineering Suite: control plane initialization, drift maintenance, feature delivery, and bug remediation
 - Office Skills Suite: high-quality document deliverables across DOCX, PDF, PPTX, and XLSX
@@ -12,12 +12,14 @@ MIT-licensed personal skill suite for agent-first software development and techn
 
 ### Harness Engineering Suite
 
-The full four-skill Harness lifecycle is complete:
+The Harness family now consists of four core workflow skills plus two cross-cutting skills:
 
 - `harness-bootstrap`: bootstrap or complete repository control plane
 - `harness-garden`: audit and repair control plane drift
 - `harness-feat`: deliver new features and structured refactors with execution plans
 - `harness-fix`: diagnose and repair bugs/regressions with root-cause evidence
+- `harness-using`: route repository work into the correct Harness workflow
+- `harness-verify`: require fresh evidence before completion claims
 
 Docs: [docs/harness-suite.en.md](docs/harness-suite.en.md)
 
@@ -47,10 +49,12 @@ Docs: [docs/write-suite.en.md](docs/write-suite.en.md)
 ## Recommended Harness Flow
 
 ```text
-$harness-bootstrap  -> establish control plane
-$harness-garden     -> keep control plane truthful
+$harness-using      -> route the task
+$harness-bootstrap  -> establish control plane when missing
+$harness-garden     -> restore truth when drift is suspected
 $harness-feat       -> build new capabilities safely
 $harness-fix        -> repair failures with evidence-driven diagnosis
+$harness-verify     -> prove completion before claiming success
 ```
 
 ---
@@ -71,6 +75,8 @@ Refinex-Skills/
 │   ├── harness-garden/
 │   ├── harness-feat/
 │   ├── harness-fix/
+│   ├── harness-using/
+│   ├── harness-verify/
 │   ├── office-docx/
 │   ├── office-pdf/
 │   ├── office-pptx/
@@ -78,6 +84,9 @@ Refinex-Skills/
 │   ├── tech-planner/
 │   ├── tech-writing/
 │   └── tech-rewrite/
+├── .codex/
+│   └── INSTALL.md
+├── tests/
 ├── LICENSE
 ├── README.md
 └── README.zh.md
@@ -98,6 +107,20 @@ Office Skills:
 Write Skills:
 - English: [docs/write-suite.en.md](docs/write-suite.en.md)
 - 中文: [docs/write-suite.zh.md](docs/write-suite.zh.md)
+
+## Validation
+
+The repository now includes:
+
+- static/content tests for Harness skill rules
+- validator integration fixtures for `check_harness.py`
+- opt-in live Codex trigger tests
+
+Run the full local test entrypoint with:
+
+```bash
+bash tests/run-all.sh
+```
 
 ---
 
