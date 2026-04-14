@@ -1,6 +1,6 @@
 ## Harness Engineering 套件
 
-Harness Engineering 套件是一组面向 agent-first 软件开发的仓库控制面能力。稳定内核仍然是四个工作流技能，但现在补上了两个横切技能，分别负责任务路由与完成验证。它把随意编码转成可治理闭环：先做 preflight，再做版本化执行计划，再用验证证据收口，最后归档形成可交接资产。
+Harness Engineering 套件是一组面向 agent-first 软件开发的仓库控制面能力。稳定内核仍然是四个工作流技能，两个横切技能分别负责任务路由与完成验证，并可叠加领域专长技能（例如 `harness-frontend`）处理高要求的实现域。它把随意编码转成可治理闭环：先做 preflight，再做版本化执行计划，再用验证证据收口，最后归档形成可交接资产。
 
 这套能力面向真实仓库长期运行场景，目标是在持续交付代码的同时，保持架构一致性、可审计性和跨会话连续性。
 
@@ -19,7 +19,7 @@ Harness 套件把这些风险拆解为四类职责：初始化、养护、建设
 
 ---
 
-## 核心四件套 + 两个横切技能
+## 核心四件套 + 两个横切技能 + 领域专长
 
 | Skill | 核心使命 | 典型触发 |
 | --- | --- | --- |
@@ -29,6 +29,7 @@ Harness 套件把这些风险拆解为四类职责：初始化、养护、建设
 | `harness-fix` | 在控制面内诊断并修复 bug/回归/故障 | 测试失败、线上问题、flaky 路径 |
 | `harness-using` | 为仓库任务路由到正确的 Harness 工作流 | 会话开始、工作流归属不明确 |
 | `harness-verify` | 在宣称完成前强制要求新鲜证据 | “完成了/修好了/通过了/ready” 这类时刻 |
+| `harness-frontend` | 为前端/界面任务提供发现、设计论证、反 slop 约束与界面实现规则 | 落地页、控制台、表单、Dashboard、前端重设计 |
 
 ---
 
@@ -41,7 +42,8 @@ Harness 套件把这些风险拆解为四类职责：初始化、养护、建设
 3. `harness-garden` 持续保证控制面描述仍然真实。
 4. `harness-feat` 在控制面内做增量建设。
 5. `harness-fix` 在控制面内做证据驱动修复。
-6. `harness-verify` 在结束前拦截不具备证据的成功宣称。
+6. `harness-frontend` 在需要高质量用户界面时作为领域专长叠加到 `harness-feat` 或 `harness-fix` 内部。
+7. `harness-verify` 在结束前拦截不具备证据的成功宣称。
 
 推荐生命周期：
 
@@ -51,6 +53,7 @@ $harness-bootstrap  -> 建立控制面
 $harness-garden     -> 保持控制面真实
 $harness-feat       -> 安全交付新能力
 $harness-fix        -> 基于根因证据修复故障
+$harness-frontend   -> 在 feat/fix 内处理前端设计与实现约束
 $harness-verify     -> 在收口前验证证据
 ```
 
@@ -68,7 +71,7 @@ $harness-verify     -> 在收口前验证证据
 
 统一语义的价值在于：不同技能之间切换时不需要重新建立上下文。
 
-其中四件套 (`bootstrap`、`garden`、`feat`、`fix`) 仍然负责生命周期主流程；`harness-using` 与 `harness-verify` 负责横切约束，不争夺主流程所有权。
+其中四件套 (`bootstrap`、`garden`、`feat`、`fix`) 仍然负责生命周期主流程；`harness-using` 与 `harness-verify` 负责横切约束；`harness-frontend` 这类领域专长技能只提供实现域内的深度方法，不争夺主流程所有权。
 
 ---
 
@@ -159,6 +162,26 @@ $harness-verify     -> 在收口前验证证据
 - 假设与证据链。
 - 回归测试保护。
 
+### 5. harness-frontend
+
+定位：
+- 作为领域专长技能，为用户可见界面提供前端发现、设计论证、构图约束、反 slop 审核和实现规则。
+
+核心行为：
+- 先识别 surface type，再做有限选项式 elicitation。
+- 在编码前写出 Working Model（视觉 / 内容 / 交互）。
+- 按 landing / app / dashboard / game 等 rule pack 落地。
+- 用设计 litmus 检查结果，但不替代技术验收。
+
+适用场景：
+- 新建或重构前端界面。
+- 落地页、Dashboard、后台、表单、onboarding、交互式 artifact。
+
+组合方式：
+- 仓库任务中先由 `harness-feat` 或 `harness-fix` 持有流程。
+- 再引入 `harness-frontend` 提供前端域决策与实现约束。
+- 最后由 `harness-verify` 用新鲜命令完成真实收口。
+
 ---
 
 ## 选择指南
@@ -176,6 +199,7 @@ $harness-verify     -> 在收口前验证证据
 
 - 先缺失后交付：先 `harness-bootstrap`，再进入工作技能。
 - 先漂移后交付：先 `harness-garden`，再 `harness-feat` 或 `harness-fix`。
+- 若任务是用户可见界面：在 `harness-feat` / `harness-fix` 内叠加 `harness-frontend`，最后仍由 `harness-verify` 收口。
 
 ---
 

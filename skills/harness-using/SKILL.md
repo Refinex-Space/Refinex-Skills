@@ -106,6 +106,7 @@ Example:
 
 - "Implement Stripe subscription retry flow" -> `harness-feat` first, then Stripe-specific guidance
 - "Fix flaky PDF export" -> `harness-fix` first, then PDF-specific guidance
+- "Build a landing page, redesign onboarding, or create an admin dashboard" -> `harness-feat` first, then `harness-frontend`, then `harness-verify`
 
 ---
 

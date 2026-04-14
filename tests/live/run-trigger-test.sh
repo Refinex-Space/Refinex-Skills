@@ -4,6 +4,7 @@ set -euo pipefail
 
 EXPECTED_SKILL="${1:?expected skill required}"
 PROMPT_FILE="${2:?prompt file required}"
+TARGET_DIR="${3:-}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
@@ -31,11 +32,25 @@ cleanup() {
   if [[ "${CREATED_LINK}" -eq 1 && -L "${LINK_PATH}" ]]; then
     rm -f "${LINK_PATH}"
   fi
+  if [[ -n "${TEMP_WORK_DIR:-}" && -d "${TEMP_WORK_DIR}" ]]; then
+    rm -rf "${TEMP_WORK_DIR}"
+  fi
 }
 
 trap cleanup EXIT
 
-WORK_DIR="$(mktemp -d)"
+WORK_DIR="${TARGET_DIR}"
+TEMP_WORK_DIR=""
+if [[ -n "${WORK_DIR}" ]]; then
+  if [[ ! -d "${WORK_DIR}" ]]; then
+    echo "SKIP: 工作目录不存在: ${WORK_DIR}"
+    exit 2
+  fi
+else
+  TEMP_WORK_DIR="$(mktemp -d)"
+  WORK_DIR="${TEMP_WORK_DIR}"
+fi
+
 LAST_MESSAGE="$(mktemp)"
 STDERR_LOG="$(mktemp)"
 

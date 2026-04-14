@@ -1,6 +1,6 @@
 ## Harness Engineering Suite
 
-The Harness Engineering Suite is a repository control plane for agent-first software development inside real repositories. Its stable core is four workflow skills, now reinforced by two cross-cutting skills for routing and completion verification. Together they turn ad-hoc coding into a governed loop with explicit preflight checks, versioned execution plans, verification evidence, and archive-ready handoff artifacts.
+The Harness Engineering Suite is a repository control plane for agent-first software development inside real repositories. Its stable core is four workflow skills, reinforced by two cross-cutting skills for routing and completion verification, and extendable with domain-specialist skills such as `harness-frontend` for high-quality UI work. Together they turn ad-hoc coding into a governed loop with explicit preflight checks, versioned execution plans, verification evidence, and archive-ready handoff artifacts.
 
 This suite is designed for teams that want agents to deliver production code continuously without losing architectural coherence, auditability, or cross-session continuity.
 
@@ -19,7 +19,7 @@ The Harness suite addresses these risks with four focused skills that map to the
 
 ---
 
-## Core Four + Cross-Cutting Two
+## Core Four + Cross-Cutting Two + Domain Specialists
 
 | Skill | Primary mission | Typical trigger |
 | --- | --- | --- |
@@ -29,6 +29,7 @@ The Harness suite addresses these risks with four focused skills that map to the
 | `harness-fix` | Diagnose and repair bugs, regressions, incidents | Failing tests, production bug, flaky path |
 | `harness-using` | Route repository work into the correct Harness workflow | Start of repo task, ambiguous workflow ownership |
 | `harness-verify` | Enforce fresh evidence before success claims | "done", "fixed", "passing", "ready" moments |
+| `harness-frontend` | Provide frontend discovery, design thesis, anti-slop constraints, and UI implementation rules | Landing pages, dashboards, forms, admin tools, frontend redesigns |
 
 ---
 
@@ -41,7 +42,8 @@ Think of the suite as one operating model:
 3. `harness-garden` keeps that baseline truthful over time.
 4. `harness-feat` executes planned feature delivery inside the control plane.
 5. `harness-fix` executes evidence-driven diagnosis and minimal repair inside the control plane.
-6. `harness-verify` gates completion claims with fresh evidence.
+6. `harness-frontend` can be layered into `harness-feat` or `harness-fix` when the task includes user-facing interface work.
+7. `harness-verify` gates completion claims with fresh evidence.
 
 Recommended lifecycle:
 
@@ -51,6 +53,7 @@ $harness-bootstrap  -> establish control plane
 $harness-garden     -> keep control plane accurate
 $harness-feat       -> build new capabilities safely
 $harness-fix        -> repair failures with root-cause evidence
+$harness-frontend   -> apply frontend-specific design and implementation discipline
 $harness-verify     -> validate claims before handoff
 ```
 
@@ -68,7 +71,7 @@ All four skills use shared terminology and artifacts:
 
 This shared vocabulary lets teams switch between skills without translation cost.
 
-The core four (`bootstrap`, `garden`, `feat`, `fix`) remain the primary lifecycle owners. `harness-using` and `harness-verify` are horizontal controls that improve routing discipline and honesty of completion claims without stealing ownership from the core workflow.
+The core four (`bootstrap`, `garden`, `feat`, `fix`) remain the primary lifecycle owners. `harness-using` and `harness-verify` are horizontal controls that improve routing discipline and honesty of completion claims. Domain specialists such as `harness-frontend` add deep implementation guidance without taking lifecycle ownership away from the primary workflow.
 
 ---
 
@@ -159,6 +162,26 @@ Outputs:
 - Hypothesis and evidence trail.
 - Regression test coverage.
 
+### 5. harness-frontend
+
+Purpose:
+- Act as a domain specialist for user-facing interfaces, providing frontend discovery, design reasoning, anti-slop constraints, and surface-specific implementation rules.
+
+Core behavior:
+- Diagnose the surface type, then run a short options-based elicitation round.
+- Write a Working Model (visual / content / interaction) before coding.
+- Apply the correct rule pack for landing / app / dashboard / game UI work.
+- Run design litmus checks without replacing technical acceptance.
+
+Use when:
+- A repository task includes building or redesigning UI.
+- The work concerns landing pages, dashboards, admin tools, forms, onboarding, or interactive frontend artifacts.
+
+Composition rule:
+- Let `harness-feat` or `harness-fix` keep lifecycle ownership in repository work.
+- Bring in `harness-frontend` for frontend-specific decision-making and build constraints.
+- Finish through `harness-verify` with fresh technical evidence.
+
 ---
 
 ## Decision Guide
@@ -176,6 +199,7 @@ If multiple situations apply, sequence them:
 
 - Missing harness first: run `harness-bootstrap`, then the work skill.
 - Drift suspected first: run `harness-garden`, then `harness-feat` or `harness-fix`.
+- User-facing interface work: run `harness-frontend` inside `harness-feat` / `harness-fix`, then close with `harness-verify`.
 
 ---
 
