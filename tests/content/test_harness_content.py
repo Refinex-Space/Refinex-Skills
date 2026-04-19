@@ -31,6 +31,11 @@ class HarnessContentTests(unittest.TestCase):
         self.assertIn("NO COMPLETION CLAIM WITHOUT FRESH VERIFICATION EVIDENCE", content)
         self.assertIn("the command that proves the claim", content)
 
+    def test_harness_using_surfaces_ambiguity_before_routing(self) -> None:
+        content = read_text("skills/harness-using/SKILL.md")
+        self.assertIn("do not pick silently", content)
+        self.assertIn("material assumptions", content)
+
     def test_harness_feat_forbids_placeholder_plans(self) -> None:
         content = read_text("skills/harness-feat/SKILL.md")
         self.assertIn("Plan quality bar: no placeholders", content)
@@ -43,11 +48,27 @@ class HarnessContentTests(unittest.TestCase):
         quality_pos = content.index("code quality review second")
         self.assertLess(spec_pos, quality_pos)
 
+    def test_harness_feat_absorbs_behavioral_guardrails(self) -> None:
+        content = read_text("skills/harness-feat/SKILL.md")
+        self.assertIn("Behavioral guardrails", content)
+        self.assertIn("Assumption ledger", content)
+        self.assertIn("Surgical diff discipline", content)
+
     def test_harness_fix_contains_attempt_stop_rule(self) -> None:
         content = read_text("skills/harness-fix/SKILL.md")
         self.assertIn("NO FIX WITHOUT REPRODUCTION EVIDENCE", content)
         self.assertIn("THREE FAILED FIX ATTEMPTS MEAN STOP AND REPLAN", content)
         self.assertIn("three failed fix attempts", content.lower())
+
+    def test_harness_fix_requires_falsifiable_and_surgical_repairs(self) -> None:
+        content = read_text("skills/harness-fix/SKILL.md")
+        self.assertIn("falsifiable hypothesis", content)
+        self.assertIn("every changed line should trace directly to the root cause or the regression proof", content)
+
+    def test_harness_verify_requires_claim_evidence_alignment(self) -> None:
+        content = read_text("skills/harness-verify/SKILL.md")
+        self.assertIn("Claim-evidence alignment", content)
+        self.assertIn("The proving command must actually prove the claim being made.", content)
 
     def test_suite_docs_and_readme_mention_new_skills(self) -> None:
         targets = [
@@ -61,6 +82,10 @@ class HarnessContentTests(unittest.TestCase):
             with self.subTest(target=target):
                 self.assertIn("harness-using", content)
                 self.assertIn("harness-verify", content)
+                self.assertTrue(
+                    "behavioral" in content.lower() or "行为纪律" in content,
+                    msg=f"expected behavioral discipline mention in {target}",
+                )
 
     def test_codex_install_doc_exists(self) -> None:
         content = read_text(".codex/INSTALL.md")

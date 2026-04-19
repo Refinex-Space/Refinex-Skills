@@ -22,6 +22,8 @@ Harness 家族现由四个核心工作流技能与两个横切技能构成：
 - `harness-using`：为仓库任务路由到正确的 Harness 工作流
 - `harness-verify`：在宣称完成前强制要求新鲜验证证据
 
+套件还内嵌了一层行为纪律：显式管理假设、在设计阶段做简化检查、保持手术式 diff、以及让验证证据与结论严格同域。这些约束被吸收到 Harness 流程内部，而不是再额外发布一套并行 skill。
+
 文档：[docs/harness-suite.zh.md](docs/harness-suite.zh.md)
 
 ### Office Skills 套件

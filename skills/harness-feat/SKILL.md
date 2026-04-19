@@ -36,6 +36,19 @@ A third risk is **scope drift**: the agent discovers something interesting mid-i
 
 ---
 
+## Behavioral guardrails
+
+Harness-feat absorbs a small set of high-signal behavior rules directly into the workflow instead of treating them as a separate layer:
+
+1. **Assumption ledger** — surface the assumptions that affect scope, architecture, or acceptance criteria before planning.
+2. **Simplicity checkpoint** — prefer the smallest design that satisfies the objective; challenge speculative abstractions before they enter the plan.
+3. **Surgical diff discipline** — every changed line should trace directly to an acceptance criterion, a plan step, or required regression protection.
+4. **Goal-evidence pairing** — every task statement should map to a proving command, test, or inspection step.
+
+These guardrails do not replace the five-step Harness workflow. They sharpen it.
+
+---
+
 ## Shared terminology
 
 All four Harness skills (harness-bootstrap, harness-garden, harness-feat, harness-fix) use these terms consistently:
@@ -110,8 +123,9 @@ The user's request is usually informal and incomplete. Rewrite it into a precise
 - **Scope**: which modules/files/directories are in play
 - **Non-scope**: what this task explicitly does NOT include (prevents drift)
 - **Constraints**: architectural rules from AGENTS.md that apply
+- **Assumptions / unknowns**: only the assumptions you are relying on; if one could change scope or architecture, surface it now instead of silently choosing
 
-Present the rewritten task to the user. Wait for confirmation before proceeding. If the user adjusts the scope, update the brief.
+Present the rewritten task to the user. If a materially simpler path exists, say so before planning. Wait for confirmation before proceeding. If the user adjusts the scope, update the brief.
 
 ### 2.2 Create the execution plan
 
@@ -123,6 +137,7 @@ The execution plan must include:
 2. **Acceptance criteria**: specific, verifiable conditions that define "done"
 3. **Implementation steps**: ordered sequence of small, testable changes
 4. **Risk notes**: known risks and mitigation strategies
+5. **Open assumptions**: only the assumptions still necessary after the rewrite
 
 #### Step sizing
 
@@ -156,6 +171,16 @@ Harness plans must be **decision-complete**, but they remain audit-oriented:
 - do **not** inline full implementation code for every step unless the change genuinely requires that precision
 
 The goal is an executable plan without creating a second source of truth that competes with the code.
+
+#### Simplicity checkpoint
+
+Before finalizing the plan, ask:
+
+- Can the objective be achieved by editing fewer files?
+- Can an existing abstraction be reused instead of adding a new one?
+- Is any configurability, indirection, or error handling being added without a concrete requirement?
+
+If the answer to any of these is "yes", simplify the plan before coding.
 
 ### 2.3 Register the plan
 
@@ -200,6 +225,8 @@ Do not make delegated workers discover the plan on their own from some alternate
 
 Re-read the current step from the execution plan. Confirm you understand what it requires and what files it touches.
 
+Before editing, restate the smallest possible change that would satisfy this step. If the step now appears larger than necessary, update the plan first.
+
 #### 3.2 Write tests first (when applicable)
 
 TDD is preferred but not always mandatory. Read `references/tdd-workflow.md` for guidance on when TDD applies.
@@ -215,6 +242,7 @@ When TDD doesn't apply (infrastructure changes, configuration, documentation):
 
 - Implement the change
 - Write a verification check (could be a test, a smoke command, or a structural assertion)
+- Keep the diff surgical: every changed line should trace directly to the active plan step
 
 #### 3.3 Run tests
 

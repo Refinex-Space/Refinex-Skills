@@ -19,6 +19,19 @@ The Harness suite addresses these risks with four focused skills that map to the
 
 ---
 
+## Behavioral Discipline Layer
+
+This suite selectively absorbs the strongest parts of Karpathy-style agent guidance into the workflow instead of shipping them as a parallel skill:
+
+- **Think before coding** -> `harness-using`, `harness-feat`, and `harness-fix` surface assumptions, competing interpretations, and tradeoffs before action.
+- **Simplicity first** -> `harness-feat` and `harness-fix` prefer the smallest design or repair that satisfies the goal; `harness-garden` also removes harness complexity that no longer pulls its weight.
+- **Surgical changes** -> `harness-feat` and `harness-fix` treat every diff line as something that must trace back to a plan step, root cause, or regression proof.
+- **Goal-driven execution** -> `harness-verify` binds completion claims to fresh proving commands instead of vague confidence.
+
+This is an absorption strategy, not a duplication strategy: the suite gets stricter without fragmenting into another parallel process.
+
+---
+
 ## Core Four + Cross-Cutting Two + Domain Specialists
 
 | Skill | Primary mission | Typical trigger |

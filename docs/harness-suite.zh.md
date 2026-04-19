@@ -19,6 +19,19 @@ Harness 套件把这些风险拆解为四类职责：初始化、养护、建设
 
 ---
 
+## 行为纪律层
+
+这套能力选择性吸收 Karpathy 风格的高信号 agent 约束，但不会再平行增加一套独立流程：
+
+- **Think Before Coding** -> 由 `harness-using`、`harness-feat`、`harness-fix` 显式暴露假设、分歧解释和关键权衡，禁止静默选边。
+- **Simplicity First** -> 由 `harness-feat`、`harness-fix` 优先选择满足目标的最小设计或最小修复，`harness-garden` 继续清理已经不再承重的 Harness 复杂度。
+- **Surgical Changes** -> 由 `harness-feat`、`harness-fix` 要求每一行 diff 都能回溯到计划步骤、根因或回归保护。
+- **Goal-Driven Execution** -> 由 `harness-verify` 把“完成/修好/可交付”强绑定到新鲜的证明命令，而不是模糊信心。
+
+这是一种“吸收增强”，不是“重复造轮子”：让套件更强，但不把控制面拆成两套互相竞争的规范。
+
+---
+
 ## 核心四件套 + 两个横切技能 + 领域专长
 
 | Skill | 核心使命 | 典型触发 |

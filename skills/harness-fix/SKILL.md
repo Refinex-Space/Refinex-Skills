@@ -37,6 +37,19 @@ If any of these rules is violated, the workflow has already degraded into guessw
 
 ---
 
+## Diagnostic guardrails
+
+Harness-fix selectively absorbs four behavioral disciplines into debugging work:
+
+1. **Explicit assumptions** — if the diagnosis depends on an environment detail, invariant, or user action, write it down instead of silently assuming it.
+2. **Falsifiable hypotheses** — write the suspected cause as a falsifiable hypothesis before editing code.
+3. **Surgical repair** — every changed line should trace directly to the root cause or the regression proof.
+4. **Proof-matched verification** — the final evidence must prove the bug is fixed, not merely that some adjacent command passed.
+
+These rules keep debugging from turning into guess-driven patching.
+
+---
+
 ## Why this skill exists
 
 When an agent encounters a bug report, the natural impulse is to read the error message, guess the cause, and start editing code. This is the debugging equivalent of cowboy coding, and it produces the same outcome: changes that appear to work but mask the real problem, introduce new failure modes, or accumulate into an unrecoverable mess.
@@ -131,6 +144,7 @@ Read `references/bug-brief-template.md` for the complete template.
 | **Affected scope** | Which modules, files, or components are involved                           |
 | **Severity**       | Blocking / Degraded / Cosmetic (see severity table below)                  |
 | **Type**           | Regression / New bug / Flaky / Environment-specific                        |
+| **Assumptions**    | Environment details or invariants currently assumed to hold                |
 
 ### 2.2 Classify severity
 
@@ -299,6 +313,7 @@ Before writing code, describe the fix in the plan:
 - Do NOT refactor surrounding code — file a separate tech debt item if refactoring is needed
 - Do NOT add features — even if the broken code reveals a missing capability
 - Do NOT fix other bugs you discover along the way — log them in `docs/exec-plans/tech-debt-tracker.md`
+- Keep the diff surgical: every changed line should trace directly to the root cause or the regression proof
 
 ### 5.3 Commit the fix
 

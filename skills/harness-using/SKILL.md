@@ -125,6 +125,19 @@ Each of these thoughts is how control planes get bypassed.
 
 ---
 
+## Ambiguity discipline
+
+Routing is where silent bad assumptions start. Before choosing a workflow:
+
+- If multiple interpretations route to different workflows, do not pick silently.
+- State the competing interpretations and the evidence for each.
+- If one unresolved assumption could change ownership, ask a targeted clarification before handing off.
+- If a simpler interpretation avoids unnecessary process overhead, say so explicitly.
+
+The routing step is allowed to be brief, but it is not allowed to be vague.
+
+---
+
 ## Output contract
 
 When this skill triggers:
@@ -132,6 +145,7 @@ When this skill triggers:
 1. State which Harness skill will own the task
 2. State any prerequisite skill that must run first
 3. State whether `harness-verify` will be required at the end
-4. Hand off immediately to the owning workflow
+4. State any material assumptions that are still unresolved, or ask the blocking clarification
+5. Hand off immediately to the owning workflow
 
 Do not linger in routing mode once ownership is clear.

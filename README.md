@@ -21,6 +21,8 @@ The Harness family now consists of four core workflow skills plus two cross-cutt
 - `harness-using`: route repository work into the correct Harness workflow
 - `harness-verify`: require fresh evidence before completion claims
 
+The suite also embeds a behavioral discipline layer: explicit assumption management, simplicity checks, surgical diffs, and proof-matched verification. These rules are absorbed into the Harness workflows rather than shipped as a separate parallel skill.
+
 Docs: [docs/harness-suite.en.md](docs/harness-suite.en.md)
 
 ### Office Skills Suite

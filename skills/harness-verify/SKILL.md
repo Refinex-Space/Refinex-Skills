@@ -81,6 +81,18 @@ Skipping any step is verification theater.
 
 ---
 
+## Claim-evidence alignment
+
+The proving command must actually prove the claim being made.
+
+- A targeted reproduction passing does NOT prove the full suite is safe.
+- A lint run passing does NOT prove behavior changed correctly.
+- A green unit test does NOT prove a deployment, migration, or integration flow is healthy.
+
+If the evidence and the claim operate at different scopes, the claim is invalid.
+
+---
+
 ## Common claims and required evidence
 
 | Claim | Minimum evidence |
