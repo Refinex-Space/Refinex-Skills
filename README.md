@@ -1,10 +1,10 @@
 # Refinex-Skills
 
-MIT-licensed personal skill suite for agent-first software development and technical delivery. The repository currently includes three complementary suites plus internal verification assets:
+MIT-licensed personal skill suite for agent-first software development and technical delivery. The repository currently includes three complementary suites, one shared diagram skill layer, plus internal verification assets:
 
 - Harness Engineering Suite: control plane initialization, drift maintenance, feature delivery, and bug remediation
 - Office Skills Suite: high-quality document deliverables across DOCX, PDF, PPTX, and XLSX
-- Write Skills Suite: technical planning, blank-page writing, and source-driven rewrite
+- Write Skills Suite: technical planning, blank-page writing, source-driven rewrite, plus a shared Mermaid diagram standard
 
 ---
 
@@ -38,11 +38,14 @@ Docs: [docs/office-suite.en.md](docs/office-suite.en.md)
 
 ### Write Skills Suite
 
-Three writing-focused skills:
+Three writing-focused skills plus one shared diagram skill:
 
+- `mermaid-diagrams`
 - `tech-planner`
 - `tech-writing`
 - `tech-rewrite`
+
+The `tech-*` skills decide whether a document needs a diagram and what question it should answer; `mermaid-diagrams` turns that visual plan into syntax-correct, Markdown-portable, restrained Mermaid.
 
 Docs: [docs/write-suite.en.md](docs/write-suite.en.md)
 
@@ -83,6 +86,7 @@ Refinex-Skills/
 │   ├── office-pdf/
 │   ├── office-pptx/
 │   ├── office-xlsx/
+│   ├── mermaid-diagrams/
 │   ├── tech-planner/
 │   ├── tech-writing/
 │   └── tech-rewrite/

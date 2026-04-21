@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mermaid Diagrams"
+  short_description: "Design syntax-safe, restrained Mermaid diagrams for Markdown"
+  default_prompt: "Use $mermaid-diagrams to turn this visual plan into clean, portable Mermaid for Markdown."

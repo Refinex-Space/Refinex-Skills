@@ -1,11 +1,11 @@
 # Refinex-Skills
 
 基于 MIT License 的个人技能仓库，面向 agent-first 软件开发与技术交付。
-当前包含三组互补能力，以及一组内部验证资产：
+当前包含三组互补能力、一层被写作套件共享的图表能力，以及一组内部验证资产：
 
 - Harness Engineering 套件：控制面初始化、漂移养护、功能交付、故障修复
 - Office Skills 套件：DOCX、PDF、PPTX、XLSX 文档交付
-- Write Skills 套件：技术规划、从零写作、基于材料重写
+- Write Skills 套件：技术规划、从零写作、基于材料重写，以及共享的 Mermaid 图表标准
 
 ---
 
@@ -39,11 +39,14 @@ Harness 家族现由四个核心工作流技能与两个横切技能构成：
 
 ### Write Skills 套件
 
-三个技术写作技能：
+三个技术写作技能，加一个共享图表技能：
 
+- `mermaid-diagrams`
 - `tech-planner`
 - `tech-writing`
 - `tech-rewrite`
+
+其中 `tech-*` 负责判断文章是否需要图、图回答什么问题；`mermaid-diagrams` 负责把视觉计划稳定地落成语法正确、跨 Markdown 渲染器可移植、风格克制的 Mermaid。
 
 文档：[docs/write-suite.zh.md](docs/write-suite.zh.md)
 
@@ -84,6 +87,7 @@ Refinex-Skills/
 │   ├── office-pdf/
 │   ├── office-pptx/
 │   ├── office-xlsx/
+│   ├── mermaid-diagrams/
 │   ├── tech-planner/
 │   ├── tech-writing/
 │   └── tech-rewrite/

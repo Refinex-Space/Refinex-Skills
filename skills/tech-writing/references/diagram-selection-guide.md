@@ -2,6 +2,8 @@
 
 Use diagrams to remove cognitive load, not to decorate the page. A diagram is required when the reader would otherwise have to simulate too many moving parts in working memory at once. A diagram is noise when the same point can be made more clearly in two or three precise sentences.
 
+This file decides whether a diagram is needed and which Mermaid type fits the question. Once that decision is made, hand the actual Mermaid authoring to `mermaid-diagrams`, which carries the shared syntax, layout, and styling standard for the write suite.
+
 The discipline is simple: every diagram must answer one explicit question. Write that question down before choosing the diagram type. "What happens first, second, and third across these components?" is a real question. "Can I add a diagram here?" is not.
 
 ## The selection rule

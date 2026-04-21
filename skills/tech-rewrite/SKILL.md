@@ -116,7 +116,7 @@ The anti-pattern catalog — false balance, empty superlatives, background stuff
 
 The Chinese and English conventions — technical terms in English, senior-engineer register, no marketing vocabulary, no tutorial voice, Anglo-Saxon over Latinate — are in `references/shared-language-conventions.md`.
 
-The diagram selection rules — when a rewritten piece needs Mermaid support and which diagram type to choose — are in `references/shared-diagram-selection-guide.md`. The rewritten output does not inherit the source's visuals; it earns its own visual plan from the Fact Register and Anchor Sheet.
+The diagram selection rules — when a rewritten piece needs Mermaid support and which diagram type to choose — are in `references/shared-diagram-selection-guide.md`. Once the type and reader question are chosen, use `mermaid-diagrams` for the actual Mermaid authoring so the rewrite inherits the same syntax, layout, and styling discipline as blank-page writing. The rewritten output does not inherit the source's visuals; it earns its own visual plan from the Fact Register and Anchor Sheet.
 
 The seven document types — blog post, ADR, design document, comparison, deep-dive, API reference, migration guide — each have a dedicated file in `references/shared-doctype-*.md`. The writer reads the relevant file in Phase 3 before drafting.
 

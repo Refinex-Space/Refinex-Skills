@@ -35,7 +35,7 @@ The sixth piece is the **scope boundary**, with both "in scope" and "explicitly 
 
 The seventh piece is the **source references**, a list of specific links or pointers to the primary sources the writing phase should consult. These are the same reference links that appear in the Markdown outline's article section, reproduced in the prompt so the writing phase has them at hand. Each reference is specific (a URL to a documentation page, a source file path, a conference talk timestamp) and annotated (what to extract from it).
 
-The eighth piece is the **visual explanation plan**. When the article's central claim depends on a mechanism, topology, lifecycle, or timeline that would be expensive to track in prose alone, the prompt specifies the reader question the diagram must answer and the Mermaid type that best fits it. The planner chooses the type from the question rather than by habit: `sequenceDiagram` for temporal call order, `flowchart` for branching pipelines, `stateDiagram-v2` for state transitions, `classDiagram` or `erDiagram` for static relationships, and `timeline` for change over time. A planner that omits this field for a mechanism-heavy article is silently pushing cognitive work onto the downstream writer.
+The eighth piece is the **visual explanation plan**. When the article's central claim depends on a mechanism, topology, lifecycle, or timeline that would be expensive to track in prose alone, the prompt specifies the reader question the diagram must answer and the Mermaid type that best fits it. The planner chooses the type from the question rather than by habit: `sequenceDiagram` for temporal call order, `flowchart` for branching pipelines, `stateDiagram-v2` for state transitions, `classDiagram` or `erDiagram` for static relationships, and `timeline` for change over time. The prompt also tells the downstream writer to use `mermaid-diagrams` for the actual Mermaid authoring so the diagram follows the write suite's shared syntax, layout, and styling standard. A planner that omits this field for a mechanism-heavy article is silently pushing cognitive work onto the downstream writer.
 
 The ninth piece is the **depth and completeness contract**. This is the downstream writing instruction that prevents the article from turning into a short, nervous summary. The contract states that the writer must not stop because the piece is already "long enough"; they stop only after every load-bearing anchor, mechanism, rejected alternative, and boundary promised by the prompt has been discharged or explicitly scoped out. This is not permission for padding. It is a guard against premature stopping.
 
@@ -172,12 +172,13 @@ the documented advisor lifecycle and note the absence of any mention of
 tool-call iteration; (4) the Spring AI 1.0.0-RC2 release notes — extract
 the two bug fixes that landed.
 
-Visual explanation plan: include a `sequenceDiagram` showing one
+Visual explanation plan: use `mermaid-diagrams` to author a
+`sequenceDiagram` showing one
 `ChatClient.call()` from advisor entry to the first provider response, then
 the internal tool-call iteration and the point at which control re-enters
 the model without re-entering `AdvisorChain.around()`. The reader should be
 able to see, at a glance, why the once-per-call boundary creates the four
-bugs. Also include a small `flowchart` showing the three execution modes
+bugs. Also use `mermaid-diagrams` to author a small `flowchart` showing the three execution modes
 (sync without tools, streaming without tools, streaming with tools) and
 highlight that only one branch crosses the broken path.
 

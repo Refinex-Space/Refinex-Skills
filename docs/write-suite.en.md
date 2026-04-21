@@ -8,11 +8,17 @@ It seems reasonable to handle "write me a technical blog post" and "rewrite thes
 
 A third scenario — "I want to write a series about Spring AI, help me plan it" — introduces a third risk: **surface skating**, where the generated series outline looks comprehensive but actually mirrors the official documentation's table of contents rather than reflecting how the knowledge actually builds in a reader's head.
 
-Three skills address three distinct problems, but they share a single set of quality standards. This is the central design decision: regardless of which path produced the content, the final document must be indistinguishable in quality.
+Three skills address three distinct problems, but they share a single set of quality standards. That standard now also has a dedicated `mermaid-diagrams` layer for turning visual plans into stable, restrained, Markdown-portable Mermaid. This is the central design decision: regardless of which path produced the content, the final document must be indistinguishable in quality, and its diagrams must not drift into separate house styles.
 
 ---
 
 ## The Three Skills and Their Roles
+
+### mermaid-diagrams — Shared diagram execution layer
+
+The problem it solves: once a document decides that it needs a Mermaid diagram, the hard part is no longer "pick a Mermaid type". The hard part is writing Mermaid that stays syntax-correct, renderer-portable, visually restrained, and free of crowding.
+
+The core defense is the Portable Authoring Standard. The skill locks the reader question and diagram type first, designs the geometry and node budget second, writes in a lowest-risk Markdown Mermaid subset third, and only then adds minimal semantic styling when it materially helps. Good-looking diagrams come primarily from structure, direction, label discipline, and split decisions, not decorative color.
 
 ### tech-writing — Blank-Page Composition
 
@@ -42,7 +48,7 @@ The series architecture follows Bruner's spiral curriculum principle: a genuine 
 
 ## How the Three Skills Work Together: The Pipeline
 
-The three skills form a pipeline where each stage's output is the next stage's input:
+The three skills form a pipeline where each stage's output is the next stage's input, with `mermaid-diagrams` acting as a shared execution layer wherever a visual plan needs to become actual Mermaid:
 
 ```
 tech-planner
@@ -54,6 +60,10 @@ tech-writing (blank page)  ◄─or─►  tech-rewrite (existing material)
     │          technical document        │          technical document
     │                                   │
     └───── Shared quality standards ────┘
+                     │
+                     ▼
+             mermaid-diagrams
+        executes any Mermaid visual plan
 ```
 
 The convergence point is the Anchor Sheet. The tech-writing skill's Phase 1 produces the Anchor Sheet directly. The tech-rewrite skill's Phase 2 produces the Anchor Sheet from the Fact Register. The tech-planner's per-article prompts contain enough information for the tech-writing skill's Phase 1 to populate its Anchor Sheet automatically. All three paths converge at the same format, and from that point forward, the writing and validation workflow is identical.
@@ -71,19 +81,20 @@ This means that if you only need to write a single article, you use tech-writing
 | You want to plan a multi-article blog series | tech-planner |
 | You have a prompt from tech-planner and want to start writing | tech-writing |
 | You have a prompt from tech-planner plus existing material on the topic | tech-rewrite |
+| You already know what the diagram should explain and only need to turn the visual plan into stable Mermaid | mermaid-diagrams |
 | You have a published article and want to rewrite it based on reader feedback | tech-rewrite |
 | You want to compare two technologies and reach a verdict | tech-writing |
 | You have an old comparison document and need to update it for new versions | tech-rewrite |
 | You want to write a post-mortem | tech-writing |
 | You have an incident report draft and want to turn it into a post-mortem blog | tech-rewrite |
 
-The decision rule is simple: do you have existing source material? If yes, use tech-rewrite. If no, use tech-writing. If you need to plan a series, use tech-planner first.
+The decision rule happens in two layers. First ask whether you are writing or simply rendering a Mermaid visual plan. If the job is only the Mermaid diagram, use `mermaid-diagrams`. If you are writing, then ask whether you already have source material: if yes, use `tech-rewrite`; if no, use `tech-writing`; if you need to plan a series, use `tech-planner` first.
 
 ---
 
 ## Shared Quality Standards
 
-The three skills share a single set of quality rules. tech-writing defines them, tech-rewrite inherits them through literal copies of the `shared-*` reference files, and tech-planner ensures downstream quality by generating prompts that conform to the same standards.
+The three skills share a single set of quality rules. tech-writing defines them, tech-rewrite inherits them through literal copies of the `shared-*` reference files, and tech-planner ensures downstream quality by generating prompts that conform to the same standards. `mermaid-diagrams` then owns the shared Mermaid syntax, layout, and restrained styling standard so the writing skills do not each invent their own diagram habits.
 
 Every document produced by any skill must pass the following non-negotiable gates:
 
@@ -204,7 +215,21 @@ The practical implication: if you are satisfied with the quality of an article p
 
 ## Skill File Inventory
 
-### tech-writing (13 files)
+### mermaid-diagrams (6 files)
+
+```
+mermaid-diagrams/
+├── SKILL.md                              # Entry point: shared Mermaid execution standard
+├── agents/
+│   └── openai.yaml                       # UI metadata and default invocation prompt
+└── references/
+    ├── authoring-standard.md             # Portable syntax subset and parser-risk rules
+    ├── styling-standard.md               # Restrained palette and minimal styling discipline
+    ├── pattern-cookbook.md               # Per-diagram-type defaults
+    └── final-checklist.md                # Last-pass validation gates
+```
+
+### tech-writing (14 files)
 
 ```
 tech-writing/
@@ -224,7 +249,7 @@ tech-writing/
     └── doctype-migration-guide.md       # Migration guide structure
 ```
 
-### tech-rewrite (17 files)
+### tech-rewrite (18 files)
 
 ```
 tech-rewrite/
@@ -239,6 +264,7 @@ tech-rewrite/
     ├── shared-narrative-voices.md       # ← literal copy from tech-writing
     ├── shared-anti-patterns.md          # ← literal copy from tech-writing
     ├── shared-language-conventions.md   # ← literal copy from tech-writing
+    ├── shared-diagram-selection-guide.md # ← literal copy from tech-writing
     ├── shared-doctype-blog-post.md      # ← literal copy from tech-writing
     ├── shared-doctype-adr.md            # ← literal copy from tech-writing
     ├── shared-doctype-design-doc.md     # ← literal copy from tech-writing
