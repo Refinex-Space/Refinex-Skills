@@ -4,6 +4,10 @@ This file describes the format and content rules for the per-article prompts tha
 
 The prompt format has two goals worth stating explicitly before the template is introduced. The first goal is completeness: the prompt must contain everything the tech-writing skill needs to populate its own Phase 1 Anchor Sheet. A reader of the prompt (or the tech-writing skill itself) should be able to construct an Anchor Sheet without referring back to the planner, the user, or any external material. The second goal is portability: the prompt must be formatted so it can be copied as a single unit, pasted into a chat session with the tech-writing skill, and executed without any modification. Any requirement that the user edit the prompt before use is a failure of the planning phase.
 
+## Boundary between the outline and the prompt
+
+The prompt is the canonical home for the article's detailed metadata. The surrounding series outline should keep only a concise title, a one-sentence thesis for navigation, and the prompt itself. Do not duplicate the nine required pieces outside the prompt. Duplication bloats the outline and creates maintenance drift without improving the handoff.
+
 ## The canonical wrapping format
 
 Every per-article prompt is wrapped in the following format, which is designed for direct copy-paste into the tech-writing skill:
@@ -15,9 +19,11 @@ Every per-article prompt is wrapped in the following format, which is designed f
 </prompt>
 ```
 
-The `/tech-write` token is the skill invocation. The `<prompt>` and `</prompt>` tags mark the content boundary. The content inside the tags is the Anchor Sheet in natural language form — not a structured YAML or table, but a paragraph-by-paragraph description of what the article should be. Natural language is preferred because the tech-writing skill's Phase 1 is already designed to accept natural-language specifications, and because natural language carries rationale and context that a structured format would strip.
+The `/tech-write` token is the skill invocation. The `<prompt>` and `</prompt>` tags mark the content boundary. The content inside the tags is the Anchor Sheet in natural language form. Short labeled sections or compact bullets are acceptable when they improve readability; what matters is that the prompt is self-contained, specific, and copy-pasteable.
 
 The content inside the wrapping must cover nine specific pieces of information. Each piece corresponds to a field in the tech-writing Anchor Sheet or its drafting contract, and all nine must be present for the prompt to be considered complete.
+
+For articles that sit early in the learning ramp, the prompt should also state the article's role clearly: onboarding, default-path usage, bridge-to-internals, deep mechanism, production diagnosis, or synthesis. This is not a separate required field because it usually fits naturally into the opening lines, but omitting it makes early-phase articles drift toward unnecessary depth.
 
 ## The nine required pieces
 
@@ -48,6 +54,12 @@ The nine pieces are assembled into a natural-language paragraph form. The templa
 <prompt>
 Write Article [N.M] of the [framework] series, titled "[argument-carrying
 title]".
+
+[Role/placement sentence: state whether this article is onboarding,
+default-path usage, a bridge article, a deep-dive, production diagnosis,
+or synthesis. If the article is early in the series, explicitly prefer
+first success, recommended defaults, and concrete usage before deep
+mechanism.]
 
 [Central argument paragraph: one or two sentences stating the article's
 falsifiable thesis. The argument should be specific, defensible, and sharp
@@ -100,15 +112,18 @@ in English | English].
 
 ## A filled-in example
 
-The template above is abstract; the example below shows a filled-in prompt for a specific article from a Spring AI series. The article is "Article 2.1: AdvisorChain.around() is invoked exactly once per ChatClient.call(), regardless of how many tool-call iterations follow — and this single fact explains four common production bugs", from a hypothetical series titled "Spring AI Beyond the Hello World".
+The template above is abstract; the example below shows a filled-in prompt for a specific article from a Spring AI series. The article is "Article 2.1: AdvisorChain.around() runs once per call", from a hypothetical series titled "Spring AI Beyond the Hello World".
 
 ```
 /tech-write
 <prompt>
 Write Article 2.1 of the Spring AI series, titled "AdvisorChain.around() is
-invoked exactly once per ChatClient.call(), regardless of how many tool-call
-iterations follow — and this single fact explains four common production
-bugs".
+invoked once per call".
+
+Role in the series: this is a deep mechanism article that comes after the
+reader has already used the public API and learned the high-level mental
+model. Do not re-teach setup or Hello World here; spend the depth budget on
+the hidden rule that explains later production bugs.
 
 Central argument: Spring AI's AdvisorChain interceptor model assumes that
 each ChatClient invocation is a single bounded operation, but the streaming
@@ -206,11 +221,13 @@ Notice the specificity of the filled-in version. Every anchor is concrete enough
 
 A prompt that looks like this can be copied into tech-writing without modification and will produce a draft that needs no further input from the user. That is the target the template is designed to hit.
 
-## Two common failures
+## Three common failures
 
-The first common failure in prompt generation is vague anchor lists. A prompt that says "include relevant code examples" is not specifying anchors — it is deferring the anchor selection to the writing phase, which does not have the research context to pick the right ones. The fix is to list anchors by name and location during Phase 3 of the planner, using the research notes from Phase 1. Every anchor in the list should be identifiable: a specific method, a specific line, a specific commit, a specific metric.
+The first common failure is duplication between the outer outline and the prompt. If the article section already lists central argument, prerequisites, scope, voice, and references above the prompt, the planner has split the truth into two places. The fix is to keep only the title, thesis, and prompt in the outer outline, and put the detailed article contract inside the prompt once.
 
-The second common failure is inheriting the prompt format from one article to another without updating the context. Two articles in the same series share the reader profile and the series overview, but they do not share the prerequisite knowledge (which is cumulative), the central argument, the scope, or most of the anchors. A prompt copied from an earlier article and minimally edited is almost always wrong for the current article, even when the two articles are closely related. The fix is to generate each prompt from scratch using the template, filling in each field based on the specific article's place in the series.
+The second common failure in prompt generation is vague anchor lists. A prompt that says "include relevant code examples" is not specifying anchors — it is deferring the anchor selection to the writing phase, which does not have the research context to pick the right ones. The fix is to list anchors by name and location during Phase 3 of the planner, using the research notes from Phase 1. Every anchor in the list should be identifiable: a specific method, a specific line, a specific commit, a specific metric.
+
+The third common failure is inheriting the prompt format from one article to another without updating the context. Two articles in the same series share the reader profile and the series overview, but they do not share the prerequisite knowledge (which is cumulative), the central argument, the scope, or most of the anchors. A prompt copied from an earlier article and minimally edited is almost always wrong for the current article, even when the two articles are closely related. The fix is to generate each prompt from scratch using the template, filling in each field based on the specific article's place in the series.
 
 ## Language switching
 

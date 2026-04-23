@@ -44,19 +44,19 @@ Gaps and silences: the docs do not cover the streaming + tool-call advisor break
 
 ## Phase 3 — Series architecture
 
-The architecture is designed from the knowledge graph and uses the spiral pattern with cognitive-state phase names. The pattern choice is justified because Spring AI has a small central concept (the advisor pipeline) that benefits from being revisited at increasing depth, and the target reader (a senior Java backend engineer) has the patience and motivation for a longer series with multiple passes over the same territory. The total series length is thirteen articles across four phases.
+The architecture is designed from the knowledge graph and uses the spiral pattern around one intentionally narrow slice of Spring AI: the advisor pipeline and its production consequences. This is not presented as the default shape for a full-framework Spring AI series. For a mixed-seniority audience, the planner should usually prepend an onboarding phase (positioning, version matching, Hello World, terminology) and often append a synthesis phase for architecture tradeoffs; totals in the twenty-to-thirty-plus range are normal for that broader scope. This scoped example stays at thirteen articles across four phases because it is teaching one slice deeply rather than the entire framework evenly.
 
-**Phase 1 — Rebuilding the LLM Integration Mental Model: Three Articles**
+**Phase 1 — Mental Model: Three Articles**
 
 The first phase contains three articles aimed at getting the reader's mental model into shape. The reader arrives with assumptions from adjacent technologies (direct provider SDKs, LangChain, or generic REST client usage) that will get in the way of understanding Spring AI. The phase exists to unseat those assumptions.
 
 Article 1.1 — "Spring AI Is Not a LangChain Port: Four Design Decisions That Make Spring AI a Spring-Native Framework". The article argues that Spring AI was designed from the ground up for the Spring programming model, and that readers who expect it to be a Java version of LangChain will be confused by its shape. The article walks through four specific design decisions: bean-based provider configuration, auto-configuration-driven client construction, the advisor model versus LangChain's chain model, and the absence of LangChain-style "agent" abstractions. Voice: Design Tribunal.
 
-Article 1.2 — "ChatClient Is a Fluent Facade, Not an API: Why Your First Spring AI Call Hides Three Abstraction Layers You Will Regret Ignoring". This is the primary aha-moment article for the series. The argument is that `ChatClient` is a convenient entry point but not where the interesting work happens, and that understanding this up front will save the reader from mistakes later. The article walks through a single `ChatClient.prompt().user(...).call()` call, shows the intermediate builder, shows the request-specification object, shows the advisor chain construction, and shows where the actual HTTP call happens. Voice: Mechanism Autopsy.
+Article 1.2 — "ChatClient Is a Facade Over AdvisorChain". This is the primary aha-moment article for the series. The argument is that `ChatClient` is a convenient entry point but not where the interesting work happens, and that understanding this up front will save the reader from mistakes later. The article walks through a single `ChatClient.prompt().user(...).call()` call, shows the intermediate builder, shows the request-specification object, shows the advisor chain construction, and shows where the actual HTTP call happens. Voice: Mechanism Autopsy.
 
 Article 1.3 — "The Advisor Contract: What Spring AI Assumes About Your Extension Code (And What That Means When the Assumption Breaks)". This article introduces the `Advisor` interface at the specification level — not its implementation, not custom advisors, just the contract. The argument is that the contract embeds a specific assumption about purity and statelessness, and that this assumption will be load-bearing for everything the reader does later in the series. Voice: Design Tribunal.
 
-**Phase 2 — Mastering the Advisor Pipeline: Four Articles**
+**Phase 2 — Advisor Pipeline: Four Articles**
 
 The second phase dives into the mechanism that the first phase introduced. Each article covers one aspect of the advisor system at source-code depth.
 
@@ -68,7 +68,7 @@ Article 2.3 — "Writing Your First Custom Advisor: A Token Counter That Actuall
 
 Article 2.4 — "Advisor Ordering, State, and the Difference Between Pre- and Post-Call Work". This article covers the nuances of advisor composition — what happens when advisor A does work before calling the next advisor and advisor B does work after, how to propagate state between advisors, and why some advisor orderings produce surprising results. Voice: Mechanism Autopsy.
 
-**Phase 3 — The Streaming and Tool-Call Revelation: Three Articles**
+**Phase 3 — Streaming and Tool Calling: Three Articles**
 
 The third phase is where the secondary aha moment lands. The reader has spent Phase 2 building a clean mental model of the advisor pipeline, and Phase 3 shows them that the mental model breaks in a specific, important case. The reveal is calculated — the earlier phases have to establish the mental model before Phase 3 can dismantle it, because dismantling a model the reader does not yet hold has no effect.
 
@@ -78,7 +78,7 @@ Article 3.2 — "How Spring AI Implements Tool Calls: The Internal Loop Inside C
 
 Article 3.3 — "When Streaming and Tool Calls Combine: Four Production Bugs That Expose Spring AI's Hidden Assumption". This article is the payoff. It walks through the four specific bugs identified in Phase 1 research — logging advisor missing turns, token counter missing turns, retry advisor not re-running, context propagation loss — and shows how each one traces back to the same root cause: the `AdvisorChain.nextAroundStream` `Flux` is constructed once, and tool-call re-invocation happens below it. Voice: Production War Story (the writer presents it as a post-mortem of four bugs encountered in production, with the diagnostic path that led to the root cause).
 
-**Phase 4 — Production Realities: Three Articles**
+**Phase 4 — Production Issues: Three Articles**
 
 The fourth phase handles the production concerns that were bracketed during the earlier phases. These articles do not build on each other — they are parallel specialty pieces — and the reader can read them in any order after finishing Phase 3.
 
@@ -139,10 +139,10 @@ is the Phase 3 payoff.
   covered well elsewhere).
 
 **Structure summary**:
-- Phase 1: Rebuilding the LLM Integration Mental Model — 3 articles
-- Phase 2: Mastering the Advisor Pipeline — 4 articles
-- Phase 3: The Streaming and Tool-Call Revelation — 3 articles
-- Phase 4: Production Realities — 3 articles
+- Phase 1: Mental Model — 3 articles
+- Phase 2: Advisor Pipeline — 4 articles
+- Phase 3: Streaming and Tool Calling — 3 articles
+- Phase 4: Production Issues — 3 articles
 - Total: 13 articles
 
 **Divergence note**: The Spring AI official documentation is organized
@@ -157,7 +157,7 @@ advisor-centric framing is more productive.
 
 ---
 
-## Phase 1: Rebuilding the LLM Integration Mental Model
+## Phase 1: Mental Model
 
 **Phase goal**: Replace the reader's existing mental model of LLM integration
 (whether that model comes from direct SDK use, LangChain, or REST client
@@ -173,58 +173,12 @@ Spring AI's core architecture — ChatClient as a fluent facade, Advisor as
 the extension point, AdvisorChain as the pipeline — and can predict at a
 high level how the framework will behave in new situations.
 
-### Article 1.2: ChatClient Is a Fluent Facade, Not an API
+### Article 1.2: ChatClient Is a Facade Over AdvisorChain
 
-**Central argument**: ChatClient is a convenient entry point, but the
-interesting work happens in the advisor pipeline it constructs on your
-behalf, and a Spring AI user who treats ChatClient as the "real API" will
-miss the extension surface that makes the framework powerful. This article
-demonstrates the distinction by walking through a single ChatClient call
-and identifying the three abstraction layers between the fluent API and
-the HTTP request.
+**Thesis**: `ChatClient` is the ergonomic entry point, but `AdvisorChain`
+is the extension surface that explains how Spring AI really behaves.
 
-**Key concepts to cover**:
-- ChatClient.prompt() and the request-specification builder pattern:
-  surface-level coverage, because the reader needs it to follow the example
-- Advisor construction from fluent configuration: medium depth, because
-  this is where the first abstraction layer becomes visible
-- AdvisorChain assembly: surface-level mention, because Article 2.1 will
-  cover it at depth
-- The ChatModel layer underneath AdvisorChain: surface-level mention for
-  context
-- The path from ChatClient.call() to the provider's HTTP endpoint: mid-depth
-  walk, covering all three layers
-
-**Prerequisite knowledge**: The reader has read Article 1.1 (which
-established that Spring AI is Spring-native rather than LangChain-like)
-and knows Spring Boot bean/DI concepts and Java fluent-builder patterns.
-
-**Must-research areas**: Verify current ChatClient source location and the
-specific class names in Spring AI 1.0.0-M6. Confirm the three-layer structure
-is the same in the current version as in research notes.
-
-**Reference links**:
-- https://docs.spring.io/spring-ai/reference/1.0/api/chatclient.html —
-  the official ChatClient reference; extract the public API surface and
-  the official description of how ChatClient relates to ChatModel
-- spring-ai-core/src/main/java/org/springframework/ai/chat/client/
-  ChatClient.java — the ChatClient interface; extract the method signatures
-  and the builder pattern
-- spring-ai-core/src/main/java/org/springframework/ai/chat/client/
-  DefaultChatClient.java — the default implementation; extract the advisor
-  chain construction in the prompt() and call() methods
-- spring-ai-core/src/main/java/org/springframework/ai/chat/client/advisor/
-  DefaultChatClientBuilder.java — the builder; extract how defaultAdvisors
-  are composed with per-request advisors
-
-**Narrative voice**: Mechanism Autopsy. The article walks through source
-code; authority comes from specific file paths and specific method references.
-
-**Scope**:
-- In: The three abstraction layers between ChatClient.prompt().call() and
-  the provider HTTP request, with specific source-code anchors
-- Out: Custom advisor writing (Article 2.3), the internal loop inside
-  ChatModel (Article 3.2), streaming specifics (Article 3.1)
+**Note**: Primary aha-moment article for the series.
 
 **tech-writing prompt**:
 
@@ -323,7 +277,7 @@ The remaining phases would follow the same overall structure.]
 
 ## Phase 4 — Validation summary for this example
 
-The deliverable above passes the outline quality checklist on the following bases. Gate 1 passes because the series argument is falsifiable and the individual article arguments collectively support it. Gate 2 passes because every article title states a claim rather than a topic. Gate 3 passes because the phase names reflect cognitive transitions (Rebuilding, Mastering, Revelation, Realities). Gate 4 passes because the series structure diverges from the official docs' feature-tour structure, with the divergence made explicit in the overview. Gate 5 passes because the article dependency order is verified — each article's prerequisites are covered by earlier articles. Gate 6 passes because overlapping revisits (the ChatClient-facade concept introduced in 1.2 and revisited in 2.1 and 3.2) are spiral revisits with distinct aspects. Gate 7 passes because the reference links are specific and annotated. Gate 8 passes because each prompt contains the nine required pieces, including the visual explanation plan and the depth/completeness contract. Gate 9 passes because each phase contains three or four articles. Gate 10 passes because the total of thirteen articles is appropriate for a medium-length spiral series. Gate 11 passes because two aha-moment articles are present (1.2 and 3.2). Gate 12 passes because the coherence notes are substantive.
+The deliverable above passes the outline quality checklist on the following bases. Gate 1 passes because the series argument is falsifiable and the individual article arguments collectively support it. Gate 2 passes because every article title states a claim rather than a topic, without overloading the title line. Gate 3 passes because the phase names are concise and the phase-goal paragraphs make the cognitive transitions explicit. Gate 4 passes because the series structure diverges from the official docs' feature-tour structure, with the divergence made explicit in the overview. Gate 5 passes because this scoped slice uses a topic-specific phase design rather than a memorized template. Gate 6 passes because the article dependency order is verified — each article's prerequisites are covered by earlier articles — and the example is clearly labeled as a scoped slice rather than a beginner entry path. Gate 7 passes because the example does not falsely claim to serve beginners and therefore does not owe a beginner-to-mid ramp it never intends to provide. Gate 8 passes because overlapping revisits (the ChatClient-facade concept introduced in 1.2 and revisited in 2.1 and 3.2) are spiral revisits with distinct aspects. Gate 9 passes because the reference links are specific and annotated. Gate 10 passes because each prompt contains the nine required pieces, including the visual explanation plan and the depth/completeness contract, while the outer outline avoids duplicating those fields. Gate 11 passes because each phase contains three or four articles. Gate 12 passes because the total of thirteen articles is appropriate for this scoped slice, while the example explicitly notes that broader framework coverage may require twenty-plus articles. Gate 13 passes because two aha-moment articles are present (1.2 and 3.2). Gate 14 passes because the coherence notes are substantive.
 
 A planner running Phase 4 on a real series would produce a similar validation summary, grouping any gate failures by the phase they need to return to and re-running the loop until the outline passes cleanly.
 

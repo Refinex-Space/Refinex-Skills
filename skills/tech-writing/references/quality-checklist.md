@@ -27,9 +27,10 @@ The title states the claim, not the topic.
 
 - [ ] The title is not a noun phrase like "Spring AI ChatClient 实战" or "Understanding Kubernetes Networking".
 - [ ] The title tells the reader what they will *learn* or what claim will be *proved*, not what will be *discussed*.
+- [ ] The title makes one clean claim. If it is trying to hold thesis, teaser, metaphor, and payoff at the same time, it is probably overloaded and should be shortened.
 - [ ] If the title contains "guide", "overview", "introduction to", or "exploring", justify it or change it. Those words are acceptable only in tutorials and reference material; for blog posts, comparisons, and deep-dives they are usually a tell.
 
-**Fix pattern.** Take the Anchor Sheet's central argument and compress it into a title. If the compressed title loses the edge, the title is too bland — try again with a sharper verb.
+**Fix pattern.** Take the Anchor Sheet's central argument and compress it into one clean claim. If the compressed title loses the edge, the title is too bland — try again with a sharper verb. If the title reads like a mini-outline, the title is too crowded — cut the second claim and keep the load-bearing one.
 
 ---
 

@@ -36,15 +36,15 @@ The weak version of a Spring AI series might look like this:
 
 This outline has a dozen failures from the quality checklist, and naming them is more useful than a vague critique.
 
-The phase names "Basics", "Intermediate Topics", "Advanced Topics", "Conclusion" are difficulty labels rather than cognitive progressions. They tell the reader nothing about what each phase will do for them, and they fail Gate 3 of the quality checklist automatically. The structure of the phases also mirrors the official Spring AI documentation's table of contents almost exactly — Spring AI's docs have sections on ChatClient, Prompts, Embeddings, Vector Stores, RAG, Tools, Memory, and Advisors, in roughly the same order — which fails Gate 1 (visible divergence from official documentation).
+The phase names "Basics", "Intermediate Topics", "Advanced Topics", "Conclusion" are difficulty labels rather than cognitive progressions. They tell the reader nothing about what each phase will do for them, and they fail Gate 3 of the quality checklist automatically. The structure of the phases also mirrors the official Spring AI documentation's table of contents almost exactly — Spring AI's docs have sections on ChatClient, Prompts, Embeddings, Vector Stores, RAG, Tools, Memory, and Advisors, in roughly the same order — which fails Gate 4 (structural divergence from official documentation).
 
 The article titles are all topic tags. "Introduction to Spring AI" makes no claim. "Working with Prompts" makes no claim. "Understanding ChatClient" makes no claim. Every title fails Gate 2. A reader who saw only the titles would learn nothing about what the series argues, and the series itself is committed to nothing because none of the titles takes a position.
 
-The phase transitions are unmotivated. Why does Phase 1 end where it does and Phase 2 begin where it does? The answer is "because the topics in Phase 2 are slightly harder than the topics in Phase 1", which is not a cognitive transition but a difficulty gradient. Gate 9 fails.
+The phase transitions are unmotivated. Why does Phase 1 end where it does and Phase 2 begin where it does? The answer is "because the topics in Phase 2 are slightly harder than the topics in Phase 1", which is not a cognitive transition but a difficulty gradient. The structure now also fails the newer ramp checks, because it does not provide a real beginner-to-mid path.
 
-The final article is a recap. "Spring AI Best Practices and Resources" delivers no cumulative payoff that depends on the earlier articles; it could have been written as the first article instead of the last, and nothing would change. Gate 10 fails.
+The final article is a recap. "Spring AI Best Practices and Resources" delivers no cumulative payoff that depends on the earlier articles; it could have been written as the first article instead of the last, and nothing would change. The newer synthesis/payoff gate fails here too.
 
-The outline does not visibly use the knowledge graph from Phase 2. No prerequisite dependencies are noted between articles. There is no acknowledgment that, for example, Article 2.2 (RAG) depends on both Article 2.1 (Embeddings and Vector Stores) and material from Phase 1, or that Article 2.3 (Function Calling) interacts with Article 3.1 (Custom Advisors) in important ways. Gates 5 and 8 fail because the prerequisite structure is invisible.
+The outline does not visibly use the knowledge graph from Phase 2. No prerequisite dependencies are noted between articles. There is no acknowledgment that, for example, Article 2.2 (RAG) depends on both Article 2.1 (Embeddings and Vector Stores) and material from Phase 1, or that Article 2.3 (Function Calling) interacts with Article 3.1 (Custom Advisors) in important ways. The current checklist would fail this under Gate 6, because the prerequisite structure is invisible and the entry ramp is under-specified.
 
 The weak outline is not the worst possible outline. Its phases are roughly in a sensible order, and it does cover most of the major Spring AI topics. But it would not produce a series that is meaningfully better than the official documentation, and the reader who followed the entire series would not have learned anything that they could not have learned by reading the docs themselves. The outline has done no useful planning work; it has simply reproduced the docs in a different layout.
 
@@ -66,7 +66,7 @@ A strong version of the same series might look like this:
   for the deep-dive articles
 - Article count: 9 across 4 phases
 
-## Phase 1 — Recalibrating Your Expectations: Why Spring AI Is Not LangChain-for-Java
+## Phase 1 — Onboarding and Terms
 
 This phase is for the reader who is approaching Spring AI with assumptions
 imported from LangChain or from direct REST usage. By the end of the phase,
@@ -74,14 +74,10 @@ the reader will have replaced those assumptions with the actual Spring AI
 mental model and will understand which problems Spring AI solves and which
 it does not.
 
-- Article 1.1: Spring AI's ChatClient is a fluent builder over a state
-  machine, not a wrapper around an HTTP client — and the distinction
-  determines what your code can and cannot do
-- Article 1.2: Spring AI inherits Spring's IoC opinions, which means
-  half the patterns you brought from LangChain do not apply and the
-  other half are spelled differently
+- Article 1.1: ChatClient is not an HTTP wrapper
+- Article 1.2: Spring AI follows Spring's IoC rules, not LangChain's
 
-## Phase 2 — Mastering the Pipeline: How Spring AI Composes Behavior from Pure Functions That Are Not Always Pure
+## Phase 2 — Advisor Pipeline
 
 This phase opens up the AdvisorChain and the surrounding mechanism. By
 the end of the phase, the reader will understand how requests actually
@@ -89,44 +85,31 @@ flow through a Spring AI ChatClient invocation, which will give them the
 mental model needed for the production decisions in Phase 3 and the
 debugging in Phase 4.
 
-- Article 2.1: AdvisorChain.around() is invoked exactly once per
-  ChatClient.call(), regardless of how many tool-call iterations
-  follow — and this single fact explains four common production bugs
-- Article 2.2: Spring AI's Prompt and PromptTemplate are not the same
-  thing as LangChain's Prompt and PromptTemplate, and the difference
-  matters when you start templating system messages
-- Article 2.3: Tool-calling in Spring AI uses the OpenAI tools protocol
-  internally even when the public API is named after the older
-  function-calling protocol — what the rename is hiding
+- Article 2.1: AdvisorChain.around() runs once per call
+- Article 2.2: Spring AI's Prompt is not LangChain's Prompt
+- Article 2.3: The `ToolCallback` rename exposed a deeper API shift
 
-## Phase 3 — Production Decisions You Will Be Stuck With: Choosing Memory, RAG, and Observability
+## Phase 3 — Production Choices
 
 This phase covers the decisions that are hardest to undo once the service
 is in production. By the end of the phase, the reader will have a defensible
 position on each of the load-bearing choices and will know what would have
 to be true for them to revisit each decision.
 
-- Article 3.1: Spring AI's ChatMemory abstraction is a leaky one and the
-  leak is in tool-call iteration — when to use it, when to roll your own,
-  and what the migration path looks like in either direction
-- Article 3.2: Choosing a VectorStore in Spring AI: a verdict for three
-  specific contexts (small in-process, mid-size single-region, large
-  multi-region) with the rejected alternatives spelled out
+- Article 3.1: ChatMemory leaks at the tool-call boundary
+- Article 3.2: VectorStore choice depends on deployment shape
 
-## Phase 4 — When It Goes Wrong in Production: Diagnostics and Recovery
+## Phase 4 — Diagnostics
 
 This phase is the operational payoff. The reader who has finished phases
 1-3 has the mental model to understand the failure modes covered here,
 and the article in this phase delivers the cumulative insight that the
 series has been building toward.
 
-- Article 4.1: The four ways Spring AI's streaming + tool-call combination
-  silently breaks AdvisorChain assumptions, with the source code references
-  and the workarounds — the one article that requires every earlier article
-  to be comprehensible, and the article that pays back the whole series
+- Article 4.1: Streaming + tool calls break AdvisorChain assumptions
 ```
 
-This outline differs from the weak version on every gate the checklist checks for. The phase names declare cognitive transitions ("Recalibrating Your Expectations", "Mastering the Pipeline", "Production Decisions You Will Be Stuck With", "When It Goes Wrong in Production") rather than difficulty labels. The phases together form an arc that the reader can feel: start by replacing the wrong mental model, master the right one, use the mastery to make decisions, then use everything to diagnose production failures.
+This outline differs from the weak version on every gate the checklist checks for. The phase names are concise and editorially natural, while the paragraphs under them carry the cognitive transition. The phases together form an arc that the reader can feel: start by replacing the wrong mental model, master the right one, use the mastery to make decisions, then use everything to diagnose production failures.
 
 Every article title carries an argument. Article 1.1 argues that ChatClient is a state machine, not an HTTP wrapper. Article 2.1 argues that AdvisorChain.around() runs exactly once per call, with a specific consequence. Article 3.2 commits to a verdict on VectorStore choice for specific contexts. None of the titles is a topic tag; all of them are claims the article must defend.
 
@@ -134,7 +117,7 @@ The structure does not mirror the official Spring AI documentation. Spring AI's 
 
 The final article is a cumulative payoff, not a recap. Article 4.1 explicitly requires the material from every earlier article and would be incomprehensible without them. A reader who skipped to Article 4.1 would not understand it; a reader who read the series in order would arrive at it with all the pieces in place. This is what the spiral curriculum looks like in practice.
 
-The series has nine articles rather than thirteen. Fewer articles, each with a sharper claim, beats more articles with diluted claims. The nine articles cover all the load-bearing material of Spring AI for production usage; the additional material the weak outline included was either redundant ("Setting Up Your First Spring AI Project" can be a section within Article 1.1 rather than a standalone article) or out of scope for the series' specific reader profile.
+The series has nine articles because it is a deliberately narrow production-usage slice, not because low article counts are inherently superior. For this scope, nine is enough. For a full-framework Spring AI series serving junior, intermediate, and senior readers, the planner should usually add an onboarding phase, split dense areas like embedding/vector store/RAG into separate articles, and add a late synthesis phase; totals above twenty are often justified. The right count follows scope and reader ladder, not a blanket preference for fewer articles.
 
 ## Example 2 — Project Reactor
 
@@ -330,7 +313,7 @@ The strong outline also addresses CRD versioning in its own phase, which the wea
 
 ## Reading the examples
 
-The three pairs above are not meant to be templates. The structures of the strong outlines vary by topic — Spring AI's strong outline has four phases and uses a hybrid of Cognitive Reconstruction and Production War, Reactor's strong outline has four phases following Mechanism Mastery, and Kubernetes Operators' strong outline has three phases following a pattern that is closest to Mechanism Mastery with elements of Decision Tribunal in Phase 3. The right pattern was chosen for each topic based on the reader profile and the topic's structural complexity, not by applying a template.
+The three pairs above are not meant to be templates. The structures of the strong outlines vary by topic — Spring AI's strong outline is a narrow four-phase operational slice, Reactor's strong outline has four phases following Mechanism Mastery, and Kubernetes Operators' strong outline has three phases following a pattern that is closest to Mechanism Mastery with elements of Decision Tribunal in Phase 3. The right pattern was chosen for each topic based on the reader profile, the intended breadth, and the topic's structural complexity, not by applying a template.
 
 What the three strong outlines share is the application of the quality checklist's principles. Every phase name declares a cognitive transition. Every article title carries an argument. Every series structure differs visibly from the official documentation's structure. Every series ends with a cumulative payoff that depends on the earlier articles. The principles are constant; the structures that implement them vary.
 

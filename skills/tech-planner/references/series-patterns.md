@@ -4,6 +4,8 @@ This file describes the common architectural patterns for a multi-article techni
 
 The patterns below are not exhaustive. They are the six patterns that recur often enough in strong technical blog series to be worth naming. A skilled planner can invent variations or hybrids when none of the six fits; the patterns are starting points, not constraints. The selection guidance at the end of the file describes how to pick between them.
 
+Before reading the patterns, keep one constraint in view: patterns are planning aids, not visible templates. If multiple unrelated series keep coming out with the same phase styles, the planner has probably started copying the pattern labels instead of designing for the actual reader payoff.
+
 ## Pattern 1 — The Cognitive Reconstruction arc
 
 The Cognitive Reconstruction arc applies when the target topic requires the reader to discard a prior mental model and replace it with a new one. This is the pattern for topics where the reader's existing intuitions are actively wrong, and the series' first job is to disable those intuitions before building new ones in their place.
@@ -66,13 +68,21 @@ The risk of the Concentric Spirals arc is that the first phase, which covers eve
 
 ## Selection rules
 
-Six patterns is a manageable set, but the planner still has to pick the right one for each topic. The selection is driven by three questions, applied in order.
+Six patterns is a manageable set, but the planner still has to pick the right one for each topic. Before choosing a pattern, ask one preparatory question: **does the reader already have a runnable starting point?** If not, prepend a short Foundation/Onboarding pass before the main pattern. That pass covers positioning, version matching, minimal setup, Hello World, terminology, and one recommended happy path. Many weak framework outlines fail because they start the main pattern too early.
+
+After that, the selection is driven by three questions, applied in order.
 
 The first question is what mental state the reader is in when they begin the series. If the reader has a wrong mental model that needs to be replaced, the answer is the Cognitive Reconstruction arc. If the reader has no relevant mental model but needs to make a decision about whether to adopt the technology, the answer is the Decision Tribunal arc. If the reader has been using the technology without understanding it, the answer is the Mechanism Mastery arc. If the reader has been operating the technology and is now trying to make it production-stable, the answer is the Production War arc.
 
 The second question is what kind of payoff the reader needs to walk away with. If the payoff is a new mental model, the patterns that emphasize cognitive change (Cognitive Reconstruction, Mechanism Mastery, Building From Scratch) are best. If the payoff is a decision or recommendation, the Decision Tribunal arc is the right choice. If the payoff is a set of operational practices, the Production War arc fits. If the payoff is a comprehensive understanding of an interconnected system, the Concentric Spirals arc is the right choice.
 
+Between the first and second question, add a ramp question: **should the reader learn by first using the thing, by first seeing a failure, or by first making a decision?** The answer changes the visible phase style even when the underlying pattern is the same. Two Spring AI series can both use a hybrid pattern and still look very different if one is adoption-first and the other is internals-first.
+
 The third question is the topic's structural complexity. If the topic is internally complex but unified — one system with internals to expose — the Mechanism Mastery arc fits. If the topic is small enough to build from scratch in a few hundred lines of code, the Building From Scratch arc is uniquely effective. If the topic has multiple interacting subsystems that cannot be cleanly separated, the Concentric Spirals arc respects the interconnections that the other patterns would lose.
+
+After the pattern is chosen, ask one closing question: **does the series need a synthesis pass for senior readers?** Large framework series often do. The synthesis pass is where the series cashes out architecture philosophy, irreversible decisions, tradeoff maps, or design lessons that only make sense after the mechanisms are already in place.
+
+One more check before finalizing the structure: **does the sequence feel like a smooth ramp for the lowest-seniority reader the series claims to serve?** If the series claims to include beginners or junior engineers, there must be a visible beginner-to-mid path. A glossary alone does not count.
 
 The selection often produces a single clear answer, but for borderline cases the planner can sometimes hybridize two patterns. A hybrid is risky because it can lose the focus that makes a single pattern work, but for a topic that genuinely combines two cognitive demands — say, a framework where the reader needs to both reconstruct their mental model and master the internals — a hybrid pattern with a Cognitive Reconstruction first half and a Mechanism Mastery second half can be the right move. The hybrid should be conscious and named in the series overview so the reader understands the two-act structure.
 
@@ -80,4 +90,4 @@ The selection often produces a single clear answer, but for borderline cases the
 
 The patterns above suggest specific phase counts (three or four for most), but the actual count depends on the topic. A small topic may use a pattern in two phases instead of three; a large topic may stretch a pattern across five or six phases. The patterns are arcs, not formulas, and the planner should not feel obligated to hit a specific count.
 
-What matters is that each phase represents a distinct cognitive move, not that the total count matches a template. A series with three phases that each represent a distinct move is stronger than a series with five phases where two of them are doing essentially the same work. When in doubt, the planner should err toward fewer phases with more distinct moves rather than more phases with overlapping ones.
+What matters is that each phase represents a distinct cognitive move, not that the total count matches a template. A series with three phases that each represent a distinct move is stronger than a series with five phases where two of them are doing essentially the same work. But "fewer is always better" is also false. A framework-scale series serving junior, mid-level, and senior readers may legitimately need an onboarding pass, a usage/defaults pass, a bridge-to-internals pass, a mechanism pass, an application pass, a production pass, and a synthesis pass. When in doubt, the planner should optimize for clean decomposition and reader continuity rather than for a low phase count.
