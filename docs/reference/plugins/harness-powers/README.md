@@ -54,15 +54,173 @@ plugins/harness-powers/assets/harness-powers-small.svg
 
 `plugin.json` 中的 `skills` 字段指向 `./skills/`，Codex App 读取该插件后会从这个目录发现 `harness-*` skills。
 
-### 本地安装方式
+插件结构遵循 Codex plugin 官方规则：`.codex-plugin/plugin.json` 是必需入口；`skills/`、`assets/` 等目录保留在 plugin root；manifest 里的路径必须相对 plugin root，并以 `./` 开头。
 
-在本仓库开发或测试 Harness Powers 时，应把 Codex App 的本地 plugin source 指向：
+官方参考：
+
+- [Build plugins](https://developers.openai.com/codex/plugins/build)
+- [Plugins](https://developers.openai.com/codex/plugins)
+
+### 推荐安装方式：Repo Marketplace
+
+Harness Powers 已经存放在当前仓库推荐的位置：
 
 ```text
-/Users/refinex/develop/code/Refinex-Skills/plugins/harness-powers
+/Users/refinex/develop/code/Refinex-Skills/plugins/harness-powers/
 ```
 
-如果当前 Codex App 环境使用本地 marketplace 配置，则将上面的目录作为 plugin source 注册；如果环境使用 UI 导入本地插件，则选择同一个目录。安装后，Codex App 应能在可用 skills 中发现 `harness-using`、`harness-brainstorm`、`harness-plan`、`harness-execute` 等入口。
+按官方文档，本地 plugin 需要通过 marketplace 暴露给 Codex。面向这个仓库使用时，创建或更新：
+
+```text
+/Users/refinex/develop/code/Refinex-Skills/.agents/plugins/marketplace.json
+```
+
+内容示例：
+
+```json
+{
+  "name": "refinex-skills-local",
+  "interface": {
+    "displayName": "Refinex Skills Local"
+  },
+  "plugins": [
+    {
+      "name": "harness-powers",
+      "source": {
+        "source": "local",
+        "path": "./plugins/harness-powers"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    }
+  ]
+}
+```
+
+关键规则：
+
+- `source.path` 必须以 `./` 开头。
+- `source.path` 指向 plugin 目录，而不是 `.codex-plugin/plugin.json`。
+- repo marketplace 的 `source.path` 按仓库根目录解析，所以这里使用 `./plugins/harness-powers`。
+- 每个 plugin entry 都应包含 `policy.installation`、`policy.authentication` 和 `category`。
+
+然后重启 Codex，打开 Plugin Directory，选择 `Refinex Skills Local` 这个 marketplace，找到 `Harness Powers` 并安装。安装后新开一个 thread，再开始使用插件。
+
+### 可选安装方式：Personal Marketplace
+
+如果希望在多个仓库中作为个人插件使用，可以把插件复制到个人插件目录：
+
+```bash
+mkdir -p ~/.codex/plugins
+cp -R /Users/refinex/develop/code/Refinex-Skills/plugins/harness-powers ~/.codex/plugins/harness-powers
+```
+
+然后创建或更新：
+
+```text
+~/.agents/plugins/marketplace.json
+```
+
+内容示例：
+
+```json
+{
+  "name": "refinex-personal",
+  "interface": {
+    "displayName": "Refinex Personal Plugins"
+  },
+  "plugins": [
+    {
+      "name": "harness-powers",
+      "source": {
+        "source": "local",
+        "path": "./.codex/plugins/harness-powers"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Coding"
+    }
+  ]
+}
+```
+
+重启 Codex 后，在 Plugin Directory 中选择 `Refinex Personal Plugins`，安装 `Harness Powers`。
+
+### CLI 添加 Marketplace
+
+如果希望让 Codex 记录并跟踪一个 marketplace source，而不是手动编辑配置，可以使用官方 CLI：
+
+```bash
+codex plugin marketplace add /Users/refinex/develop/code/Refinex-Skills
+```
+
+如果 marketplace 来自远端仓库，也可以使用 GitHub shorthand、Git URL、`--ref` 或 `--sparse`。更新或移除 marketplace：
+
+```bash
+codex plugin marketplace upgrade
+codex plugin marketplace upgrade refinex-skills-local
+codex plugin marketplace remove refinex-skills-local
+```
+
+### 安装后的实际加载位置
+
+通过 marketplace 安装后，Codex 会把 plugin 安装到缓存目录，而不是直接从 marketplace entry 指向的源目录运行：
+
+```text
+~/.codex/plugins/cache/$MARKETPLACE_NAME/$PLUGIN_NAME/$VERSION/
+```
+
+对本地 plugin，`$VERSION` 通常是 `local`。因此修改源目录后，需要更新 marketplace 指向的 plugin 内容并重启 Codex，必要时重新安装或刷新 marketplace，才能让本地安装拾取新文件。
+
+插件启用状态存放在：
+
+```text
+~/.codex/config.toml
+```
+
+如果只想临时关闭插件，可以在对应 plugin 条目下设置：
+
+```toml
+enabled = false
+```
+
+然后重启 Codex。
+
+### 使用前 Smoke Test
+
+安装并启用后，新开一个 thread，确认可用 skill 列表中出现 `harness-powers:*`，例如：
+
+```text
+harness-powers:harness-using
+harness-powers:harness-brainstorm
+harness-powers:harness-plan
+harness-powers:harness-execute
+```
+
+然后发起一个最小验证 prompt：
+
+```text
+@Harness Powers 请用 harness-using 路由这个任务：检查当前仓库是否需要 Harness 控制面维护。
+```
+
+也可以直接点名 skill：
+
+```text
+$harness-using 检查当前仓库任务应该进入哪条 Harness Powers 流程。
+```
+
+如果 `@Harness Powers` 或 `$harness-using` 无法解析，优先检查：
+
+- marketplace 文件是否位于 `$REPO_ROOT/.agents/plugins/marketplace.json` 或 `~/.agents/plugins/marketplace.json`。
+- `source.path` 是否以 `./` 开头，并且指向 plugin 目录。
+- 是否已经重启 Codex。
+- Plugin Directory 中是否已经安装并启用 `Harness Powers`。
+- `~/.codex/config.toml` 中对应 plugin 是否被设置为 `enabled = false`。
 
 不要直接编辑已安装缓存中的 Superpowers：
 
@@ -245,4 +403,3 @@ docs/superpowers/plans/
 - 新增 skill 时保持 `harness-*` 命名，并补充插件测试。
 - 大段机制说明优先放进 skill `references/`，避免 `SKILL.md` 变成不可快速加载的长手册。
 - 每次修改后至少运行插件专项测试；涉及全仓规则时运行 `tests/run-all.sh`。
-
