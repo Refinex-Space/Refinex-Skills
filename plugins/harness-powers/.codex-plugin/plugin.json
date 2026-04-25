@@ -1,0 +1,45 @@
+{
+  "name": "harness-powers",
+  "version": "0.1.0",
+  "description": "Harness Engineering control plane plus planning, debugging, review, dispatch, and verification workflows for coding agents.",
+  "author": {
+    "name": "refinex"
+  },
+  "homepage": "https://github.com/Refinex-Space/Refinex-Skills",
+  "repository": "https://github.com/Refinex-Space/Refinex-Skills",
+  "license": "MIT",
+  "keywords": [
+    "harness",
+    "control-plane",
+    "agentic-workflow",
+    "planning",
+    "tdd",
+    "debugging",
+    "code-review",
+    "verification"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Harness Powers",
+    "shortDescription": "Harness Engineering control plane and delivery workflows for coding agents",
+    "longDescription": "Use Harness Powers to guide coding agents through repository control-plane setup, brainstorming, planning, execution, TDD-informed feature delivery, systematic debugging, code review, dispatch, and evidence-backed completion.",
+    "developerName": "refinex",
+    "category": "Coding",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Route this repository task through Harness Powers.",
+      "Build this feature with Harness Powers."
+    ],
+    "websiteURL": "https://github.com/Refinex-Space/Refinex-Skills",
+    "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
+    "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+    "brandColor": "#0F766E",
+    "composerIcon": "./assets/harness-powers-small.svg",
+    "logo": "./assets/harness-powers-small.svg",
+    "screenshots": []
+  }
+}

@@ -70,7 +70,7 @@ Do not:
 - Create: `plugins/harness-powers/assets/harness-powers-small.svg`
 - Copy or create: `plugins/harness-powers/assets/app-icon.png`
 
-- [ ] **Step 1: Create plugin directory and metadata**
+- [x] **Step 1: Create plugin directory and metadata**
 
 Create `plugin.json` with:
 
@@ -84,7 +84,7 @@ Create `plugin.json` with:
 - composer icon path: `./assets/harness-powers-small.svg`
 - logo path: `./assets/app-icon.png`
 
-- [ ] **Step 2: Add first README shell**
+- [x] **Step 2: Add first README shell**
 
 Create a concise README with:
 
@@ -95,11 +95,11 @@ Create a concise README with:
 - lifecycle overview
 - installation note for local plugin use
 
-- [ ] **Step 3: Add license and simple assets**
+- [x] **Step 3: Add license and simple assets**
 
 Use the repository's existing license posture where applicable. For the SVG, create a simple deterministic icon that does not reuse Superpowers branding as the final brand mark.
 
-- [ ] **Step 4: Verify scaffold**
+- [x] **Step 4: Verify scaffold**
 
 Run:
 
@@ -119,7 +119,7 @@ Expected: all commands exit 0.
 
 - Create: `tests/content/test_harness_powers_plugin.py`
 
-- [ ] **Step 1: Write failing tests for plugin metadata and skill inventory**
+- [x] **Step 1: Write failing tests for plugin metadata and skill inventory**
 
 Add Python `unittest` coverage for:
 
@@ -171,21 +171,21 @@ LEGACY_SKILLS = {
 }
 ```
 
-- [ ] **Step 2: Write failing tests for frontmatter consistency**
+- [x] **Step 2: Write failing tests for frontmatter consistency**
 
 For every expected skill, parse the `---` frontmatter block and assert:
 
 - `name: <directory-name>` appears
 - `description:` appears
 
-- [ ] **Step 3: Write failing tests for forbidden default paths**
+- [x] **Step 3: Write failing tests for forbidden default paths**
 
 Assert no plugin `SKILL.md` contains:
 
 - `docs/superpowers/specs`
 - `docs/superpowers/plans`
 
-- [ ] **Step 4: Run tests and confirm they fail before implementation**
+- [x] **Step 4: Run tests and confirm they fail before implementation**
 
 Run:
 
@@ -210,7 +210,7 @@ Expected: failure because the plugin skills have not been created yet.
 - Copy/adapt from: `skills/harness-verify/`
 - Copy/adapt from: `skills/harness-frontend/`
 
-- [ ] **Step 1: Copy current Harness-owned skill directories**
+- [x] **Step 1: Copy current Harness-owned skill directories**
 
 Copy the seven existing Harness skill directories into the plugin:
 
@@ -222,15 +222,15 @@ Copy the seven existing Harness skill directories into the plugin:
 - `harness-verify`
 - `harness-frontend`
 
-- [ ] **Step 2: Preserve references and scripts**
+- [x] **Step 2: Preserve references and scripts**
 
 Ensure each copied skill keeps its `references/` and `scripts/` subdirectories when present.
 
-- [ ] **Step 3: Adjust plugin-local frontmatter only where needed**
+- [x] **Step 3: Adjust plugin-local frontmatter only where needed**
 
 Keep names unchanged. Descriptions may mention Harness Powers when it improves routing clarity, but do not rewrite content heavily in this task.
 
-- [ ] **Step 4: Verify copied skill frontmatter**
+- [x] **Step 4: Verify copied skill frontmatter**
 
 Run:
 
@@ -252,7 +252,7 @@ Expected: tests still fail because new Superpowers-derived `harness-*` skills ar
 - Create: `plugins/harness-powers/skills/harness-plan/references/plan-reviewer-prompt.md`
 - Create: `plugins/harness-powers/skills/harness-execute/SKILL.md`
 
-- [ ] **Step 1: Adapt brainstorming into harness-brainstorm**
+- [x] **Step 1: Adapt brainstorming into harness-brainstorm**
 
 Use Superpowers `brainstorming` as source material, then change:
 
@@ -262,7 +262,7 @@ Use Superpowers `brainstorming` as source material, then change:
 - repository exploration to prefer `AGENTS.md`, `docs/ARCHITECTURE.md`, and `docs/PLANS.md`
 - implementation bans to mention Harness Powers flow
 
-- [ ] **Step 2: Adapt writing-plans into harness-plan**
+- [x] **Step 2: Adapt writing-plans into harness-plan**
 
 Use Superpowers `writing-plans` as source material, then change:
 
@@ -273,7 +273,7 @@ Use Superpowers `writing-plans` as source material, then change:
 - plan style to decision-complete and audit-oriented
 - remove requirement that every step inline full implementation code
 
-- [ ] **Step 3: Adapt executing-plans into harness-execute**
+- [x] **Step 3: Adapt executing-plans into harness-execute**
 
 Use Superpowers `executing-plans` as source material, then change:
 
@@ -283,14 +283,14 @@ Use Superpowers `executing-plans` as source material, then change:
 - delegated work handoff to `harness-dispatch`
 - completion handoff to `harness-verify` and then `harness-finish`
 
-- [ ] **Step 4: Move reviewer prompts into references**
+- [x] **Step 4: Move reviewer prompts into references**
 
 Move and rename:
 
 - Superpowers `brainstorming/spec-document-reviewer-prompt.md` to `harness-brainstorm/references/spec-reviewer-prompt.md`
 - Superpowers `writing-plans/plan-document-reviewer-prompt.md` to `harness-plan/references/plan-reviewer-prompt.md`
 
-- [ ] **Step 5: Verify three core skills**
+- [x] **Step 5: Verify three core skills**
 
 Run:
 
@@ -309,7 +309,7 @@ Expected: metadata, frontmatter, and missing-core-skill checks pass. Tests may s
 - Modify: `plugins/harness-powers/skills/harness-using/SKILL.md`
 - Modify: `plugins/harness-powers/skills/harness-verify/SKILL.md`
 
-- [ ] **Step 1: Merge using-superpowers discipline into harness-using**
+- [x] **Step 1: Merge using-superpowers discipline into harness-using**
 
 Add concise sections covering:
 
@@ -319,7 +319,7 @@ Add concise sections covering:
 - routing for `harness-brainstorm`, `harness-plan`, `harness-execute`, `harness-review`, `harness-dispatch`, `harness-worktree`, and `harness-finish`
 - direct-action bans for unclear ownership
 
-- [ ] **Step 2: Merge verification-before-completion into harness-verify**
+- [x] **Step 2: Merge verification-before-completion into harness-verify**
 
 Ensure `harness-verify` covers:
 
@@ -329,7 +329,7 @@ Ensure `harness-verify` covers:
 - workflow-specific minimum evidence
 - red flags for unsupported success language
 
-- [ ] **Step 3: Verify no legacy entry or exit skill is published**
+- [x] **Step 3: Verify no legacy entry or exit skill is published**
 
 Run:
 
@@ -348,7 +348,7 @@ Expected: tests for absence of `using-superpowers` and `verification-before-comp
 - Create: `plugins/harness-powers/skills/harness-review/SKILL.md`
 - Create: `plugins/harness-powers/skills/harness-review/references/code-reviewer-prompt.md`
 
-- [ ] **Step 1: Merge review request workflow**
+- [x] **Step 1: Merge review request workflow**
 
 Adapt Superpowers `requesting-code-review` into sections for:
 
@@ -358,7 +358,7 @@ Adapt Superpowers `requesting-code-review` into sections for:
 - findings-first output
 - severity ordering
 
-- [ ] **Step 2: Merge review feedback workflow**
+- [x] **Step 2: Merge review feedback workflow**
 
 Adapt Superpowers `receiving-code-review` into sections for:
 
@@ -368,7 +368,7 @@ Adapt Superpowers `receiving-code-review` into sections for:
 - implement, reject, or escalate with evidence
 - handle multiple items in priority order
 
-- [ ] **Step 3: Apply Harness review priorities**
+- [x] **Step 3: Apply Harness review priorities**
 
 Make the priority order explicit:
 
@@ -376,11 +376,11 @@ Make the priority order explicit:
 security > correctness > performance > readability
 ```
 
-- [ ] **Step 4: Add completion handoff**
+- [x] **Step 4: Add completion handoff**
 
 Require `harness-verify` after review fixes before any success claim.
 
-- [ ] **Step 5: Verify review skill**
+- [x] **Step 5: Verify review skill**
 
 Run:
 
@@ -401,7 +401,7 @@ Expected: `harness-review` exists, frontmatter is valid, and legacy review skill
 - Create: `plugins/harness-powers/skills/harness-dispatch/references/spec-reviewer-prompt.md`
 - Create: `plugins/harness-powers/skills/harness-dispatch/references/code-quality-reviewer-prompt.md`
 
-- [ ] **Step 1: Merge subagent-driven development workflow**
+- [x] **Step 1: Merge subagent-driven development workflow**
 
 Adapt Superpowers `subagent-driven-development` into:
 
@@ -411,7 +411,7 @@ Adapt Superpowers `subagent-driven-development` into:
 - spec compliance review
 - code quality review
 
-- [ ] **Step 2: Merge parallel dispatch workflow**
+- [x] **Step 2: Merge parallel dispatch workflow**
 
 Adapt Superpowers `dispatching-parallel-agents` into:
 
@@ -420,7 +420,7 @@ Adapt Superpowers `dispatching-parallel-agents` into:
 - no shared write scope unless explicitly coordinated
 - integration review after workers return
 
-- [ ] **Step 3: Define worker output contract**
+- [x] **Step 3: Define worker output contract**
 
 Require workers to report:
 
@@ -429,7 +429,7 @@ Require workers to report:
 - residual risks
 - any plan deviations
 
-- [ ] **Step 4: Verify dispatch skill**
+- [x] **Step 4: Verify dispatch skill**
 
 Run:
 
@@ -448,7 +448,7 @@ Expected: `harness-dispatch` exists, frontmatter is valid, and legacy dispatch s
 - Create: `plugins/harness-powers/skills/harness-worktree/SKILL.md`
 - Create: `plugins/harness-powers/skills/harness-finish/SKILL.md`
 
-- [ ] **Step 1: Adapt worktree workflow**
+- [x] **Step 1: Adapt worktree workflow**
 
 Adapt Superpowers `using-git-worktrees` into `harness-worktree` with:
 
@@ -458,7 +458,7 @@ Adapt Superpowers `using-git-worktrees` into `harness-worktree` with:
 - setup and baseline commands where detectable
 - warning against plan execution on `main` or `master` without explicit permission
 
-- [ ] **Step 2: Adapt finishing workflow**
+- [x] **Step 2: Adapt finishing workflow**
 
 Adapt Superpowers `finishing-a-development-branch` into `harness-finish` with:
 
@@ -468,7 +468,7 @@ Adapt Superpowers `finishing-a-development-branch` into `harness-finish` with:
 - plan archival and `docs/PLANS.md` update
 - PR body references to plan and verification evidence
 
-- [ ] **Step 3: Verify worktree and finish skills**
+- [x] **Step 3: Verify worktree and finish skills**
 
 Run:
 
@@ -491,7 +491,7 @@ Expected: `harness-worktree` and `harness-finish` exist, frontmatter is valid, a
 - Create: `plugins/harness-powers/skills/harness-fix/references/systematic-debugging.md`
 - Create or update: `plugins/harness-powers/skills/harness-fix/references/root-cause-techniques.md`
 
-- [ ] **Step 1: Move TDD material into harness-feat references**
+- [x] **Step 1: Move TDD material into harness-feat references**
 
 Use Superpowers `test-driven-development` and its testing anti-patterns reference as source material. Preserve:
 
@@ -502,7 +502,7 @@ Use Superpowers `test-driven-development` and its testing anti-patterns referenc
 - refactor while green
 - testing anti-patterns
 
-- [ ] **Step 2: Reference TDD from harness-feat**
+- [x] **Step 2: Reference TDD from harness-feat**
 
 Keep the main `SKILL.md` concise:
 
@@ -511,7 +511,7 @@ Keep the main `SKILL.md` concise:
 - non-TDD work needs equivalent verification
 - details live in `references/tdd-discipline.md`
 
-- [ ] **Step 3: Move systematic debugging material into harness-fix references**
+- [x] **Step 3: Move systematic debugging material into harness-fix references**
 
 Use Superpowers `systematic-debugging` and related references as source material. Preserve:
 
@@ -523,7 +523,7 @@ Use Superpowers `systematic-debugging` and related references as source material
 - condition-based waiting where relevant
 - defense in depth where relevant
 
-- [ ] **Step 4: Reference debugging from harness-fix**
+- [x] **Step 4: Reference debugging from harness-fix**
 
 Keep the main `SKILL.md` concise:
 
@@ -532,7 +532,7 @@ Keep the main `SKILL.md` concise:
 - three failed fix attempts means stop and replan
 - details live in `references/systematic-debugging.md`
 
-- [ ] **Step 5: Verify TDD and debugging are internalized**
+- [x] **Step 5: Verify TDD and debugging are internalized**
 
 Run:
 
@@ -552,7 +552,7 @@ Expected: plugin contains no `test-driven-development` or `systematic-debugging`
 - Modify: `plugins/harness-powers/skills/harness-garden/SKILL.md`
 - Modify: `plugins/harness-powers/skills/harness-frontend/SKILL.md`
 
-- [ ] **Step 1: Update harness-bootstrap**
+- [x] **Step 1: Update harness-bootstrap**
 
 Add Harness Powers awareness:
 
@@ -560,7 +560,7 @@ Add Harness Powers awareness:
 - execution plan docs should use active/completed layout
 - generated guidance should mention `harness-using` and `harness-verify`
 
-- [ ] **Step 2: Update harness-garden**
+- [x] **Step 2: Update harness-garden**
 
 Add drift checks for:
 
@@ -570,7 +570,7 @@ Add drift checks for:
 - `docs/PLANS.md` links
 - stale references to old Superpowers default paths
 
-- [ ] **Step 3: Update harness-frontend**
+- [x] **Step 3: Update harness-frontend**
 
 Clarify repository mode:
 
@@ -578,7 +578,7 @@ Clarify repository mode:
 - frontend owns visual thesis and rule packs
 - verification and plan ownership remain Harness lifecycle responsibilities
 
-- [ ] **Step 4: Verify plugin-aware Harness skills**
+- [x] **Step 4: Verify plugin-aware Harness skills**
 
 Run:
 
@@ -597,7 +597,7 @@ Expected: structure tests pass and content tests for plugin-aware routing pass.
 - Modify: `plugins/harness-powers/README.md`
 - Modify: `tests/content/test_harness_powers_plugin.py`
 
-- [ ] **Step 1: Finalize README**
+- [x] **Step 1: Finalize README**
 
 README must include:
 
@@ -609,11 +609,11 @@ README must include:
 - non-published legacy skill list
 - local development and validation commands
 
-- [ ] **Step 2: Add README inventory test**
+- [x] **Step 2: Add README inventory test**
 
 Test that every expected public skill appears in the README.
 
-- [ ] **Step 3: Add content ownership tests**
+- [x] **Step 3: Add content ownership tests**
 
 Add tests that assert:
 
@@ -624,7 +624,7 @@ Add tests that assert:
 - `harness-feat` references TDD discipline
 - `harness-fix` references systematic debugging
 
-- [ ] **Step 4: Run plugin tests**
+- [x] **Step 4: Run plugin tests**
 
 Run:
 
@@ -644,7 +644,7 @@ Expected: all plugin content tests pass.
 - Modify: `docs/PLANS.md`
 - Move when complete: `docs/exec-plans/active/2026-04-25-harness-powers-plugin.md` to `docs/exec-plans/completed/2026-04-25-harness-powers-plugin.md`
 
-- [ ] **Step 1: Run full repository tests**
+- [x] **Step 1: Run full repository tests**
 
 Run:
 
@@ -654,7 +654,7 @@ tests/run-all.sh
 
 Expected: all non-live tests pass; live tests may skip when `HARNESS_RUN_LIVE` is unset.
 
-- [ ] **Step 2: Run targeted plugin inspections**
+- [x] **Step 2: Run targeted plugin inspections**
 
 Run:
 
@@ -670,7 +670,7 @@ Expected:
 - forbidden path grep exits with no matches
 - skill directory list contains only approved `harness-*` public skills plus the parent directory
 
-- [ ] **Step 3: Update evidence log in this plan**
+- [x] **Step 3: Update evidence log in this plan**
 
 Record:
 
@@ -679,7 +679,7 @@ Record:
 - conclusion
 - residual risks
 
-- [ ] **Step 4: Archive plan**
+- [x] **Step 4: Archive plan**
 
 Move the plan to completed:
 
@@ -692,7 +692,7 @@ Update `docs/PLANS.md`:
 - remove from Active Plans
 - add under Completed Plans with completion date
 
-- [ ] **Step 5: Final commit**
+- [x] **Step 5: Final commit**
 
 Stage and commit the implementation:
 
@@ -707,4 +707,51 @@ Expected: commit succeeds after verification evidence has been recorded.
 
 ## Evidence Log
 
-No implementation evidence yet. This plan is ready for execution after review.
+### 2026-04-25 Final Verification
+
+Claim: Harness Powers plugin implementation satisfies the active plan acceptance criteria.
+
+Command:
+
+```bash
+tests/run-all.sh
+```
+
+Result: exit 0. Static and fixture integration tests passed: 26 tests, 0 failures. Live trigger tests skipped because `HARNESS_RUN_LIVE` is not set.
+
+Conclusion: repository test suite passed for the plugin implementation.
+
+Command:
+
+```bash
+python3 -m unittest tests.content.test_harness_powers_plugin -v
+```
+
+Result: exit 0. Plugin-specific content tests passed: 11 tests, 0 failures.
+
+Conclusion: plugin metadata, public skill inventory, legacy skill absence, forbidden path checks, README inventory, routing anchors, verification contract, review priority, dispatch output contract, and internalized TDD/debugging references are verified.
+
+Command:
+
+```bash
+rg -n "docs/superpowers/(specs|plans)" plugins/harness-powers/skills && exit 1 || true
+```
+
+Result: exit 0 with no matches.
+
+Conclusion: published plugin skills do not contain the forbidden old Superpowers default plan/spec paths.
+
+Command:
+
+```bash
+find plugins/harness-powers/skills -maxdepth 1 -type d | sort
+```
+
+Result: listed the parent `skills` directory plus the 14 approved `harness-*` public skill directories.
+
+Conclusion: public skill surface matches the approved first-pass Harness Powers inventory.
+
+Residual risks:
+
+- Live Codex trigger tests were not run because `HARNESS_RUN_LIVE` is unset.
+- The plugin is implemented locally under `plugins/harness-powers/`; marketplace publishing or Codex App relink/install validation is outside this pass.
