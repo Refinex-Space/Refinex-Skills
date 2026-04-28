@@ -56,6 +56,8 @@ Phase 2 is where the firewall does its work. At the start of Phase 2, put the so
 
 From the Fact Register, define the target document as if it were a blank-page piece. Write a central argument (falsifiable, defensible, one sentence). Identify the reader. Choose the document type. Select the narrative voice. Bound the scope. Decide which MISSING items will be addressed, which will be scoped out, and which require lookups or user input.
 
+Do not inherit the source's title or heading style. Low-quality sources often use long AI-scented titles to hide weak structure. During target definition, choose concise editorial headings and move full claims into the Anchor Sheet, opening paragraph, or prompt-equivalent contract. A rewrite that keeps `从 X 到 Y`, `不是 X 而是 Y`, or `把 X 变成 Y` titles because the source used them has failed the firewall.
+
 The output of Phase 2 is an Anchor Sheet in the same format as the `tech-writing` skill's Anchor Sheet. The two skills share this format deliberately — it is the point at which the two paths converge. A rewrite's Anchor Sheet should be identical in form to a blank-page Anchor Sheet, and a reader looking only at the Anchor Sheet should not be able to tell which path produced it. The Anchor Sheet format is described in full in the extraction protocol file.
 
 The critical rule of Phase 2 is that the structure of the target document is designed from the Fact Register and the reader, not inherited from the source. If the source had three sections in order A-B-C, the target may have five sections in order D-E-B-F-A — or two sections, or ten — depending on what the argument requires. The source's ordering is not a signal of anything; it is the shape the previous writer happened to use. Let it go.
@@ -108,7 +110,7 @@ The first seven mechanisms match the original brief. The last three are addition
 
 This section is deliberately short because the standards are unchanged from tech-writing. Every rule that applies to a blank-page piece applies to a rewritten piece. The full rules live in the shared files.
 
-The non-negotiable quality gates — title carries the argument, header info block, 60-second rule, verdict in comparisons, rejected alternatives for design decisions, failure modes as mechanisms, limitations with thresholds, visual explanations where they materially reduce cognitive load, Anchor-Sheet completeness, and the senior-engineer test — are enforced by `references/shared-quality-standards.md`.
+The non-negotiable quality gates — concise professional title, header info block, 60-second rule, verdict in comparisons, rejected alternatives for design decisions, failure modes as mechanisms, limitations with thresholds, visual explanations where they materially reduce cognitive load, Anchor-Sheet completeness, and the senior-engineer test — are enforced by `references/shared-quality-standards.md`.
 
 The narrative voice catalog — Production War Story, Design Tribunal, Mechanism Autopsy, Migration Field Guide, Benchmarker's Notebook, Reference Librarian — is in `references/shared-narrative-voices.md`. The voice is chosen during Phase 2 from the Fact Register, not inherited from the source. A source written in Tutorial Voice does not constrain the output to Tutorial Voice.
 

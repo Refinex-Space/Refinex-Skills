@@ -21,16 +21,17 @@ If any of these fails, stop the validation loop and return to Phase 1.
 
 ---
 
-## Gate 1 — Title carries the argument
+## Gate 1 — Title is concise and professional
 
-The title states the claim, not the topic.
+The title or top-level heading must be concise, accurate, and editorially natural. It should not be a hollow topic tag, but it must not become a mini-outline. The full central argument belongs in the header block and opening paragraph.
 
-- [ ] The title is not a noun phrase like "Spring AI ChatClient 实战" or "Understanding Kubernetes Networking".
-- [ ] The title tells the reader what they will *learn* or what claim will be *proved*, not what will be *discussed*.
-- [ ] The title makes one clean claim. If it is trying to hold thesis, teaser, metaphor, and payoff at the same time, it is probably overloaded and should be shortened.
+- [ ] The title is not a hollow phrase like "Spring AI ChatClient 实战" or "Understanding Kubernetes Networking" unless the document is pure reference.
+- [ ] The title is short enough to scan in a table of contents.
+- [ ] The title does not try to hold thesis, teaser, metaphor, and payoff at the same time.
+- [ ] The title avoids stacked constructions such as `不是 X，而是 Y`, `先 X，再 Y`, `从 X 到 Y`, `把 X 变成 Y`, and arrow-heavy chains unless the user explicitly asked for that style.
 - [ ] If the title contains "guide", "overview", "introduction to", or "exploring", justify it or change it. Those words are acceptable only in tutorials and reference material; for blog posts, comparisons, and deep-dives they are usually a tell.
 
-**Fix pattern.** Take the Anchor Sheet's central argument and compress it into one clean claim. If the compressed title loses the edge, the title is too bland — try again with a sharper verb. If the title reads like a mini-outline, the title is too crowded — cut the second claim and keep the load-bearing one.
+**Fix pattern.** Name the topic with one precise editorial label, then move the full claim into the opening. Good titles look like `事务边界`, `配置绑定`, `Consumer Group`, `GC 日志`, or `ChatClient 抽象边界`. If the title reads like a sentence the model is trying to impress with, compress it.
 
 ---
 
@@ -126,6 +127,7 @@ Run the anti-pattern catalog in `anti-patterns.md` against the draft. Every matc
 - [ ] No Wikipedia-voice opening ("X is a Y that was created in Z by...").
 - [ ] No restating-the-question opening ("How do you choose between A and B? That's a great question.").
 - [ ] No "comprehensive guide" framing.
+- [ ] No title theater: long, clever, stacked-clause titles that sound generated even when technically correct.
 - [ ] No bullet-points-instead-of-prose sections, where a paragraph was needed but bullets were used to avoid having to make the argument flow.
 
 See `anti-patterns.md` for the full catalog and detection heuristics.

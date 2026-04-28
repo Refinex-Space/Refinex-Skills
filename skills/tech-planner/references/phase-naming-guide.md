@@ -5,7 +5,7 @@ Phase names matter, but not in the way many generated outlines assume. The job o
 Weak outlines usually fail phase naming in one of two opposite ways:
 
 - they use empty buckets like `Basics`, `Intermediate`, `Advanced`
-- they overcorrect into taxonomy theater like `认知重建`, `机制精通`, `能力扩展`
+- they overcorrect into taxonomy theater like `认知重建`, `机制精通`, `能力扩展`, `驯服配置`, `拆开魔法`, `穿透 Web`, `走向异步`
 
 Both are bad. One says too little. The other sounds like a model trying to sound important.
 
@@ -38,13 +38,15 @@ A strong phase name is:
 
 It does **not** need to carry the entire argument of the phase by itself. That is what the phase goal paragraph is for.
 
+For most technical series, a phase name should be a compact noun phrase or capability label: `建立入口`, `语法基础`, `配置管理`, `自动配置`, `SQL 基础`, `事务并发`, `观测排障`, `架构决策`. The name can be plain. Plain is often better than clever. Do not make the phase title do the work of a paragraph.
+
 ## Three tests
 
 ### 1. Scan test
 
 If a reader skims all phase names in five seconds, can they tell the broad arc of the series?
 
-Names like `入门与术语`, `核心抽象`, `RAG 管线`, `生产化`, `架构取舍` pass.
+Names like `建立入口`, `核心抽象`, `RAG 管线`, `生产化`, `架构取舍` pass.
 Names like `Phase 2: Mechanism Mastery: how the request pipeline actually wires together` are usually doing too much in the label itself.
 
 ### 2. Naturalness test
@@ -59,6 +61,8 @@ Generated-feeling patterns to avoid:
 - paired theatrical clauses
 - slogan-like wording
 - stage-language such as `最后一公里`, `真实代价`, `背后发生了什么`
+- verb slogans such as `驯服 X`, `穿透 X`, `拆开魔法`, `掌控 X`, `走向 X`, `重建心智`
+- stacked phase titles such as `从 X 到 Y 都要可解释` or `先 X，再 Y`
 
 ### 3. Transformation test
 
@@ -89,11 +93,11 @@ Not useful:
 
 For framework series, these patterns are usually enough:
 
-- onboarding: `入门与术语`, `第一条链路`, `版本与启动`
-- mechanism: `核心抽象`, `调用链`, `执行模型`
+- onboarding: `建立入口`, `入门与术语`, `版本与启动`
+- mechanism: `核心抽象`, `调用链`, `执行模型`, `自动配置`
 - application: `RAG 管线`, `Tool Calling`, `Memory`
-- production: `生产化`, `诊断与观测`, `故障模式`
-- synthesis: `架构取舍`, `设计哲学`, `什么时候该绕开它`
+- production: `生产化`, `诊断与观测`, `观测排障`, `故障模式`
+- synthesis: `架构取舍`, `架构决策`, `设计哲学`, `什么时候不用它`
 
 These are examples, not a fixed vocabulary. The point is the level of compression.
 
@@ -109,11 +113,35 @@ Bad:
 
 Better:
 
-- `入门与术语`
+- `建立入口`
 - `核心抽象`
 - `Tool Calling`
 - `生产化`
 - `架构取舍`
+
+### Spring Boot
+
+Bad:
+
+- `驯服配置：把 Environment 从字符串仓库变成运行时事实表`
+- `拆开魔法：把 Auto-configuration 还原成普通 Spring 决策`
+- `穿透 Servlet Web：从端口监听到错误响应都能解释`
+
+Better:
+
+- `配置管理`
+- `自动配置`
+- `Servlet Web`
+
+### MySQL
+
+Good:
+
+- `SQL 基础`
+- `索引模型`
+- `执行计划`
+- `事务并发`
+- `备份恢复`
 
 ### Project Reactor
 

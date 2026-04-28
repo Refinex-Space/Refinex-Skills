@@ -12,17 +12,19 @@ The gate also checks whether the series argument is reflected in the individual 
 
 The fix when this gate fails is usually in Phase 3 (the articles do not collectively support the argument) or in Phase 2 (the knowledge graph did not contain an aha moment that the argument depends on), not in the Phase 4 outline.
 
-## Gate 2 — Every article title carries a claim without sounding generated
+## Gate 2 — Every article title is concise, accurate, and non-theatrical
 
-This gate is inherited from the shared tech-writing quality standards and is applied mechanically. For every article in the series, the planner reads the title and asks whether it states a claim or merely labels a topic. Titles that label topics fail; titles that carry arguments pass.
+This gate is applied mechanically. For every article in the series, the planner reads the visible title and asks whether it would work as a professional table-of-contents entry. The title may carry a light claim, but it does not need to carry the full thesis. The full thesis belongs in the article's `Thesis:` line and prompt.
 
 Titles of the form "Introduction to X", "Getting Started with Y", "Understanding Z", "X Explained", "An Overview of W", and "X for Beginners" are automatic fails. Titles that try to stuff thesis, teaser, metaphor, and payoff into one line also fail. The pass condition is simpler: the title should make one clean claim in editorial language. "Embedding 需要单独成篇" passes. "Embedding、VectorStore、ETL Pipeline 与过滤 DSL——你以为是一件事，其实是四件事" is probably trying to do too much and should usually be split or shortened.
+
+Professional short labels can pass when the surrounding thesis line is specific: `版本基线`, `配置绑定`, `事务边界`, `Consumer Group`, `GC 日志`, `生产清单`. Generated-feeling sentence titles fail even when technically correct: `配置优先级不是记忆题，而是 ConfigData 构建出的搜索路径`, `从端口监听到错误响应都能解释`, `先跑通系统，再讨论组件`.
 
 A gate failure on a single article title is easy to fix — rewrite the title. A gate failure on many titles at once is a deeper problem, usually meaning the Phase 3 architecture did not generate specific article arguments and the planner has been using topic labels as placeholders. The fix in that case is to return to Phase 3 and state the specific argument for each article, then derive the title from the argument.
 
 ## Gate 3 — Phase naming is clear, concise, and non-generic
 
-For each phase in the series, the phase name is evaluated against the discipline in `phase-naming-guide.md`. Phase names that are topic groupings ("Basics", "Advanced Topics", "Core Features"), difficulty levels ("Beginner", "Intermediate"), or subject-area labels ("Configuration", "APIs", "Deployment") fail. Inflated taxonomy labels that sound generated rather than editorial also fail. Short names such as "入门与术语", "核心抽象", "RAG 管线", "生产化", or "架构取舍" can pass if the attached phase goal paragraph makes the transformation explicit.
+For each phase in the series, the phase name is evaluated against the discipline in `phase-naming-guide.md`. Phase names that are generic buckets ("Basics", "Advanced Topics", "Core Features") or difficulty levels ("Beginner", "Intermediate") fail. Subject-area labels can pass when they are concrete and paired with a specific phase goal paragraph: `配置管理`, `自动配置`, `SQL 基础`, `事务并发`, `观测排障`. Inflated taxonomy labels and verb slogans that sound generated rather than editorial fail: `认知重建`, `机制精通`, `驯服配置`, `拆开魔法`, `穿透 Web`.
 
 The test from `phase-naming-guide.md` applies here: a reader who reads the phase names together with the phase goal paragraphs should be able to describe the series' intellectual arc in their own words. If they fail this test, the naming and phase framing need to be rewritten.
 

@@ -52,7 +52,7 @@ The nine pieces are assembled into a natural-language paragraph form. The templa
 ```
 /tech-write
 <prompt>
-Write Article [N.M] of the [framework] series, titled "[argument-carrying
+Write Article [N.M] of the [framework] series, titled "[concise editorial
 title]".
 
 [Role/placement sentence: state whether this article is onboarding,

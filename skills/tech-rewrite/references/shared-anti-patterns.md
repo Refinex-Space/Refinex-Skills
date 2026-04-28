@@ -122,7 +122,24 @@ In a Production War Story the voice is specifically diagnostic, not accusatory. 
 
 ---
 
-## 9. Bullet-point avoidance of prose
+## 9. Title theater
+
+**What it is.** A title that tries to perform depth by becoming a sentence, a contrast, a teaser, and a mini-outline at once. It often uses `不是 X，而是 Y`, `先 X，再 Y`, `从 X 到 Y`, `把 X 变成 Y`, arrows, stacked punctuation, or a clever metaphor.
+
+**Examples.**
+- `配置优先级不是记忆题，而是 ConfigData 构建出的搜索路径`
+- `穿透 Servlet Web：从端口监听到错误响应都能解释`
+- `ChatClient → AdvisorChain → ChatModel 三层夹心——你的第一次 API 调用背后发生了什么`
+
+**Cause.** Misreading "title should carry an argument" as "title should contain the whole argument". The result sounds generated because the prose is trying to prove seriousness before the article starts.
+
+**Detection.** If the title needs more than one clause, more than one punctuation mark, or a rhetorical contrast to work, it is a candidate. If it would look silly in a sober table of contents next to `事务边界`, `配置绑定`, or `GC 日志`, rewrite it.
+
+**Fix.** Compress the visible title to a precise editorial label, then move the full claim into the opening paragraph or header block. `配置优先级` is the title; `配置优先级不是记忆题，而是 ConfigData 构建出的搜索路径` is the opening claim.
+
+---
+
+## 10. Bullet-point avoidance of prose
 
 **What it is.** Using bullet lists to avoid having to write an actual argumentative paragraph. Bullets are great for genuinely list-shaped content (steps, options, enumerations); they are poison for argument, because an argument is a flow between ideas and bullets break the flow.
 
@@ -138,7 +155,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 10. Encyclopedic drift
+## 11. Encyclopedic drift
 
 **What it is.** The piece is shaped like an encyclopedia entry on its topic: what it is, its history, its major features, its usage, its ecosystem. The piece describes without judging. There is no argument; there is only description.
 
@@ -150,7 +167,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 11. Missing rejected alternatives
+## 12. Missing rejected alternatives
 
 **What it is.** A design piece that names a chosen solution but does not say what was rejected or why. The reader has no way to calibrate whether the choice was thoughtful.
 
@@ -162,7 +179,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 12. "Under the hood, magic happens"
+## 13. "Under the hood, magic happens"
 
 **What it is.** The writer gestures at internals without actually explaining them. "Under the hood, Spring does some magic to wire everything together." Magic is the absence of a mechanism; writing "magic" is the writer telling you they did not look.
 
@@ -172,7 +189,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 13. Tutorial voice in a non-tutorial piece
+## 14. Tutorial voice in a non-tutorial piece
 
 **What it is.** "Let's dive in!", "Now we will explore...", "As you can see...", "Let's take a look at...", "Don't worry — we'll cover that in the next section!". These are tutorial cues. They belong in tutorials. They do not belong in blog posts, ADRs, design docs, deep-dives, or reference material.
 
@@ -184,7 +201,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 14. The restating conclusion
+## 15. The restating conclusion
 
 **What it is.** The final paragraph restates the opening paragraph in slightly different words. It is there because the writer was taught that "a good essay has an introduction, body, and conclusion", and the conclusion slot must be filled.
 
@@ -198,7 +215,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 15. "In this post" / "In this article"
+## 16. "In this post" / "In this article"
 
 **What it is.** A meta-reference to the piece itself. It almost always marks a sentence that is saying nothing. "In this post, we will explore Spring AI's ChatClient" is an announcement, not content.
 
@@ -208,7 +225,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 16. Bullet-list tabulation of tradeoffs without synthesis
+## 17. Bullet-list tabulation of tradeoffs without synthesis
 
 **What it is.** A "tradeoffs" section that consists of a bullet list of good things and a bullet list of bad things, with no synthesis step that weighs them against each other.
 
@@ -218,7 +235,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 17. Present-tense-about-the-future
+## 18. Present-tense-about-the-future
 
 **What it is.** Writing "Spring AI *provides* tool-call support" when what you mean is "Spring AI *plans to provide* tool-call support in a future version". The reader walks away believing the feature exists.
 
@@ -230,7 +247,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 18. "Best practices" without a context
+## 19. "Best practices" without a context
 
 **What it is.** Writing "best practices" as if they were universal. They are not. A best practice is the solution to a specific class of problem in a specific context; stripped of context, it becomes a platitude.
 
@@ -240,7 +257,7 @@ ADRs and design documents are exceptions: they can use more lists because parts 
 
 ---
 
-## 19. Invented precision
+## 20. Invented precision
 
 **What it is.** Specific-looking numbers that are not actually measured — they are vibes dressed up as measurements. "This improves latency by 37%." From where? Measured how?
 
@@ -254,7 +271,7 @@ This anti-pattern is particularly insidious because it looks like the opposite o
 
 ---
 
-## 20. The senior-engineer-insulting paragraph
+## 21. The senior-engineer-insulting paragraph
 
 **What it is.** A paragraph that explains something every member of the target audience already knows. "A database is a system for storing and retrieving data. There are two main types: relational and non-relational." If the piece is for engineers, every one of them knows this, and the paragraph is insulting to their time.
 

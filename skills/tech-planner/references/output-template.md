@@ -51,7 +51,7 @@ The phase name should be short and natural. The paragraph carries the fuller tra
 Each article uses this shape:
 
 ````markdown
-### Article N.M — [concise claim-carrying title]
+### Article N.M — [concise editorial title]
 
 Thesis: [one sentence]
 
@@ -81,18 +81,25 @@ Those belong inside the prompt. The outer outline already has the thesis line fo
 
 ## Title guidance
 
-The article title should make one clean claim.
+The article title is a navigation label first. It should be concise, accurate, and editorially natural. The full central thesis belongs in the `Thesis:` line and inside the prompt, not in the visible title.
 
 Good:
 
-- `ChatClient 不是 HTTP wrapper`
-- `Embedding 需要单独成篇`
-- `RAG 的瓶颈通常不在检索`
+- `版本基线`
+- `配置绑定`
+- `事务边界`
+- `Consumer Group`
+- `GC 日志`
+- `生产清单`
 
 Bad:
 
 - `Introduction to ChatClient`
 - `理解 Spring AI`
 - `ChatClient → AdvisorChain → ChatModel 三层夹心——你的第一次 API 调用背后发生了什么`
+- `配置优先级不是记忆题，而是 ConfigData 构建出的搜索路径`
+- `从端口监听到错误响应都能解释`
 
 The bad examples fail for opposite reasons: some say nothing, others try to say everything.
+
+Reject visible titles that depend on theatrical contrasts such as `不是 X，而是 Y`, `先 X，再 Y`, `从 X 到 Y`, `把 X 变成 Y`, `背后的真实代价`, or multi-clause subtitle stacks. Those phrases can appear in the prompt's `中心论点` when they are actually the argument; they should not dominate the table of contents.

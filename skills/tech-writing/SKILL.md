@@ -60,7 +60,7 @@ Only after the Anchor Sheet is complete and any gaps have been resolved:
 1. **Pick the document type** and read the corresponding reference file (see the table below). Each doc type has its own required structure — do not improvise structure for ADRs, design docs, or API reference. For blog posts and deep-dives the structure is more flexible but still anchored.
 2. **Write in the selected voice only.** If you feel the voice shifting mid-draft (for example, from "Design Tribunal" into "Mechanism Autopsy" because you got interested in the internals), stop and decide: either the piece is actually a different voice and you restart the draft, or this is drift and you rein it back in. Voice drift is a leading cause of muddy technical writing.
 3. **Apply the 60-second rule**: the opening paragraph must state the central argument. A reader who stops after 60 seconds should still know what you are claiming. No throat-clearing. No "In recent years, as AI has grown in importance…". No background stuffing.
-4. **Apply the title rule**: the title carries the argument, not a topic tag. "Spring AI ChatClient 实战" is a topic. "ChatClient 的抽象只在同步场景成立" is a claim. Prefer one clean claim over a long stack of sub-clauses. If the title starts sounding like a mini-outline or a teaser trailer, compress it.
+4. **Apply the title rule**: the title is concise, accurate, and editorially natural. It should not be a hollow topic tag, but it also should not carry the full Anchor Sheet. Put the complete argument in the opening paragraph and header block. Prefer `事务边界`, `配置绑定`, or `ChatClient 抽象边界` over long constructions such as `配置优先级不是记忆题，而是 ConfigData 构建出的搜索路径` or `ChatClient → AdvisorChain → ChatModel 三层夹心——第一次 API 调用背后发生了什么`.
 5. **Make the visual plan real.** If the Anchor Sheet said a mechanism, topology, lifecycle, or timeline needs a diagram, draw it with the best-fit Mermaid type via `mermaid-diagrams`. Do not downgrade to prose-only because diagrams take effort, and do not force a diagram where prose is already clearer.
 6. **Honor the depth contract.** Do not stop because the draft is "already long enough". Stop only when every load-bearing anchor, mechanism, rejected alternative, and boundary promised by the Anchor Sheet has been discharged or explicitly scoped out. Depth is measured by paid-off obligations, not by word count.
 
@@ -116,7 +116,7 @@ These are enforced by `references/quality-checklist.md`. The summary is here so 
 
 **Structure:**
 
-- Title states the argument, not the topic.
+- Title is concise and professional; the opening states the full argument.
 - Header info block present: scope, prior knowledge assumed, central argument.
 - 60-second rule: the central argument appears in the opening paragraph.
 - Every comparison section ends with a clear verdict. "Both have pros and cons" is a failure.
