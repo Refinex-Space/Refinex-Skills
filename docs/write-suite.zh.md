@@ -74,6 +74,17 @@ tech-writing (从零创作) ← 或 → tech-rewrite (从已有材料重建)
 
 如果你不确定用哪个,参考下面的选择速查表。
 
+## Notion Agent 版本
+
+本仓库还提供 Notion 原生页面版本,用于在 Notion Agent 中按需运行同一套写作流程:
+
+- `notion/skills/tech-planner.md`
+- `notion/skills/tech-writing.md`
+- `notion/skills/tech-rewrite.md`
+- `notion/instructions/writing-agent.md`
+
+这些文件不是 Codex `SKILL.md`,而是可复制到 Notion 后标记为 AI Skill 或 AI Instruction 的页面。配置和使用说明见 [docs/reference/notion/README.md](reference/notion/README.md)。
+
 ---
 
 ## Skill 选择速查表

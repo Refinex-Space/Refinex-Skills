@@ -70,6 +70,17 @@ The convergence point is the Anchor Sheet. The tech-writing skill's Phase 1 prod
 
 This means that if you only need to write a single article, you use tech-writing or tech-rewrite directly — tech-planner is not needed. If you are planning a series, you start with tech-planner and then execute each article through tech-writing or tech-rewrite. If you are unsure which skill to use, consult the selection guide below.
 
+## Notion Agent Version
+
+The repository also includes Notion-native page versions for running the same writing workflows inside Notion Agent:
+
+- `notion/skills/tech-planner.md`
+- `notion/skills/tech-writing.md`
+- `notion/skills/tech-rewrite.md`
+- `notion/instructions/writing-agent.md`
+
+These files are not Codex `SKILL.md` files. They are pages you copy into Notion and mark as AI Skills or AI Instructions. Setup and usage docs: [docs/reference/notion/README.md](reference/notion/README.md).
+
 ---
 
 ## Skill Selection Guide

@@ -6,6 +6,7 @@
 - Harness Engineering 套件：控制面初始化、漂移养护、功能交付、故障修复
 - Office Skills 套件：DOCX、PDF、PPTX、XLSX 文档交付
 - Write Skills 套件：技术规划、从零写作、基于材料重写，以及共享的 Mermaid 图表标准
+- Notion 写作产物：面向 Notion Agent 的三个写作 Skill 页面和可选 Instructions
 
 ---
 
@@ -50,6 +51,8 @@ Harness 家族现由四个核心工作流技能与两个横切技能构成：
 
 文档：[docs/write-suite.zh.md](docs/write-suite.zh.md)
 
+Notion 配套文档：[docs/reference/notion/README.md](docs/reference/notion/README.md)
+
 ---
 
 ## 推荐 Harness 流程
@@ -74,8 +77,13 @@ Refinex-Skills/
 │   ├── harness-suite.zh.md
 │   ├── office-suite.en.md
 │   ├── office-suite.zh.md
+│   ├── reference/
+│   │   └── notion/
 │   ├── write-suite.en.md
 │   └── write-suite.zh.md
+├── notion/
+│   ├── instructions/
+│   └── skills/
 ├── skills/
 │   ├── harness-bootstrap/
 │   ├── harness-garden/
@@ -114,6 +122,7 @@ Office Skills：
 Write Skills：
 - English: [docs/write-suite.en.md](docs/write-suite.en.md)
 - 中文: [docs/write-suite.zh.md](docs/write-suite.zh.md)
+- Notion: [docs/reference/notion/README.md](docs/reference/notion/README.md)
 
 ## 验证
 

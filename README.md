@@ -5,6 +5,7 @@ MIT-licensed personal skill suite for agent-first software development and techn
 - Harness Engineering Suite: control plane initialization, drift maintenance, feature delivery, and bug remediation
 - Office Skills Suite: high-quality document deliverables across DOCX, PDF, PPTX, and XLSX
 - Write Skills Suite: technical planning, blank-page writing, source-driven rewrite, plus a shared Mermaid diagram standard
+- Notion writing artifacts: Notion Agent Skills and optional Instructions for the same planning, writing, and rewriting workflows
 
 ---
 
@@ -49,6 +50,8 @@ The `tech-*` skills decide whether a document needs a diagram and what question 
 
 Docs: [docs/write-suite.en.md](docs/write-suite.en.md)
 
+Notion companion docs: [docs/reference/notion/README.md](docs/reference/notion/README.md)
+
 ---
 
 ## Recommended Harness Flow
@@ -73,8 +76,13 @@ Refinex-Skills/
 │   ├── harness-suite.zh.md
 │   ├── office-suite.en.md
 │   ├── office-suite.zh.md
+│   ├── reference/
+│   │   └── notion/
 │   ├── write-suite.en.md
 │   └── write-suite.zh.md
+├── notion/
+│   ├── instructions/
+│   └── skills/
 ├── skills/
 │   ├── harness-bootstrap/
 │   ├── harness-garden/
@@ -113,6 +121,7 @@ Office Skills:
 Write Skills:
 - English: [docs/write-suite.en.md](docs/write-suite.en.md)
 - 中文: [docs/write-suite.zh.md](docs/write-suite.zh.md)
+- Notion: [docs/reference/notion/README.md](docs/reference/notion/README.md)
 
 ## Validation
 
