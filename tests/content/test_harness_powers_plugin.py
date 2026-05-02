@@ -51,7 +51,7 @@ def read_text(path: Path) -> str:
 
 
 class HarnessPowersPluginTests(unittest.TestCase):
-    def test_plugin_metadata_exists_and_points_to_skills(self) -> None:
+    def test_codex_plugin_metadata_exists_and_points_to_skills(self) -> None:
         plugin_json = PLUGIN_ROOT / ".codex-plugin" / "plugin.json"
         self.assertTrue(plugin_json.is_file())
 
@@ -59,6 +59,24 @@ class HarnessPowersPluginTests(unittest.TestCase):
         self.assertEqual(metadata["name"], "harness-powers")
         self.assertEqual(metadata["skills"], "./skills/")
         self.assertEqual(metadata["interface"]["displayName"], "Harness Powers")
+
+    def test_cursor_plugin_metadata_exists_and_points_to_skills(self) -> None:
+        plugin_json = PLUGIN_ROOT / ".cursor-plugin" / "plugin.json"
+        self.assertTrue(plugin_json.is_file())
+
+        metadata = json.loads(read_text(plugin_json))
+        self.assertEqual(metadata["name"], "harness-powers")
+        self.assertEqual(metadata["skills"], "./skills/")
+        self.assertEqual(metadata["logo"], "assets/harness-powers-small.svg")
+        self.assertEqual(metadata["category"], "Coding")
+        self.assertNotIn("interface", metadata)
+
+        for path_key in ["skills", "logo"]:
+            with self.subTest(path_key=path_key):
+                relative_path = Path(metadata[path_key])
+                self.assertFalse(relative_path.is_absolute())
+                self.assertNotIn("..", relative_path.parts)
+                self.assertTrue((PLUGIN_ROOT / relative_path).exists())
 
     def test_expected_public_skill_directories_exist(self) -> None:
         for skill in sorted(EXPECTED_SKILLS):

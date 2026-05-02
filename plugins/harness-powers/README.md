@@ -1,6 +1,6 @@
 # Harness Powers
 
-Harness Powers is a Codex App plugin for agent-first software development. It combines the repository control-plane discipline of Harness Engineering with the strongest workflow ideas from Superpowers: brainstorming, planning, TDD, debugging, review, dispatch, worktree isolation, and evidence-backed completion.
+Harness Powers is a Codex App and Cursor plugin for agent-first software development. It combines the repository control-plane discipline of Harness Engineering with the strongest workflow ideas from Superpowers: brainstorming, planning, TDD, debugging, review, dispatch, worktree isolation, and evidence-backed completion.
 
 This plugin is Harness-first. It does not publish legacy Superpowers skill names. Instead, it exposes one coherent `harness-*` skill surface where `harness-using` owns routing and `harness-verify` owns completion evidence.
 
@@ -115,9 +115,10 @@ find plugins/harness-powers/skills -maxdepth 2 -name SKILL.md | sort
 
 # Validate plugin metadata
 python3 -m json.tool plugins/harness-powers/.codex-plugin/plugin.json >/dev/null
+python3 -m json.tool plugins/harness-powers/.cursor-plugin/plugin.json >/dev/null
 ```
 
-To test a local install in Codex App, point the app or plugin marketplace entry at `plugins/harness-powers/`. Do not edit the installed cache copy directly; make changes in this repository and reinstall or relink from here.
+To test a local install in Codex App, point the app or plugin marketplace entry at `plugins/harness-powers/`. To test in Cursor, symlink or copy `plugins/harness-powers/` to `~/.cursor/plugins/local/harness-powers` and reload Cursor. Do not edit installed cache copies directly; make changes in this repository and reinstall or relink from here.
 
 ## Local Validation
 
