@@ -1,6 +1,6 @@
 ---
 name: code-comments
-description: Authoritative code commenting standards for Java (Javadoc), Python (PEP 257), Rust (rustdoc), TypeScript/JavaScript (JSDoc/TSDoc), Vue, React, XML, HTML, YAML, SQL (including stored procedures), CSS, Go, Kotlin, Swift, Shell, and C/C++. Use when asked to add, fix, supplement, or generate comments/documentation for any file or directory — and also as a passive constraint when writing any code, so that all output is properly commented by default. Covers class/method/field doc comments, POJO annotations, enum constants, config file comments, SQL DDL comments, and inline logic comments. Triggers on: "注释", "docstring", "Javadoc", "document this code", "annotate", or any code documentation request.
+description: Use when adding, fixing, reviewing, or generating code comments, docstrings, Javadoc, JSDoc/TSDoc, rustdoc, SQL comments, or documentation comments for source, markup, configuration, or database files.
 ---
 
 # Code Comments: Authoritative Multi-Language Commenting Standards
