@@ -1,0 +1,29 @@
+{
+    "skill_name": "tech-planner",
+    "evals": [
+      {
+        "id": 1,
+        "prompt": "帮我规划一个 Spring Boot 的技术博客系列",
+        "expected_output": "Skill should detect that 'Spring Boot' is too broad and pause to ask the user to narrow scope to a specific subsystem (e.g., auto-configuration, testing strategy, production readiness, security). Should NOT proceed to Phase 1 research without narrowing.",
+        "files": []
+      },
+      {
+        "id": 2,
+        "prompt": "我想写一个 Spring AI 的系列博客，从入门到实战，大概 6-10 篇，目标读者是有 Spring Boot 经验的后端工程师。",
+        "expected_output": "Skill should execute the full 4-phase protocol: Phase 1 with real web research (not fabricated), Phase 2 with a concept dependency graph, Phase 3 with cognitively sequenced articles each having a complete self-sufficient tech-writing prompt, Phase 4 validation passing all 12 gates. Titles should be Meituan Tech Blog style. No documentation mirroring of Spring AI docs structure.",
+        "files": []
+      },
+      {
+        "id": 3,
+        "prompt": "规划一个 Redis 数据结构与应用实践的博客系列，读者是中级 Java 后端开发者，会用 Redis 做缓存但对其他数据结构和高级用法不熟悉。",
+        "expected_output": "Skill should produce a series likely using Problem-Solution Chain pattern. The knowledge graph should reflect use-case relationships (not API dependencies). Each article should center on a practical engineering problem. Should correctly identify that this is a non-framework topic where concepts relate through 'applicable scenarios' rather than 'API inheritance'.",
+        "files": []
+      },
+      {
+        "id": 4,
+        "prompt": "我想写一个系列文章专门讲 Spring Boot 里的 @ConditionalOnClass 注解",
+        "expected_output": "Skill should detect that this topic is too narrow for a series (a single annotation does not warrant multiple articles). Should suggest either single-article treatment or expanding scope to the broader conditional auto-configuration mechanism.",
+        "files": []
+      }
+    ]
+  }

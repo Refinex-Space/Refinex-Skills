@@ -1,183 +1,68 @@
-# Phase naming guide
+# Phase Naming Guide
 
-Phase names matter, but not in the way many generated outlines assume. The job of a phase name is to orient the reader quickly. The job of the phase goal paragraph is to explain the cognitive move in full.
+## Purpose
 
-Weak outlines usually fail phase naming in one of two opposite ways:
+Guide the naming of series phases so that each name describes a cognitive activity the reader performs, not a difficulty label.
 
-- they use empty buckets like `Basics`, `Intermediate`, `Advanced`
-- they overcorrect into taxonomy theater like `认知重建`, `机制精通`, `能力扩展`, `驯服配置`, `拆开魔法`, `穿透 Web`, `走向异步`
+---
 
-Both are bad. One says too little. The other sounds like a model trying to sound important.
+## The Rule
 
-## Core rule
+A phase name must answer: "What is the reader *doing* cognitively during this phase?" The name should be a verb-noun phrase or a metaphorical label that immediately communicates the type of intellectual work involved.
 
-Treat a phase label as a pair:
+**Forbidden patterns**: 基础篇, 进阶篇, 高级篇, 入门, Beginner, Intermediate, Advanced, Fundamentals, Deep Dive. These describe the reader's assumed experience level, not their cognitive activity.
 
-1. a **concise phase name**
-2. a **phase goal paragraph**
+---
 
-The concise name should be easy to scan and sound like something an editor would actually publish. The goal paragraph carries the richer transformation: what the reader can do after the phase, what misconceptions are being corrected, and why this phase exists in the series.
+## Naming Structure
 
-Good pair:
+Each phase has two components:
 
-- Phase name: `入门与术语`
-- Goal paragraph: by the end of this phase, the reader can create a first runnable project, match the framework version correctly, and understand the terms used in the rest of the series
+1. **Cognitive-action name** (2-6 Chinese characters or equivalent English): A compact label for the phase.
+2. **Subtitle** (one sentence): Expands the name into a concrete description of what the reader is doing.
 
-Bad pair:
+Format: `Phase N: {认知动作名} — {副标题}`
 
-- Phase name: `认知重建`
-- Goal paragraph: vague repetition of the title with no concrete reader change
+---
 
-## What a strong phase name does
+## Example Names (Positive)
 
-A strong phase name is:
+These are illustrative, not prescriptive. Every series needs its own phase names tailored to the subject matter.
 
-- short enough to scan
-- concrete enough to orient
-- natural enough to sound edited rather than generated
+**For a Spring AI series:**
+- Phase 1: 认知重建 — 卸载 LangChain 的心智模型，理解 Spring AI 的分层抽象设计意图
+- Phase 2: 机制掌握 — 请求管道的实际装配过程与可干预点
+- Phase 3: 承重决策 — 无法轻易回滚的架构选择与权衡分析
 
-It does **not** need to carry the entire argument of the phase by itself. That is what the phase goal paragraph is for.
+**For a Redis applied patterns series:**
+- Phase 1: 结构直觉 — 从数据结构特性推导适用场景
+- Phase 2: 工程组装 — 用基础结构组合解决复合业务问题
+- Phase 3: 故障预判 — 识别和防御生产环境中的退化模式
 
-For most technical series, a phase name should be a compact noun phrase or capability label: `建立入口`, `语法基础`, `配置管理`, `自动配置`, `SQL 基础`, `事务并发`, `观测排障`, `架构决策`. The name can be plain. Plain is often better than clever. Do not make the phase title do the work of a paragraph.
+**For a Kubernetes networking series:**
+- Phase 1: 模型校准 — 重新理解 Pod 网络的扁平地址空间
+- Phase 2: 链路追踪 — 一个请求从 Ingress 到 Pod 的完整旅程
+- Phase 3: 策略编织 — NetworkPolicy 的组合语义与安全边界设计
 
-## Three tests
+---
 
-### 1. Scan test
+## Naming Process
 
-If a reader skims all phase names in five seconds, can they tell the broad arc of the series?
+1. Look at the articles assigned to each phase.
+2. Ask: "What single cognitive verb captures what all these articles require the reader to do?" Common cognitive verbs: 重建 (reconstruct), 掌握 (master), 组装 (assemble), 校准 (calibrate), 拆解 (deconstruct), 预判 (anticipate), 编织 (weave), 迁移 (migrate), 抉择 (decide).
+3. Pair the verb with a noun that grounds it in the subject matter.
+4. Write the subtitle to make the cognitive activity concrete and specific.
 
-Names like `建立入口`, `核心抽象`, `RAG 管线`, `生产化`, `架构取舍` pass.
-Names like `Phase 2: Mechanism Mastery: how the request pipeline actually wires together` are usually doing too much in the label itself.
+---
 
-### 2. Naturalness test
+## Capability Statement
 
-Would a human editor choose this phrase for a section header?
+Each phase also requires a capability statement: a sentence describing what the reader can *do* after completing this phase that they could not do before.
 
-If the answer is "probably not, but it sounds grand", rewrite it.
+Format: "完成本阶段后，读者能够 {具体能力描述}。"
 
-Generated-feeling patterns to avoid:
+**Good**: "完成本阶段后，读者能够阅读 Spring AI 的 auto-configuration 源码并预测给定配置下哪些 Bean 会被注册。"
 
-- abstract noun inflation
-- paired theatrical clauses
-- slogan-like wording
-- stage-language such as `最后一公里`, `真实代价`, `背后发生了什么`
-- verb slogans such as `驯服 X`, `穿透 X`, `拆开魔法`, `掌控 X`, `走向 X`, `重建心智`
-- stacked phase titles such as `从 X 到 Y 都要可解释` or `先 X，再 Y`
+**Bad**: "完成本阶段后，读者对 Spring AI 有了更深入的了解。" (Unfalsifiable and vague.)
 
-### 3. Transformation test
-
-Read the phase name **together with** the goal paragraph and ask: what changes for the reader after this phase?
-
-If the answer is still vague, the phase is under-specified.
-
-This test applies to the pair, not the title alone. The title can stay compact.
-
-## The four verbs are planning aids, not naming mandates
-
-The classic planning verbs — reconstruct, master, extend, debug — are still useful. They help the planner reason about the phase's role in the series.
-
-But they do not need to appear literally in the phase name.
-
-Useful:
-
-- use `reconstruct` when deciding that the phase corrects a wrong mental model
-- use `master` when deciding that the phase opens up the mechanism
-- use `extend` when deciding that the phase covers extension points or composition
-- use `debug` when deciding that the phase is about failure modes or diagnostics
-
-Not useful:
-
-- forcing every visible phase name to spell out the verb category
-
-## Recommended naming patterns
-
-For framework series, these patterns are usually enough:
-
-- onboarding: `建立入口`, `入门与术语`, `版本与启动`
-- mechanism: `核心抽象`, `调用链`, `执行模型`, `自动配置`
-- application: `RAG 管线`, `Tool Calling`, `Memory`
-- production: `生产化`, `诊断与观测`, `观测排障`, `故障模式`
-- synthesis: `架构取舍`, `架构决策`, `设计哲学`, `什么时候不用它`
-
-These are examples, not a fixed vocabulary. The point is the level of compression.
-
-## Good and bad examples
-
-### Spring AI
-
-Bad:
-
-- `认知重建`
-- `机制精通`
-- `能力扩展`
-
-Better:
-
-- `建立入口`
-- `核心抽象`
-- `Tool Calling`
-- `生产化`
-- `架构取舍`
-
-### Spring Boot
-
-Bad:
-
-- `驯服配置：把 Environment 从字符串仓库变成运行时事实表`
-- `拆开魔法：把 Auto-configuration 还原成普通 Spring 决策`
-- `穿透 Servlet Web：从端口监听到错误响应都能解释`
-
-Better:
-
-- `配置管理`
-- `自动配置`
-- `Servlet Web`
-
-### MySQL
-
-Good:
-
-- `SQL 基础`
-- `索引模型`
-- `执行计划`
-- `事务并发`
-- `备份恢复`
-
-### Project Reactor
-
-Bad:
-
-- `Reactive Basics`
-- `Advanced Operators`
-
-Better:
-
-- `发布与订阅`
-- `Operator 分类`
-- `执行模型`
-- `生产问题`
-
-### Kubernetes Operators
-
-Bad:
-
-- `Introduction`
-- `Core Concepts`
-- `Advanced Patterns`
-
-Better:
-
-- `控制器心智模型`
-- `Reconcilers`
-- `CRD 演化`
-- `故障与恢复`
-
-## Workflow
-
-1. Define the phase purpose in one sentence.
-2. Decide whether the phase is onboarding, mechanism, application, production, or synthesis.
-3. Draft a short name that a human editor would plausibly use.
-4. Write the phase goal paragraph.
-5. Run the three tests.
-
-If the phase only works when the title itself becomes a mini-essay, the problem is usually the phase design, not the title wording.
+The capability statement must be concrete enough that a reader could verify whether they've achieved it.
