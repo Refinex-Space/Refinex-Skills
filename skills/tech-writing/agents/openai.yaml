@@ -1,0 +1,4 @@
+interface:
+  display_name: "Tech Writing"
+  short_description: "撰写经过论点锚点和质量门禁验证的专业技术博客文章。"
+  default_prompt: "Use $tech-writing to draft a rigorous long-form technical blog article from my topic or tech-planner prompt."

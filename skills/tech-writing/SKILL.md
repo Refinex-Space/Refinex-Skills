@@ -1,187 +1,100 @@
 ---
 name: tech-writing
-description: Produce production-grade technical writing from scratch: blog posts, architecture design docs, ADRs, X vs Y comparisons, source code and mechanism deep-dives, API documentation, and migration guides.Use when the user has a technical decision, system, or implementation to document but no draft. Trigger on requests like "write a blog", "draft an ADR", "compare X and Y", "design doc", "deep dive", "API docs", or "migration guide".Default output in Chinese with key technical terms in English; switch to English only if explicitly requested.
+description: >
+  Write a single rigorous mid-to-long-form technical blog article from a user topic, writing intent, draft prompt, or tech-planner handoff.
+  Use this skill for professional engineering articles, architecture explainers, mechanism deep dives, production postmortems, technology comparisons,
+  framework/API analysis, and article drafting requests that require a falsifiable thesis, concrete technical anchors, diagrams, and anti-AI-slop validation.
+  Do NOT use for multi-article series planning, general content calendars, marketing copy, API reference documentation, or short social posts.
 ---
 
-# tech-writing
+# Tech Writing
 
-A skill for blank-page technical writing. The user has a topic, argument, or decision in their head, but no existing draft. This skill exists to stop one failure mode: **anchor hunger** — the default AI slide into encyclopedic prose that describes _what things are_ and never judges _what they mean_.
+## Mission
 
-The cure is not stylistic. It is procedural. Anchors are gathered **before** drafting, a narrative voice is locked in **before** drafting, and the draft is then checked against non-negotiable quality gates **before** delivery.
+Write one professional technical blog article at the level of Meituan Tech Blog, Anthropic Engineering Blog, or OpenAI Developer Blog. The article must make a falsifiable technical claim, prove it with concrete anchors, and avoid encyclopedic, template-shaped, AI-flavored prose.
 
----
+Default output is Chinese. Preserve English for technical terms, API names, class names, config keys, error names, protocol names, commands, and version identifiers.
 
-## The failure mode this skill fights
+## Hard Gate
 
-Without this skill, given "write a blog post about Spring AI's `ChatClient`", a model typically produces: a history paragraph, a "what is" paragraph, a feature list, a hello-world example, and a "conclusion" that says both old and new approaches have pros and cons. Nothing in that output requires having ever used `ChatClient` in production. Nothing is falsifiable. The reader learns no more than they would from the README.
+Do not start Phase 2 drafting until Phase 1 has produced an Anchor Sheet and the user has explicitly confirmed it. A complete prompt from `tech-planner` may compress Phase 1, but it never removes the confirmation gate.
 
-The pattern has a name here: **encyclopedic drift**. It happens when the writer (human or model) has not gathered enough concrete technical material to have an argument, so the writing compensates by becoming comprehensive instead of sharp. This skill's job is to prevent that — by forcing the argument and the anchors to exist _on paper_ before the first sentence of prose.
+If the user asks to "just write it" before the Anchor Sheet is confirmed, explain that this skill requires a brief pre-writing confirmation and present the shortest viable Anchor Sheet.
 
----
+## Three-Phase Workflow
 
-## Workflow
+### Phase 1: Collaborative Pre-Writing
 
-Every task under this skill follows the same three phases. Do not skip ahead. Do not start drafting during Phase 1.
+Start by reading `references/prewriting-protocol.md`.
 
-```
-Phase 1: PRE-WRITING PROTOCOL   → produces an Anchor Sheet
-Phase 2: DRAFTING               → produces a draft under one locked voice
-Phase 3: VALIDATION LOOP        → checks against gates, revises, repeats
-```
+Produce an initial Anchor Sheet instead of asking generic open-ended questions. Use the user's request, any supplied `tech-planner` prompt, and targeted research to fill six dimensions:
 
-### Phase 1 — Pre-writing protocol (MANDATORY; do not skip)
+1. Central thesis: one falsifiable judgment that can appear in the opening paragraph.
+2. Technical anchors: concrete data, failure mechanisms, version behavior, rejected alternatives, trade-off thresholds, boundary conditions, source links, or code-level facts.
+3. Reader profile: what the target reader already knows, what they may misunderstand, and what the article should not explain from scratch.
+4. Scope boundary: in-scope and explicitly out-of-scope lists.
+5. Visual plan: load-bearing mechanisms, topologies, lifecycles, timelines, or comparisons that need diagrams.
+6. Narrative strategy: the selected strategy from `references/narrative-strategies.md`, or a justified hybrid.
 
-Before writing any prose, produce an **Anchor Sheet**. This is an internal working document — show it to the user at the start so they can correct missing or wrong anchors. The six steps:
+Use current sources when facts may have changed, when library/API behavior matters, or when the article depends on version-specific details. Use Context7 MCP for library/API documentation when available; use web search/fetch for official docs, release notes, issue discussions, benchmarks, and primary sources.
 
-1. **Central argument.** Write one sentence. It must be falsifiable and defensible. "Spring AI's `ChatClient` is a thoughtful abstraction" is not an argument — it cannot be falsified. "Spring AI's `ChatClient` improves ergonomics for synchronous chat but leaks abstraction the moment you need tool-call streaming, and the leak is in `AdvisorChain`, not in the fluent API" is an argument. If you cannot write the sentence, you do not yet have a piece to write — ask the user for more context before proceeding.
+Expose weak spots. If anchors are missing or the thesis is not falsifiable, do not hide the gap with confident prose. Offer three concrete options: user supplies missing facts, you run targeted research, or you narrow the scope.
 
-2. **Technical anchors.** Gather at least:
-   - **Real numbers**: latency, throughput, memory, version numbers, error rates, code sizes, config values, thresholds. "A lot" and "significantly" are not numbers.
-   - **Specific failure mechanisms**: not "it can fail under load" but "under >200 concurrent requests, the default `SimpleVectorStore` rebuilds its in-memory index on every insert, which is O(n) per write and dominates CPU by ~40%".
-   - **Rejected alternatives with reasons**: what else was considered, and precisely why each was set aside.
-   - **Boundary conditions with thresholds**: where does the claim stop being true? ("This pattern holds up to ~10k rows per partition; beyond that, Cassandra's tombstone scan cost overtakes the read path.")
+End Phase 1 by showing the complete Anchor Sheet and asking: "以上是本文的写作蓝图，是否可以开始撰写？" Stop there until the user confirms.
 
-3. **Visual explanation plan.** Decide whether any load-bearing mechanism, topology, lifecycle, or timeline is clearer in a diagram than in prose alone. If yes, pre-commit the diagram and pick the Mermaid type by question, not by habit: `sequenceDiagram` for temporal call order, `flowchart` for branching pipelines, `stateDiagram-v2` for state transitions, `classDiagram` or `erDiagram` for structural relationships, `timeline` for version/change chronology. Read `references/diagram-selection-guide.md` when the choice is not obvious. Once the type and reader question are locked, use `mermaid-diagrams` to author the actual Mermaid so the code stays syntax-safe, portable, and visually restrained.
+### Phase 2: Drafting
 
-4. **Reader audit.** Who is the reader? What do they already know (so you don't waste their time)? What do they probably *mis*know (so you correct it early)? A Java backend engineer reading a Spring AI post already knows what a bean is — spending two paragraphs explaining IoC is an insult to their time and a tell that you have nothing to say.
+Draft only from the confirmed Anchor Sheet.
 
-5. **Scope boundary.** Write two lists: "in scope" and "explicitly not in scope". The second list is the more important one. It is how you earn the right to ignore things without the reader feeling cheated.
+Follow the selected narrative strategy. Do not silently switch strategies; if the strategy no longer fits, return to Phase 1 and ask for confirmation of the revised Anchor Sheet.
 
-6. **Voice selection.** Pick exactly one narrative voice from the catalog in `references/narrative-voices.md` and commit to it for the whole piece. Voice is not tone; it is the stance from which the piece is argued.
+Apply these non-negotiables:
 
-If any of the six is thin — especially real numbers, rejected alternatives, or the visual plan for a mechanism-heavy piece — **stop and tell the user**. Say what is missing. Offer options: (a) the user supplies the missing anchors, (b) you run specific lookups with tools, (c) the piece is narrowed so the missing anchor is no longer needed. Never paper over a missing anchor with generic prose.
+- State the central thesis in the opening paragraph. The reader should know the article's claim within 60 seconds.
+- Let structure grow from the thesis. Do not force a fixed outline such as "background / concept / practice / summary".
+- Use precise, editorial titles. Ban topic tags, clickbait, empty drama, and self-media phrasing.
+- Fulfill every promised anchor. If the Anchor Sheet says a mechanism, rejected option, threshold, or boundary matters, the article must explain it or explicitly remove it through a confirmed scope change.
+- Fulfill the visual plan. Use the `mermaid-diagrams` skill for Mermaid diagrams. Diagrams must answer specific reader questions, not decorate the article.
+- Write like a senior engineer explaining a design review to peers: opinionated, evidence-based, direct, and technically specific.
+- Keep the ending tied to the thesis. Do not end with cheerleading, "相信读者已经了解", or generic future-looking praise.
 
-For the detailed protocol with worked examples, read `references/pre-writing-protocol.md`.
+Read `references/language-standard.md` before drafting if tone, titles, or AI-flavored prose are at risk. Read `references/diagram-guide.md` before writing diagrams.
 
-### Phase 2 — Drafting
+### Phase 3: Validation Loop
 
-Only after the Anchor Sheet is complete and any gaps have been resolved:
+Before delivering the article, read `references/quality-checklist.md` and run the checklist as an executable loop:
 
-1. **Pick the document type** and read the corresponding reference file (see the table below). Each doc type has its own required structure — do not improvise structure for ADRs, design docs, or API reference. For blog posts and deep-dives the structure is more flexible but still anchored.
-2. **Write in the selected voice only.** If you feel the voice shifting mid-draft (for example, from "Design Tribunal" into "Mechanism Autopsy" because you got interested in the internals), stop and decide: either the piece is actually a different voice and you restart the draft, or this is drift and you rein it back in. Voice drift is a leading cause of muddy technical writing.
-3. **Apply the 60-second rule**: the opening paragraph must state the central argument. A reader who stops after 60 seconds should still know what you are claiming. No throat-clearing. No "In recent years, as AI has grown in importance…". No background stuffing.
-4. **Apply the title rule**: the title is concise, accurate, and editorially natural. It should not be a hollow topic tag, but it also should not carry the full Anchor Sheet. Put the complete argument in the opening paragraph and header block. Prefer `事务边界`, `配置绑定`, or `ChatClient 抽象边界` over long constructions such as `配置优先级不是记忆题，而是 ConfigData 构建出的搜索路径` or `ChatClient → AdvisorChain → ChatModel 三层夹心——第一次 API 调用背后发生了什么`.
-5. **Make the visual plan real.** If the Anchor Sheet said a mechanism, topology, lifecycle, or timeline needs a diagram, draw it with the best-fit Mermaid type via `mermaid-diagrams`. Do not downgrade to prose-only because diagrams take effort, and do not force a diagram where prose is already clearer.
-6. **Honor the depth contract.** Do not stop because the draft is "already long enough". Stop only when every load-bearing anchor, mechanism, rejected alternative, and boundary promised by the Anchor Sheet has been discharged or explicitly scoped out. Depth is measured by paid-off obligations, not by word count.
+1. Check the draft against every gate.
+2. Revise any failing section.
+3. Re-check the revised draft.
+4. Deliver only when all gates pass, or clearly state the remaining risk if a user-imposed constraint prevents a fix.
 
-### Phase 3 — Validation loop
+Use `references/anti-patterns.md` whenever a language or structure problem is ambiguous. First drafts often fail two or three gates; treat that as normal and revise.
 
-Before delivering the draft to the user, run it against the checklist in `references/quality-checklist.md`. This is an **executable** loop: read each gate, check the draft, and fix what fails before moving on. Do not merely "consider" the gates — actually verify each one against the prose. The gates are tight enough that a first draft will usually fail two or three of them; that is expected and is the point of the loop. Revise and re-run until the draft passes every gate.
+## Handoff From Tech Planner
 
-If you deliver a draft without running the checklist, you have not used this skill. It is the checklist that makes the skill work.
+If the input is a `tech-planner` prompt, read `references/tech-planner-handoff.md`.
 
----
+Convert the prompt into an Anchor Sheet, mark which fields are already satisfied, call out missing anchors or version ambiguity, and request confirmation. Do not re-plan the whole series. Do not skip Phase 1.
 
-## Document type selection
+## Reference Map
 
-Pick the type first; structure follows. When in doubt between types, ask the user — do not blend structures.
+Read only what the current task needs:
 
-| The user wants to…                                                       | Document type                      | Reference file                          |
-| ------------------------------------------------------------------------ | ---------------------------------- | --------------------------------------- |
-| Publish a technical argument or war story to a general engineer audience | Technical blog post                | `references/doctype-blog-post.md`       |
-| Record a specific architecture choice with its rationale                 | ADR (Architecture Decision Record) | `references/doctype-adr.md`             |
-| Propose a new system or major change for review                          | Design document                    | `references/doctype-design-doc.md`      |
-| Compare two or more technologies and recommend one                       | Technology comparison              | `references/doctype-comparison.md`      |
-| Walk through source code, protocol internals, or a mechanism             | Deep-dive / mechanism autopsy      | `references/doctype-deep-dive.md`       |
-| Document an API for developers consuming it                              | API reference                      | `references/doctype-api-doc.md`         |
-| Guide readers through an upgrade, migration, or adoption                 | Migration field guide              | `references/doctype-migration-guide.md` |
+- `references/prewriting-protocol.md` — Phase 1 Anchor Sheet protocol and confirmation rules.
+- `references/narrative-strategies.md` — strategy library for non-template article structures.
+- `references/anti-patterns.md` — AI writing symptoms, detection methods, fixes, and bad/good examples.
+- `references/quality-checklist.md` — Phase 3 validation gates.
+- `references/language-standard.md` — title, tone, transition, ending, and evidence language standards.
+- `references/diagram-guide.md` — visual planning and Mermaid selection guidance.
+- `references/tech-planner-handoff.md` — compressed Phase 1 for complete planning prompts.
+- `references/test-cases.md` — representative forward-testing prompts.
 
-Each reference file contains the required sections, ordering rules, examples, and type-specific quality rules. Read the relevant file before drafting — do not rely on memory of "what an ADR usually looks like".
+## Final Output Shape
 
-The Diátaxis four-quadrant distinction (tutorial / how-to / reference / explanation) is a useful cross-cutting lens: before picking a doc type, ask yourself which quadrant the reader is in. API reference is reference. A migration guide is a how-to. A deep-dive is explanation. Blending quadrants in one document is a reliable way to make it good at nothing. More on this in `references/doctype-blog-post.md` and `references/doctype-api-doc.md`.
+When delivering the article, include:
 
----
+- The article itself in Markdown.
+- A short validation note after the article listing the most important gates checked and any residual assumptions.
 
-## Narrative voices (pick exactly one per document)
-
-A voice is a consistent stance — what the writer is doing with the material. Voice drift is a top anti-pattern. Pick one and commit. The four primary voices:
-
-- **Production War Story** — post-mortem, operational lesson. The writer lived through an incident and is teaching the reader what the system actually did, not what the docs said it would do. Opens with a symptom, ends with a structural lesson.
-- **Design Tribunal** — architecture decisions and technology comparisons. The writer is sitting in judgment. Every claim must be falsifiable. Every alternative must be named and set aside for a specific reason. No "both have pros and cons" verdicts.
-- **Mechanism Autopsy** — source code deep-dives, protocol analysis. The writer has opened the thing up and is walking the reader through the internals. Authority comes from specificity: exact file paths, exact line numbers, exact call chains.
-- **Migration Field Guide** — upgrade guides, adoption playbooks. The writer has done the migration and is handing the reader a map, complete with the pits they fell into. Tense is imperative; scope is ruthlessly bounded.
-
-Two secondary voices for completeness:
-
-- **Benchmarker's Notebook** — for performance comparison pieces where the whole point is the numbers and the methodology. Authority comes from reproducibility.
-- **Reference Librarian** — for pure API reference and spec documentation. Authority comes from completeness and consistency, not argument. This is the only voice where "just describe what the thing does" is acceptable, because the reader is not looking for an argument.
-
-For each voice, a before/after example showing generic AI output vs. output in that voice is in `references/narrative-voices.md`. Read that file whenever you are unsure which voice fits, or you suspect your draft has drifted.
-
----
-
-## Non-negotiable quality gates (summary)
-
-These are enforced by `references/quality-checklist.md`. The summary is here so you know the bar before you start drafting.
-
-**Structure:**
-
-- Title is concise and professional; the opening states the full argument.
-- Header info block present: scope, prior knowledge assumed, central argument.
-- 60-second rule: the central argument appears in the opening paragraph.
-- Every comparison section ends with a clear verdict. "Both have pros and cons" is a failure.
-- Every design decision includes rejected alternatives and specific reasons.
-
-**Depth:**
-
-- Failure modes name specific mechanisms, not general categories.
-- Load-bearing mechanisms, topologies, lifecycles, and timelines get the right visual support when prose alone would overload the reader.
-- A limitations / boundary section exists with concrete thresholds.
-- Every load-bearing item in the Anchor Sheet is actually discharged in the body; the piece does not open lines of argument it never cashes out.
-- **Senior-engineer test**: for every section, ask "does this teach a senior engineer anything they couldn't get from the official docs in five minutes?" If no, cut or deepen the section. There is no third option.
-
-**Language:**
-
-- For Chinese output: technical terms (class names, config keys, protocol names, CLI flags, metric names) stay in English. Tone is _senior engineer explaining to a peer in a design review_, not "小白教程". Argument-first sentence structure. No 引言式废话 ("在当今这个…的时代").
-- For English output: prefer Anglo-Saxon vocabulary over Latinate ("use" not "utilize", "start" not "commence"). Active voice by default. Present tense for behavior. Precision over concision — if the precise version is longer, ship the precise version.
-
-**Anti-patterns (kill on sight):** false balance, empty superlatives, background stuffing, passive responsibility avoidance, hedge stacking, bullet-point avoidance-of-prose, Wikipedia-voice opening, restating the question, "comprehensive guide" framing. Full catalog with examples in `references/anti-patterns.md`.
-
----
-
-## When to stop and ask the user
-
-This skill is high-freedom for _how_ to write, but strict about _what to write about_. Stop and ask the user, before drafting, when any of the following is true:
-
-1. You cannot state the central argument in one falsifiable sentence.
-2. You have no real numbers, and the piece claims anything about performance, cost, or scale.
-3. You can name the chosen solution but not the rejected alternatives, and the piece is an ADR, design doc, or comparison.
-4. The user's request is actually two pieces glued together (for example, "compare X and Y and also walk through the source code of X") — propose splitting it.
-5. The reader is ambiguous — a piece aimed at both beginners and senior engineers will serve neither.
-
-Asking is not a failure. Papering over the gap with generic prose is the failure.
-
----
-
-## Output language defaults
-
-- Default: **Chinese**, with all technical terms kept in English (class names, method names, protocol names, config keys, CLI flags, metric names, library names, error codes, HTTP status codes).
-- Switch to English only when the user explicitly asks for English, or the document type is "API reference for an English-speaking audience".
-- Never machine-translate technical terms into Chinese (不要写"弹簧 AI 聊天客户端"). Never mix — if the output is Chinese, headings, prose, and captions are Chinese; only technical tokens stay English.
-- Full language conventions, including punctuation, spacing between Chinese and English, and quotation rules, in `references/language-conventions.md`.
-
----
-
-## Reference file map
-
-All reference files are one level below `SKILL.md`. Read the file when its topic is relevant to the current task — don't read them all upfront.
-
-- `references/pre-writing-protocol.md` — detailed Anchor Sheet protocol with worked examples
-- `references/narrative-voices.md` — six voices, before/after examples per voice, drift diagnostics
-- `references/anti-patterns.md` — full AI-scented anti-pattern catalog with detection heuristics
-- `references/quality-checklist.md` — executable validation loop; run before every delivery
-- `references/diagram-selection-guide.md` — choose the right Mermaid diagram for mechanisms, topology, state, or time
-- `references/language-conventions.md` — Chinese and English writing conventions
-- `references/doctype-blog-post.md` — technical blog post structure
-- `references/doctype-adr.md` — ADR structure (Nygard + MADR variants)
-- `references/doctype-design-doc.md` — architecture design document structure (Google-style)
-- `references/doctype-comparison.md` — X vs Y technology comparison structure
-- `references/doctype-deep-dive.md` — source code / mechanism autopsy structure
-- `references/doctype-api-doc.md` — API reference structure
-- `references/doctype-migration-guide.md` — migration and upgrade guide structure
-
----
-
-## Final reminder
-
-The entire skill rests on one load-bearing claim: **anchors first, prose second**. If a draft is weak, the fix is almost never "rewrite the prose". The fix is almost always "the Anchor Sheet was thin; go back and fill it in". When the anchors are real, the prose almost writes itself. When the anchors are fake, no amount of prose polish will save the piece. The same applies to depth and diagrams: if the obligations were not made explicit in the Anchor Sheet, they will almost always be skipped in the draft.
+Do not include the full Anchor Sheet in the final article unless the user asks for it.

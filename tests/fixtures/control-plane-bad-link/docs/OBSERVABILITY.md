@@ -1,3 +1,0 @@
-# Observability
-
-Fixture observability doc.
